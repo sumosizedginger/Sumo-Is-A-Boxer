@@ -1,0 +1,1091 @@
+# TESTING_AND_VALIDATION.md
+
+## Status
+
+**CANONICAL PROJECT DOCUMENT**
+
+Repository: `sumosizedginger/My-Game-Engine-1.0`
+
+This document defines how My Game Engine 1.0 proves that code, runtime behavior, deterministic systems, visual systems, lifecycle behavior, examples, exports, and public APIs work.
+
+---
+
+## 1. Core Law
+
+> **Use evidence that can actually prove the claim being made.**
+
+Examples:
+
+```text
+"the module builds"
+→ build proof
+
+"the collision algorithm returns the right result"
+→ unit/integration proof
+
+"the game runs"
+→ runtime/browser proof
+
+"the character looks right"
+→ controlled visual proof
+
+"generation is deterministic"
+→ repeatability proof
+
+"resources clean up"
+→ lifecycle/repetition proof
+
+"export works"
+→ exported-build static-host proof
+
+"the public API is usable"
+→ consumer/example/blind API proof
+```
+
+No single test type proves everything.
+
+---
+
+## 2. Testing Philosophy
+
+Testing in this project exists for five purposes:
+
+1. protect durable invariants;
+2. prove user-visible behavior;
+3. catch architecture drift;
+4. make model-generated changes falsifiable;
+5. keep examples and proof games from silently rotting.
+
+Tests should not fossilize arbitrary implementation details.
+
+A refactor that preserves public behavior and canonical invariants should not fail merely because private file layout changed.
+
+---
+
+## 3. Test Layers
+
+Use the smallest sufficient layer first, then add higher-level proof where the claim crosses boundaries.
+
+### 3.1 Static / Structural Checks
+
+Use for:
+
+- syntax;
+- import resolution;
+- schema validation;
+- forbidden dependency checks;
+- project structure invariants;
+- link/path checks when introduced;
+- package/build configuration.
+
+Static checks do not prove runtime behavior.
+
+### 3.2 Unit Tests
+
+Use for deterministic isolated logic such as:
+
+- math;
+- geometry operations;
+- entity-handle generation logic;
+- rule evaluation;
+- state transitions;
+- seeded RNG;
+- serialization helpers;
+- content hashing;
+- semantic propagation;
+- collision primitives.
+
+Unit tests should be fast and deterministic.
+
+### 3.3 Integration Tests
+
+Use when multiple engine-owned components interact.
+
+Examples:
+
+- script host + events + variables;
+- motion intent + movement authority;
+- geometry compiler + artifact instantiation;
+- save snapshot + persistent identity;
+- WorldFieldQuery + consumer;
+- renderer factory + runtime scene setup.
+
+### 3.4 Browser / Runtime Tests
+
+Use for behavior that only becomes meaningful in an actual browser/runtime environment.
+
+Examples:
+
+- boot;
+- rendering;
+- input dispatch;
+- requestAnimationFrame integration;
+- DOM UI;
+- WebGPU/WebGL2 path selection;
+- audio initialization when allowed;
+- static export;
+- lifecycle around browser resources.
+
+A Node-only test cannot prove browser behavior.
+
+### 3.5 Proof-Game Tests
+
+Proof games are architectural integration tests.
+
+They answer questions too broad for isolated suites.
+
+Examples:
+
+- Proof A: can a tiny complete game be built cleanly?
+- B1: does procedural character motion actually work visually?
+- B2: do generation + motion + materials + gameplay integrate?
+- C: do bounded world systems work together?
+- D: can a different genre use the engine without rewriting foundations?
+- E: can a fresh consumer use the public API?
+
+### 3.6 Independent Validation
+
+A separate model/agent audits the exact builder revision.
+
+This is required for material tranches according to `DEFINITION_OF_DONE.md`.
+
+### 3.7 Independent Verification
+
+A fresh verifier reproduces the accepted proof on the exact audited revision, preferably from a clean checkout/worktree.
+
+---
+
+## 4. Canonical Command Surface
+
+Phase 0 must establish a small, memorable command surface.
+
+The exact package scripts do not exist until Phase 0 implements them, but the target interface should remain conceptually simple.
+
+Prefer conventional commands such as:
+
+```text
+npm install / npm ci
+npm test
+npm run build
+npm run dev
+npm run eval
+```
+
+Additional commands may be earned when needed, for example:
+
+```text
+npm run test:unit
+npm run test:browser
+npm run test:examples
+npm run capture
+npm run lint
+```
+
+Do not create twenty scripts before there are twenty distinct workflows.
+
+Once canonical commands exist, `README.md`, `AGENTS.md`, CI, and learning material must agree on them.
+
+---
+
+## 5. Clean-State Reproduction
+
+Material verification should prefer a clean environment.
+
+At minimum record:
+
+- exact revision;
+- Node version;
+- dependency install method;
+- branch/detached state;
+- environment assumptions;
+- commands executed.
+
+A verifier should not rely on untracked local files, stale build artifacts, globally installed packages, or hidden environment state.
+
+---
+
+## 6. Exact Revision Rule
+
+Every material audit/verification applies to one exact revision.
+
+If code changes afterward, previous validation does not automatically apply.
+
+Report full commit SHAs where practical.
+
+Do not use vague identifiers such as:
+
+```text
+latest
+fixed branch
+current build
+new version
+```
+
+---
+
+## 7. Unit Test Design Rules
+
+Prefer tests that state a durable behavior.
+
+Good:
+
+> A stale `EntityHandle` generation does not resolve after a slot is reused.
+
+Bad:
+
+> Internal array element 14 equals object X because today's implementation stores it there.
+
+Good:
+
+> Seed 1234 produces the same accepted procedural result across repeated runs in the supported platform class.
+
+Bad:
+
+> This private helper is called exactly three times unless call count itself is the required behavior.
+
+Tests should allow safe refactoring.
+
+---
+
+## 8. Runtime Evidence Rule
+
+When production runtime behavior changes, execute it.
+
+Report:
+
+```text
+COMMAND:
+URL / ENTRY POINT:
+EXPECTED:
+OBSERVED:
+CONSOLE / DIAGNOSTICS:
+PASS / FAIL:
+```
+
+Do not replace runtime evidence with source inspection.
+
+---
+
+## 9. Browser Baseline
+
+My Game Engine 1.0 is browser-first.
+
+Phase 0 should establish a supported browser automation path appropriate to the chosen tooling.
+
+Do not overcommit to a giant compatibility matrix before evidence requires it.
+
+Early development may use one canonical automated browser target plus targeted manual/independent checks.
+
+As renderer/export proofs mature, expand coverage according to `PRD.md` and real compatibility requirements.
+
+---
+
+## 10. WebGPU and WebGL2 Validation
+
+Approved renderer direction:
+
+```text
+WebGPU preferred
+WebGL2 fallback
+```
+
+Do not claim both backends work merely because the factory interface contains both names.
+
+When a proof depends on fallback behavior, validate the actual fallback path.
+
+For renderer-specific work, identify:
+
+- backend requested;
+- backend selected;
+- fallback reason if any;
+- rendered result;
+- diagnostics;
+- known feature difference.
+
+Exact fallback feature tier is evidence-driven.
+
+---
+
+## 11. Determinism Testing
+
+The target is reproducible behavior for a defined engine build/platform class, not magical universal floating-point identity.
+
+For deterministic systems:
+
+1. fix inputs;
+2. fix seed;
+3. fix relevant ordering;
+4. execute repeatedly;
+5. compare meaningful outputs;
+6. change one input/seed;
+7. confirm controlled change.
+
+Possible comparison surfaces:
+
+- definition hashes;
+- artifact keys;
+- serialized state;
+- geometry counts/topology metadata;
+- semantic landmark output;
+- event sequence;
+- save snapshots;
+- replay checkpoint hashes;
+- world field samples.
+
+If platform-level numerical tolerance is necessary, define it explicitly in the subsystem test rather than hiding drift.
+
+---
+
+## 12. Randomness Tests
+
+Deterministic gameplay/generation must not rely on uncontrolled `Math.random()`.
+
+Testing should detect or prevent accidental uncontrolled randomness where practical.
+
+For seeded systems verify:
+
+```text
+same seed + same definition + same engine build/platform class
+→ same accepted result
+```
+
+Then verify:
+
+```text
+different seed
+→ controlled meaningful difference
+```
+
+Cosmetic nondeterminism, when explicitly allowed, should remain isolated and identifiable.
+
+---
+
+## 13. Entity Identity Tests
+
+When identity is implemented, test at least:
+
+- handle resolves while entity is alive;
+- despawn invalidates the old handle;
+- pooled slot reuse increments generation;
+- stale handle does not resolve to a new occupant;
+- persistent IDs serialize only when appropriate;
+- temporary entities do not acquire persistence accidentally.
+
+Identity failures are correctness failures, not polish issues.
+
+---
+
+## 14. Transform Authority Tests
+
+When multiple movement-related systems exist, test the invariant:
+
+> One authoritative writer commits an entity transform per simulation step.
+
+As applicable verify:
+
+- animation does not directly own world transforms;
+- root motion is expressed as movement intent/root delta;
+- active movement/physics authority commits the result;
+- teleport explicitly suppresses inappropriate interpolation for that frame;
+- conflicting writers are detected or prevented according to current architecture.
+
+Do not build arbitration complexity before a real conflict exists.
+
+---
+
+## 15. Fixed-Step Simulation Tests
+
+Gameplay-observable behavior runs on the fixed simulation.
+
+As the clock is implemented, test:
+
+- fixed update cadence behavior;
+- rendering remains variable/interpolated;
+- gameplay systems do not create independent frame loops;
+- input snapshot enters simulation predictably;
+- event/timer ordering follows accepted architecture;
+- pause/time-scale semantics when implemented.
+
+Avoid fragile wall-clock tests where deterministic clock injection can prove behavior more reliably.
+
+---
+
+## 16. Lifecycle and Cleanup Tests
+
+Resource cleanup is part of correctness.
+
+For resources/entities/listeners/workers/caches with lifecycles, test repeated cycles:
+
+```text
+create
+→ use
+→ dispose/despawn
+→ recreate
+→ repeat
+```
+
+Look for:
+
+- stale handles;
+- duplicate listeners;
+- orphaned animation loops;
+- retained GPU resources;
+- worker leaks;
+- cache ownership errors;
+- event subscriptions surviving disposal;
+- duplicate DOM bindings.
+
+Use telemetry/probes when ordinary assertions cannot expose the leak.
+
+---
+
+## 17. Geometry Validation
+
+Geometry tests should protect semantic and topological correctness, not merely vertex counts.
+
+As systems exist, test applicable properties such as:
+
+- finite positions/normals/UVs;
+- index validity;
+- winding consistency;
+- expected boundary behavior;
+- degenerate triangles;
+- normals/orientation;
+- manifold expectations when required;
+- semantic `regionId` / `surfaceId` propagation;
+- `SemanticLandmarks` correctness;
+- deterministic output;
+- invalid input diagnostics.
+
+A visually plausible mesh can still be invalid geometry.
+
+---
+
+## 18. Kiln Tests
+
+Kiln begins small.
+
+When implemented, test the seam before building industrial caching infrastructure.
+
+Minimum conceptual proof:
+
+```text
+definition
+→ compile
+→ artifact
+→ instantiate
+```
+
+Verify:
+
+- schema/definition validation where applicable;
+- content-derived artifact identity;
+- same accepted definition yields same artifact key under the defined rules;
+- artifact can instantiate runtime object;
+- runtime object does not become the source of truth;
+- memory cache behavior if implemented;
+- compiler-only code does not leak unnecessarily into runtime-only exports.
+
+Do not require IndexedDB/workers/binary formats before they are implemented.
+
+---
+
+## 19. Save and Replay Tests
+
+When save exists, test snapshot behavior independently of replay.
+
+Save tests may include:
+
+- save format version;
+- project/definition identity;
+- declared persistent variables;
+- declared persistent entity state;
+- load reconstruction;
+- temporary runtime objects excluded;
+- stale/invalid version diagnostics.
+
+Replay tests may include:
+
+- seed/definition identity;
+- input log;
+- checkpoint hashes;
+- divergence report when hashes differ.
+
+Do not make game load require replaying the entire historical session.
+
+---
+
+## 20. World Query Tests
+
+When World Forge exists, distinguish:
+
+### `WorldFieldQuery`
+
+Cheap/bulk 2.5D field information.
+
+Test representative consumers such as vegetation/ecology and grounding where appropriate.
+
+### `WorldVolumeQuery`
+
+Authoritative 3D spatial truth.
+
+Test overhang/interior/cave/staked-floor cases when those features exist.
+
+Anything requiring correctness beneath an overhang must not be "proved" only through height-field queries.
+
+---
+
+## 21. Visual Validation
+
+Visual work requires controlled visual evidence.
+
+Prefer:
+
+- deterministic scene setup;
+- deterministic seed;
+- fixed camera transform;
+- fixed viewport where practical;
+- stable lighting/environment;
+- explicit expected properties;
+- captures tied to exact revision.
+
+Visual review should ask concrete questions.
+
+Examples:
+
+```text
+Is the silhouette anatomically plausible?
+Are feet visibly grounded?
+Does the walk read as weighted rather than sliding?
+Are material regions correctly assigned?
+Does fallback rendering preserve the required scene meaning?
+```
+
+Avoid "looks good" as the only acceptance criterion.
+
+---
+
+## 22. Capture Baselines
+
+A0 establishes the capture/evaluation mechanism required by upcoming proofs.
+
+When captures become canonical evidence:
+
+- tie them to exact revision/scene/config;
+- avoid unexplained nondeterminism;
+- preserve metadata needed to reproduce them;
+- update baselines deliberately;
+- do not accept a changed baseline merely to make a test green.
+
+A baseline change should correspond to an accepted visual change.
+
+### 22.1 Evaluation Harness Operations
+
+The evaluation harness (`src/eval/*`) provides automated, headless real-browser validation and deterministic evidence capture:
+
+- **Command**: `npm run eval`
+  - Exit code `0` = PASS (all checks passed with zero fatal/error diagnostics).
+  - Exit code `1` = FAIL (one or more checks failed or fatal errors encountered).
+  - Executes headless real-browser validation (`puppeteer-core`).
+- **Default Suite Targets**: By default, `npm run eval` executes the full six-target evaluation suite:
+  1. **Phase 0 Controlled Boot Proof**:
+     - URL: `http://localhost:5173/?controlled=1`
+     - Evaluates foundational engine boot and purity checks (`boot`, `runtimeMode`, `fullEngineSeam`, `purity`, `noConsoleErrors`, `noPageErrors`, `noFailedRequests`, `domStatusPass`).
+     - Produces baseline capture fixture: `artifacts/captures/phase0_boot_fixture.png`.
+  2. **Proof A Pong Controlled Fixture**:
+     - URL: `http://localhost:5173/?game=pong&controlled=1`
+     - Evaluates Proof A Pong gameplay and mechanics checks:
+       - `pongBoot`: Verifies HTTP 200, game initialization, and exposure of runtime coordinator (`window.__PROOF_A_PONG__`).
+       - `pongGameplay`: Verifies action-based input injection (`MoveUp`), single-writer transform motion, and simulation state transitions (`PLAYING`).
+       - `pongScoring`: Verifies ball deflection/bounds triggers, rule evaluation, score variable updates, and synchronized DOM HUD display updates.
+     - Produces game capture fixture: `artifacts/captures/proof_a_pong_fixture.png`.
+  3. **Proof B1 Motion Truth Fixture**:
+     - URL: `http://localhost:5173/?proof=b1&controlled=1`
+     - Evaluates procedural character generation, locomotion kinematics, and realized grounding checks:
+       - `b1Boot`: Verifies HTTP 200, motion viewer initialization, and exposure of motion controller (`window.__PROOF_B1_MOTION__`).
+       - `b1CharacterGeneration`: Verifies procedural mesh synthesis, deformation-ready loop clusters, canonical 22-bone hierarchy, and normalization invariant.
+       - `b1MotionExecution`: Verifies locomotion simulation clock stepping, double-frequency vertical bounce, lateral sway, and counter-phase arm swing.
+       - `b1GroundingCheck`: Verifies multi-frame realized rendered foot bone heights (`foot_l`, `foot_r`) directly from the armature: guarantees zero ground penetration ($Y \ge \text{footH} - 0.001\text{ m}$) and bounded stance float ($Y \le \text{footH} + 0.025\text{ m}$, mean $\le 10\text{ mm}$).
+     - Produces motion capture fixture: `artifacts/captures/proof_b1_motion_fixture.png`.
+  4. **Proof B2 Combat Room Controlled Fixture**:
+     - URL: `http://localhost:5173/?proof=b2&controlled=1`
+     - Evaluates integrated procedural room geometry, compiled PBR materials, multi-character locomotion, single-writer transform authority, single authoritative combat hit resolution, and victory lifecycle state transitions:
+       - `b2Boot`: Verifies HTTP 200, game coordinator and renderer initialization, and evaluation bridge exposure (`window.__PROOF_B2_COMBAT__`).
+       - `b2RoomGeneration`: Verifies procedural room synthesis from `RoomDefinition`, semantic vertex attributes (`regionId`, `surfaceId`), and synchronized collision bounds.
+       - `b2MaterialGeneration`: Verifies Material Forge compiler seam producing Three.js PBR materials with provenance.
+       - `b2CharacterIntegration`: Verifies multiple distinct SkinnedMesh characters (`athletic` player, `heavy` enemy) instantiated in room.
+       - `b2CombatExecution`: Verifies single authoritative attack volume evaluation, active strike window timing, hit registration, and damage application.
+       - `b2WinState`: Verifies enemy HP reduction to 0 and transition to terminal `VICTORY` state.
+     - Produces combat capture fixture: `artifacts/captures/proof_b2_combat_fixture.png`.
+  5. Proof C Bounded World Controlled Fixture:
+     - URL: `http://localhost:5173/?proof=c&controlled=1`
+     - Fixed default recipe/seed 87122, starting state and camera; the evaluator fixes 1280x720.
+     - Uses the real traversal coordinator through Forward 340 ticks, Right 180 ticks, Forward 720 ticks at 60 Hz, with a generated trunk collision on the first leg.
+     - Checks: `cBoot`, `cWorldGeneration`, `cFieldDeterminism`, `cTerrainQueryTruth`, `cVegetationPlacement`, `cVegetationRendering`, `cWorldVolumeQuery`, `cCharacterGrounding`, `cTraversal`, `cCollision`, `cPageProofSuccess`.
+     - Mesh truth uses independent triangle ray intersections. Vegetation rendering inspects actual trunk instance transforms. Grounding uses realized foot bones and skinned sole vertices over non-flat traversal, not only analytic target values.
+     - Every required check must be exactly true; missing values, a missing page bridge or false page success fail the target. INFO/ERROR records and measured world/traversal metrics appear under `browserDetails.targets.c.cProof`.
+     - Captures after the controlled sequence: `artifacts/captures/proof_c_world_fixture.png`. Existing targets retain their previous capture timing.
+  6. Proof D Arcade Racing Controlled Fixture:
+     - URL: `http://localhost:5173/?proof=d&controlled=1`.
+     - Project-owned Copper Loop: 128 offset samples, 256 barrier faces, eight
+       gates, two laps, fixed start and fixed camera. No Character/Motion/World
+       Forge dependency or external physics.
+     - A semantic scalar driver applies throttle, initially drives into the
+       outer barrier, then steers toward centerline lookahead samples. It never
+       teleports or writes vehicle/race state. Race authority runs at 60 Hz.
+     - Checks: `dBoot`, `dTrackGeneration`, `dVehicleMotion`, `dAnalogInput`,
+       `dBarrierCollision`, `dCheckpointProgress`, `dRaceFinish`,
+       `dControlledCamera`, `dPageProofSuccess`. All must be exactly true.
+     - Geometry samples and rendered gate frames are compared with track truth.
+       Barrier truth reads the actual instanced box face transforms. Committed
+       distance, disk containment, barrier contact, scalar snapshots, strictly
+       ordered checkpoint records and terminal race state are required.
+     - Canonical data includes normalized track definition/hash and final vehicle,
+       fixed-time and checkpoint state. It excludes generation/step timings and
+       transient Three.js identities. Compare this data and captures across runs.
+     - Report metrics include generation time, geometry counts, barrier/gate counts,
+       observed distance, clearance, controlled step timing and render draw counts.
+     - Capture: `artifacts/captures/proof_d_racing_fixture.png`, after the real race.
+       Existing five targets retain their capture timing and presentation.
+- **Capture Fixtures**:
+  - `artifacts/captures/phase0_boot_fixture.png` (Phase 0 boot proof)
+  - `artifacts/captures/proof_a_pong_fixture.png` (Proof A Pong game)
+  - `artifacts/captures/proof_b1_motion_fixture.png` (Proof B1 Motion truth)
+  - `artifacts/captures/proof_b2_combat_fixture.png` (Proof B2 Combat room)
+  - `artifacts/captures/proof_c_world_fixture.png` (Proof C bounded world)
+  - `artifacts/captures/proof_d_racing_fixture.png` (Proof D arcade racer)
+  - Captures record SHA-256 integrity hash, byte size, viewport dimensions (default 1280x720), format, and git revision metadata.
+- **Single-Target / Custom Evaluation**:
+  - The programmatic harness (`runEvaluation({ url, captureName })`) supports single-target evaluation if a custom target URL or capture name is specified.
+  - A convenience export `runProofAEvaluation(options)` is provided in `src/eval/harness.js` for targeting Pong independently.
+- **Report Output**: `artifacts/evaluation-report.json`
+  - Machine-readable JSON report (`schemaVersion: "1.0.0"`).
+  - Report keys: `schemaVersion`, `harness`, `status`, `timestamp`, `revision`, `checks`, `diagnostics`, `telemetry`, `captures`, `browserDetails`.
+- **Server Lifecycle**:
+  - Automatically checks connectivity to `http://localhost:5173/`.
+  - Reuses an existing active dev server if port 5173 is already listening.
+  - Automatically spawns a transient local Vite dev server if no server is running, and shuts it down cleanly upon evaluation completion.
+- **Browser Discovery**:
+  - Automatically locates local system-installed Chrome or Edge.
+  - Can be explicitly overridden using the `CHROME_PATH` environment variable.
+- **Artifacts & Git**:
+  - The `artifacts/` directory is intentionally ignored in `.gitignore` because it contains generated run-specific evaluation evidence.
+
+---
+
+## 23. Performance Validation
+
+Proof D coverage lives in `tests/racing.test.js` and `tests/racing-browser.test.js`:
+scalar compatibility, sparse controller reconnect, deterministic track geometry,
+all inner/outer barrier segments and corner sweeps, directed ordered gates,
+acceleration/braking/steering, transform commit ownership, resets, repeatable real
+race completion, bounded camera orbit isolation, browser keyboard/gamepad paths,
+viewport/DPR, resource teardown/recreation, lazy routing and failure injection.
+The actual evaluator must fail even when every named D check is true but page
+success is false. Injected collision, movement and progression failures must also
+fail the page proof.
+
+Live `?proof=d` has a chase camera with Q/E or right-stick yaw limited to ±1.1
+radians. WASD/arrows drive; controller left stick steers, triggers drive/brake,
+R/Y restarts the whole race at the definition-derived start. Controlled mode does
+not attach live input or start a frame loop; camera input cannot alter its view.
+It injects an empty controller through the existing public input seam, preventing
+physical gamepad polling (including boolean reset) from affecting controlled runs.
+Rendering interpolates position/heading; race timing uses only fixed ticks.
+
+Proof D visual failures are: torn/self-intersecting track, visible/collision
+disagreement, unreadable steering or gate direction, camera losing the vehicle,
+camera input affecting simulation, skipped-course finishes, invalid reset
+placement, binary analog control, or presentation that remains a moving-box test.
+Builder visual observations are evidence, not independent acceptance. The current
+renderer uses the accepted WebGL2 presentation path; no new renderer framework,
+WebGPU implementation, vehicle physics, camera framework or racing subsystem is
+claimed. Live frame measurements must report raw observed intervals separately
+from simulation clock clamps.
+
+Proof C's automated contracts are in `tests/world.test.js` and
+`tests/world-browser.test.js`. They include seed variation/repeatability, recipe
+normalization, terrain/query agreement, ecology, volume collision, actual terrain
+grounding, failure injection, real browser keyboard input, viewport/DPR behavior,
+resource disposal/recreation, and an actual harness run whose page success is false
+while all named checks are true. B1 average/athletic/heavy realized-foot regressions
+remain required when changing terrain-aware motion. Pong's route is checked for
+absence of C world-module requests.
+
+Human review must inspect the live `?proof=c` route for coherent terrain/ecology,
+grounded vegetation, slope contact, visible trunk collision, bounded traversal,
+usable camera/canopy cutaway and resize behavior. Detailed failure criteria and
+implemented limits are in `WORLD_FORGE.md`. Browser interval measurements must
+report uncapped observed frame intervals separately from simulation delta clamps.
+
+Performance claims require measurements.
+
+For a benchmark, record:
+
+```text
+REVISION:
+ENVIRONMENT:
+WORKLOAD:
+METRIC:
+WARMUP:
+SAMPLE METHOD:
+BASELINE:
+RESULT:
+VARIANCE / NOTES:
+```
+
+Use representative workloads from proof games rather than synthetic microbenchmarks alone.
+
+Do not define premature universal frame budgets.
+
+Budgets become canonical when enough evidence exists to justify them.
+
+---
+
+## 24. Static Export Validation
+
+When export is in scope:
+
+1. build the game/export;
+2. inspect expected output files;
+3. serve them through a normal static HTTP server/host path;
+4. load the game in browser;
+5. verify asset/module paths;
+6. verify no hidden dev-server API is required;
+7. verify Studio is not required;
+8. inspect diagnostics/console;
+9. exercise core interaction.
+
+GitHub Pages-style hosting should remain possible for ordinary games.
+
+---
+
+## 25. Public API Validation
+
+Public APIs should be exercised from outside engine internals.
+
+Use:
+
+- examples;
+- black-box integration tests;
+- proof games;
+- eventually blind API tests.
+
+Watch for:
+
+- internal import paths required by normal game code;
+- hidden global state;
+- excessive setup boilerplate;
+- ambiguous lifecycle;
+- undocumented ownership;
+- physical-key assumptions instead of input actions;
+- inability to inspect engine state/diagnostics.
+
+If documentation must explain a bizarre workaround, ask whether the API is wrong.
+
+---
+
+## 26. Example Validation
+
+Examples are first-class tests.
+
+At minimum, important examples should verify:
+
+- build;
+- boot;
+- required local assets;
+- no fatal diagnostics.
+
+Important examples should receive browser tests when practical.
+
+Example code must use current public API.
+
+Do not keep pseudocode disguised as runnable example code.
+
+---
+
+## 27. Learning Documentation Validation
+
+For substantial tutorials:
+
+```text
+fresh reader / fresh agent
+→ follow only the lesson
+→ run documented commands
+→ produce expected outcome
+```
+
+If that fails, classify the failure:
+
+- lesson error;
+- public API defect;
+- setup defect;
+- engine defect.
+
+Repair the underlying cause.
+
+Do not merely add paragraphs around a broken workflow.
+
+---
+
+## 28. Adversarial Validation
+
+Validators should actively search for cases the builder is unlikely to test.
+
+Depending on the subsystem, examples include:
+
+- empty input;
+- malformed definitions;
+- extreme but valid parameters;
+- repeated create/destroy;
+- stale handles;
+- reversed geometry;
+- unusual orientation;
+- seed extremes;
+- pause/resume;
+- resize;
+- fallback renderer;
+- missing optional capability;
+- disconnected controller;
+- export under non-root path;
+- dependency absent from runtime-only build.
+
+Adversarial does not mean random chaos.
+
+Choose probes based on known invariants and failure modes.
+
+---
+
+## 29. Validator Behavior
+
+The validator does not primarily ask:
+
+> Can I find something to complain about?
+
+It asks:
+
+> What claims does this revision make, and what evidence would falsify them?
+
+The validator should:
+
+- reproduce important checks;
+- inspect exact diff;
+- inspect canonical requirements;
+- add temporary probes if useful;
+- distinguish defect from preference;
+- classify severity;
+- avoid production repair unless explicitly authorized.
+
+---
+
+## 30. Repair Validation
+
+After repair:
+
+- rerun the failing reproduction;
+- rerun affected regression tests;
+- rerun broader tests when change risk justifies it;
+- inspect for adjacent regressions;
+- send material repairs back to validator.
+
+A repaired revision is a new revision.
+
+Previous validation does not automatically transfer.
+
+---
+
+## 31. Independent Verification
+
+Verifier requirements:
+
+- exact audited SHA;
+- clean state preferred;
+- canonical Node/toolchain;
+- documented install;
+- documented tests;
+- runtime/browser proof;
+- required captures/probes;
+- no redesign;
+- no production fixes.
+
+A verifier returns `PASS`, `FAIL`, `PARTIAL`, or `BLOCKED` with evidence.
+
+---
+
+## 32. CI Direction
+
+CI should automate stable, valuable checks as they emerge.
+
+Potential progression:
+
+```text
+Phase 0:
+install + tests + build
+
+A0/A:
++ browser smoke/proof
+
+Later:
++ examples
++ deterministic probes
++ selected capture checks
++ static export smoke
++ documentation/link checks
+```
+
+Do not build an enormous CI matrix before the repository has enough implementation to justify it.
+
+Local commands and CI commands should agree.
+
+---
+
+## 33. Failure Reporting
+
+When a test fails, preserve:
+
+- exact revision;
+- command;
+- environment if material;
+- expected result;
+- observed result;
+- diagnostic/error output;
+- minimal reproduction if possible;
+- whether failure is deterministic;
+- whether failure existed at base revision when relevant.
+
+Do not summarize a useful failure into "tests red."
+
+---
+
+## 34. No Silent Skips
+
+If a required test cannot run:
+
+state why.
+
+Examples:
+
+- browser unavailable;
+- WebGPU unavailable;
+- required fixture missing;
+- environment dependency absent;
+- test infrastructure itself broken.
+
+A skipped required proof is unresolved evidence, not a PASS.
+
+---
+
+## 35. Flash-Model Validation Procedure
+
+For Gemini Flash / DeepSeek Flash / other fast agents, use this sequence exactly unless a work order overrides it:
+
+```text
+1. Confirm canonical repository and exact SHA.
+2. Confirm worktree state.
+3. Read the task-routed canonical docs.
+4. Extract explicit acceptance claims from the work order/handoff.
+5. Map each claim to a proof type.
+6. Run the cheapest valid proof first.
+7. Run runtime/browser proof for runtime claims.
+8. Add bounded adversarial probes for high-risk invariants.
+9. Check dependency/provenance rules.
+10. Check architecture conflicts.
+11. Classify findings by severity.
+12. Report what remains unproven.
+13. Do not repair while acting as validator/verifier.
+14. Return the canonical handoff format.
+```
+
+Do not infer PASS from builder confidence.
+
+---
+
+## 36. Proof Matrix
+
+Use this as a default mapping:
+
+| Claim | Minimum evidence |
+|---|---|
+| Package/build configuration works | clean install + build |
+| Pure algorithm works | unit tests |
+| Engine subsystems integrate | integration tests |
+| Browser runtime works | browser execution |
+| Visual result is correct | controlled capture + inspection |
+| Deterministic generation works | repeated controlled runs |
+| Lifecycle is correct | repeated create/destroy + probes |
+| Performance improved | baseline + measured result |
+| Static export works | exported build on static host |
+| Public API is usable | external example/consumer test |
+| Learning lesson works | fresh-reader execution |
+| Donor port preserved useful behavior | provenance + new-repo regression tests |
+
+Stronger evidence may be required by a subsystem spec.
+
+---
+
+## 37. Future Evidence Classes for the Expanded Engine
+
+### NONE OF THESE EXIST. THIS SECTION DESCRIBES WHAT WILL BE REQUIRED, NOT WHAT IS IMPLEMENTED.
+
+`PRD.md` Part II records product requirements that no current system satisfies. Each will eventually need an evidence class that the existing harness does not provide. Recording them now costs nothing and prevents a future tranche from inventing a weaker standard under deadline pressure.
+
+**No test in this section exists. No tranche is authorized by it.** When one of these systems is built, its evidence requirements are designed in that tranche and must meet or exceed what is sketched here.
+
+### 37.1 Scene and composition
+
+- **Serialization round trip.** A composed scene serialized and reloaded produces identical structural identity. Same discipline as the accepted portable structural manifest: identity must not depend on the machine, the window or the run.
+- **Hierarchy correctness.** Local and world transforms agree after reparenting, and transform authority (`CONSTITUTION.md` §13) is not violated by the hierarchy.
+- **Prefab and instance divergence.** An instance modified after creation does not silently mutate its template, and a template change propagates only where the model says it should.
+
+### 37.2 Persistence and save migration
+
+- **Version migration.** A save written by version N loads correctly under version N+1, with an explicit failure rather than silent corruption when it cannot.
+- **Identity survival.** Persistent identity survives save, reload, and an unload/reload cycle. Runtime handles never appear in a save file (`CONSTITUTION.md` §14, §15).
+
+### 37.3 Streaming and residency
+
+- **Unload/reload identity.** An object unloaded and reloaded is the same object, with the same persistent identity and the same state.
+- **Resource lifetime.** Repeated residency cycling releases GPU and DOM resources and does not accumulate listeners — the same standard §22 already applies to viewers.
+- **Simulation while unloaded.** Whatever the design promises about unloaded regions is asserted, not assumed.
+
+### 37.4 Import normalization
+
+- **Normalization, not passthrough.** An imported asset produces engine-owned representation. No vendor type escapes the adapter (`ARCHITECTURE.md` §44).
+- **Determinism.** The same input bytes produce the same normalized output and the same canonical identity across runs and runtimes, to the standard the accepted MeshIR codec already meets.
+- **Provenance.** Every imported asset can state what it came from, through which adapter, at which revision.
+- **Honest failure.** A malformed or unsupported file fails with a structured diagnostic. It does not produce a silently degraded asset.
+
+### 37.5 Visual graphs
+
+- **Two-door equivalence.** A graph authored through the visual editor and the same graph authored through the code API produce identical data and identical behavior. This is the test that enforces `PRD.md` §34, and without it the Two-Door Law is decorative.
+- **Determinism.** Identical graph plus identical inputs produce identical execution, under `CONSTITUTION.md` §12 and §16.
+- **No editor-only behavior.** Cosmetic editor state does not affect execution or identity.
+
+### 37.6 Networking
+
+- **Authority.** A client cannot change state the server owns.
+- **Replication correctness.** A replicated entity converges to server truth after divergence.
+- **Interest management.** A client receives only state relevant to it, asserted by what it does *not* receive.
+- **Failure behavior.** Disconnection, reconnection and server restart produce defined outcomes rather than undefined ones.
+
+### 37.7 Performance baseline methodology
+
+Performance claims require measurement (§ above, and `CONSTITUTION.md` §31). A baseline harness must state what it measures, how many samples, on what hardware and in which browser, and must report variance rather than a single number.
+
+It must distinguish measurement from inference. The current example: CINDER demonstrates 227 authoring parts producing 227 measured draw calls. That is a measurement. "Draw calls are the dominant frame cost" is an inference, and no evidence in this repository supports it yet.
+
+### 37.8 Accessibility and localization
+
+- **Rebinding.** Every action is rebindable, and rebinding survives a reload.
+- **Locale switching.** Switching locale changes presented text without changing game state or identity.
+- **No hard-coded presentation strings** in engine-owned code paths intended for public use.
+
+---
+
+## 38. Final Law
+
+The purpose of testing is not to create a wall of green badges.
+
+It is to make the engine's claims falsifiable.
+
+When the project says a thing works, another human or model should be able to reproduce the evidence on the exact machine state and reach the same conclusion.
