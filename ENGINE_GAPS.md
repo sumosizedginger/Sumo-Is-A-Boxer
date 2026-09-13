@@ -497,3 +497,33 @@ Do not design a Texture Forge, graph editor, material compiler replacement,
 asset marketplace or generalized volumetric system before the experiment passes.
 
 No new dynamic-decal, volume or rope capability was attempted in Phase 1.
+
+CHARACTER-CEILING-001, 2026-09-12
+
+Existing character-authoring gaps remain: the public humanoid parameters do
+not describe a portrait, regional anatomy, sewn panels, or pose correctives.
+This pass uses the accepted public skeleton, landmarks, MeshIR constructors,
+Previewable compilation, material definitions, locomotion and analytical IK.
+The game owns the new skin, fitted face, garment weights and corrective fields.
+
+The concrete workaround for corrective deformation is ten precomputed relative
+position/normal morph targets on the public Three.js SkinnedMesh, with bounded
+scalar activation. Gloves use one compression morph per asset. Trunk panels
+share the public skeleton, bind in their actual attachment frame, and blend
+pelvis/thigh weights. No additional skeleton or engine module was introduced.
+The authored fields are consumer code, not new Character Forge capabilities.
+
+Regional skin, leather and cloth response composes a small onBeforeCompile
+hook on compiled standard materials. It adds no texture allocation. This is
+an extension of the existing material gap, not a new rendering subsystem.
+True subsurface scattering, dual-quaternion skinning and cloth collision were
+not implemented. Their absence is a limitation of this result, not proof that
+the engine cannot ever support them. No engine-side repair was attempted.
+
+Validation limitation: CUA inventory returned apps: [], browsers: []; a direct
+attempt to open the running localhost build returned "No browser is available".
+The server returned HTTP 200. There are no rendered captures or measured GPU
+results from this session. CPU generation/animation and geometry inventories
+are recorded separately from browser measurements, which remain null.
+Independent visual review must establish whether these changes improve the
+character and whether further engine capability is actually needed.

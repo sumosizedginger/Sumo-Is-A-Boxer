@@ -17,6 +17,7 @@
  * the hand about the limb so the knuckles face out. Pose values are game-authored. VISUAL-QUALITY-001 changes await browser review.
  */
 
+import { createEquipmentCorrection } from './equipment-corrections.js';
 import { Group, Vector3, Euler, Quaternion } from 'three';
 
 const LEFT = -1;
@@ -130,6 +131,7 @@ export function createPlayerFists({ library, camera }) {
     root.add(pivot);
     return {
       side,
+      correction: mesh ? createEquipmentCorrection(mesh,true) : null,
       pivot,
       rollNode,
       baseRoll:roll,
@@ -232,6 +234,7 @@ export function createPlayerFists({ library, camera }) {
         * 0.0019 * idleAmount;
 
       for (const arm of [left, right]) {
+        arm.correction?.set(player.blocking ? .45 : .08);
         const key = arm.side === LEFT ? 'left' : 'right';
         const entry = pose[key];
         arm.targetPosition.set(entry.p[0]+arm.side*.016, entry.p[1]-.012, entry.p[2]+.012);
@@ -250,6 +253,7 @@ export function createPlayerFists({ library, camera }) {
         const from = pose[key];
         const to = strike[key];
         const k = Math.max(-0.3, extension);
+        arm.correction?.set(Math.max(0,extension));
         attackTwist=(player.action==='CROSS'?-1:1)*Math.max(0,extension)*.035;
         arm.rollNode.rotation.y=arm.baseRoll-arm.side*Math.max(0,extension)*.6;
         arm.targetPosition.set(
@@ -313,7 +317,7 @@ export function createPlayerFists({ library, camera }) {
       }
     },
 
-    reset() {hitShove=0;bobPhase=0;breatheTime=0;movementLag=0;lastSpeed=0;attackTwist=0;for(const arm of [left,right]){arm.rollNode.rotation.y=arm.baseRoll;const entry=POSES.guardHigh[arm.side===LEFT?'left':'right'];arm.position.set(...entry.p);arm.rotation.set(...entry.r);}},
+    reset() {hitShove=0;bobPhase=0;breatheTime=0;movementLag=0;lastSpeed=0;attackTwist=0;for(const arm of [left,right]){arm.correction?.set(.08);arm.rollNode.rotation.y=arm.baseRoll;const entry=POSES.guardHigh[arm.side===LEFT?'left':'right'];arm.position.set(...entry.p);arm.rotation.set(...entry.r);}},
 
     /** Shoves the guard on a hit taken. */
     shove() {

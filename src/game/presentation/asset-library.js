@@ -13,6 +13,7 @@
  * nine crowd rows upload one column and three crowd rows.
  */
 
+import { applyCharacterSurface } from './character-surfaces.js';
 import { Mesh } from 'three';
 import { createPreviewable } from '@sumosizedginger/my-game-engine-1.0/full';
 
@@ -48,6 +49,7 @@ export function createAssetLibrary({ assets, materials, surfaceDetail = null }) 
     });
     for (let i = 0; i < built.compiledMaterials.length; i++) {
       surfaceDetail?.apply(built.compiledMaterials[i], key, built.materialOrder[i]);
+      applyCharacterSurface(built.compiledMaterials[i], key, built.materialOrder[i]);
     }
     // The Previewable allocates a prototype Mesh; placements make their own.
     built.object3D.removeFromParent();

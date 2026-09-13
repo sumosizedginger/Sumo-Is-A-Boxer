@@ -17,6 +17,8 @@ import {
   solveTwoBoneIK,
   commitRootMotionIntent
 } from '@sumosizedginger/my-game-engine-1.0/full';
+import { skinTrunkPanel } from './garment-skin.js';
+import { createEquipmentCorrection } from './equipment-corrections.js';
 import { createBoxingFeet } from './boxing-feet.js';
 import { rebuildAthleticBody } from './athletic-body.js';
 import { mat, materialById } from '../assets/materials.js';
@@ -79,6 +81,14 @@ function buildPoseTargets(landmarks) {
   const shoulderY = landmarks['shoulder.L'].y;
   const chin = landmarks.head.y - 0.11;
   return {
+    neutral: {
+      left: [.33, shoulderY-.40, .12], right: [-.33, shoulderY-.40, .12],
+      pelvisYaw: 0, chestYaw: 0, headPitch: .02, lean: .025
+    },
+    deepFlex: {
+      left: [.28, shoulderY+.12, .13], right: [-.28, shoulderY+.11, .13],
+      pelvisYaw: -.22, chestYaw: .03, headPitch: .08, lean: .08
+    },
     stance: {
       left: [0.242, chin - 0.155, 0.25], right: [-0.219, chin - 0.12, 0.222],
       pelvisYaw: -0.52, chestYaw: 0.06, headPitch: 0.1, lean: 0.09
@@ -188,8 +198,10 @@ export function createOpponentBoxer({ library }) {
    */
   function attach(boneName, assetKey, { position = [0, 0, 0], rotation = [0, 0, 0], scale = 1 } = {}) {
     const bone = character.bonesByName[boneName];
-    const object = library.object(assetKey, `${assetKey}@${boneName}`);
+    let object = library.object(assetKey, `${assetKey}@${boneName}`);
     if (!bone || !object) return null;
+    const garment=/\.trunks\.(left|right)$/.test(assetKey)?skinTrunkPanel(object,character,boneName.endsWith('_l')?'l':'r'):null;
+    if(garment)object=garment.mesh;
     const holder = new Object3D();
     holder.name = `attach:${boneName}`;
     holder.position.set(position[0], position[1], position[2]);
@@ -198,20 +210,22 @@ export function createOpponentBoxer({ library }) {
     object.castShadow = true;
     object.frustumCulled = false;
     holder.add(object);
+    if(assetKey.includes('.glove.'))holder.userData.correction=createEquipmentCorrection(object);
     bone.add(holder);
+    if(garment){garment.bind();holder.userData.garment=garment;}
     attachments.push(holder);
     return holder;
   }
 
   // Gloves are authored cuff-at-origin pointing +Y; the rest hand points -Y.
-  attach('hand_l', 'asset.boxer.glove.left', { position: [0, -0.03, 0], rotation: [Math.PI, 0, 0], scale: 1.02 });
-  attach('hand_r', 'asset.boxer.glove.right', { position: [0, -0.03, 0], rotation: [Math.PI, 0, 0], scale: 1.02 });
+  const leftGlove = attach('hand_l', 'asset.boxer.glove.left', { position: [0, -0.03, 0], rotation: [Math.PI, 0, 0], scale: 1.02 });
+  const rightGlove = attach('hand_r', 'asset.boxer.glove.right', { position: [0, -0.03, 0], rotation: [Math.PI, 0, 0], scale: 1.02 });
   attach('pelvis', 'asset.boxer.trunks', { position: [0, 0.02, 0] });
   attach('thigh_l', 'asset.boxer.trunks.left');
   attach('thigh_r', 'asset.boxer.trunks.right', {rotation:[0,Math.PI,0]});
   attach('foot_l', 'asset.boxer.boot.left', { position: [0, -0.015, 0] });
   attach('foot_r', 'asset.boxer.boot.right', { position: [0, -0.015, 0] });
-  attach('head', 'asset.boxer.head.detail', { position: [0, 0.02, 0] });
+  attach('head', 'asset.boxer.head.detail');
 
   // --- MOTION FORGE ---------------------------------------------------------
   const motionDefinition = createMotionDefinition({ id: 'motion.boxer.shuffle', parameters: BOXER_MOTION });
@@ -346,6 +360,7 @@ export function createOpponentBoxer({ library }) {
   return {
     group,
     character,
+    corrections: anatomy.corrections,
     definition,
     motionDefinition,
     landmarks,
@@ -373,8 +388,8 @@ export function createOpponentBoxer({ library }) {
      * @param {number} options.speed - Actual planar speed, m/s.
      */
     react({zone='high',heavy=false,side=1}={}) { reactionTime=0;reactionPower=heavy?1:.6;reactionSide=side;reactionZone=zone; },
-    reset() { planted.reset();locomotion.reset();poseTime=0;reactionTime=10;reactionPower=0;current.left.set(...poses.stance.left);current.right.set(...poses.stance.right);for(const key of ['pelvisYaw','chestYaw','headPitch','lean'])current[key]=poses.stance[key];gaitScale=0;gaitTransform.position.z=0;body.position.set(0,0,0);body.rotation.set(0,0,0); },
-    update({ state, position, dt, speed }) {
+    reset() { leftGlove.userData.correction.set(.08);rightGlove.userData.correction.set(.08);anatomy.corrections.reset();planted.reset();locomotion.reset();poseTime=0;reactionTime=10;reactionPower=0;current.left.set(...poses.stance.left);current.right.set(...poses.stance.right);for(const key of ['pelvisYaw','chestYaw','headPitch','lean'])current[key]=poses.stance[key];gaitScale=0;gaitTransform.position.z=0;body.position.set(0,0,0);body.rotation.set(0,0,0); },
+    update({ state, position, dt, speed, inspection = null }) {
       if(dt<=0)return;
       poseTime+=dt;reactionTime+=dt;
       group.position.set(position.x, 0, position.z);
@@ -384,7 +399,7 @@ export function createOpponentBoxer({ library }) {
       const downState=state.state==='down'||state.state==='getup';
       const down=downState?(state.state==='down'?Math.min(1,state.stateT*3.2):Math.max(0,1-state.stateT/Math.max(.001,state.stateDuration))):0;
       body.rotation.x=-down*1.42;
-      body.position.set(0,-.075-down*.16,0);
+      body.position.set(0,-.075-down*.16-(inspection?.crouch ?? 0),0);
       body.updateWorldMatrix(true, false);
       body.getWorldQuaternion(_bodyInverse).invert();
       _bodyInverseMatrix.copy(body.matrixWorld).invert();
@@ -408,14 +423,14 @@ export function createOpponentBoxer({ library }) {
       if (state.state === 'block') poseName = state.blockZone === 'low' ? 'blockLow' : 'blockHigh';
       if (state.state === 'wind') poseName = state.attack === 'HOOK' ? 'hookWind' : 'jabWind';
       if (state.state === 'strike') poseName = state.attack === 'HOOK' ? 'hookStrike' : 'jabStrike';
-      const pose = poses[poseName] ?? poses.stance;
+      const pose = poses[inspection?.pose ?? poseName] ?? poses.stance;
 
       target.left.set(pose.left[0], pose.left[1], pose.left[2]);
       target.right.set(pose.right[0], pose.right[1], pose.right[2]);
       target.pelvisYaw = pose.pelvisYaw;
-      target.chestYaw = pose.chestYaw;
+      target.chestYaw = inspection?.twist ?? pose.chestYaw;
       target.headPitch = pose.headPitch;
-      target.lean = pose.lean;
+      target.lean = inspection?.lean ?? pose.lean;
       target.left.y+=Math.sin(poseTime*1.8)*.0025;
       target.right.y+=Math.sin(poseTime*1.8+.4)*.002;
       if(state.attackZone==='low'&&(state.state==='strike'||state.state==='wind')){
@@ -483,7 +498,7 @@ export function createOpponentBoxer({ library }) {
       _bodyInverseMatrix.copy(body.matrixWorld).invert();
       body.getWorldQuaternion(_bodyInverse).invert();
       if(!downState){
-        planted.update(group,dt,speed,drive,heavy);
+        planted.update(group,dt,speed,drive,heavy,inspection?.stanceWidth);
         solveLeg('l',planted.feet[0],drive,heavy);
         solveLeg('r',planted.feet[1],drive,heavy);
       } else {planted.reset();}
@@ -506,6 +521,9 @@ export function createOpponentBoxer({ library }) {
         bones['hand_'+side].rotation.set(-.08, (side==='l'?1:-1)*(.22+extension*1.05),0);
       }
       character.rootBone.updateWorldMatrix(true,true);
+      anatomy.corrections.update();
+      leftGlove.userData.correction.set(drive>0 && attackSide==='l' ? drive : state.state==='block' ? .45 : .08);
+      rightGlove.userData.correction.set(drive>0 && attackSide==='r' ? drive : state.state==='block' ? .45 : .08);
     },
 
     /**
@@ -533,6 +551,7 @@ export function createOpponentBoxer({ library }) {
       if (disposed) return;
       disposed = true;
       for (const holder of attachments) {
+        holder.userData.garment?.dispose();
         holder.parent?.remove(holder);
         holder.clear();
       }

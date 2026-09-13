@@ -1,0 +1,35 @@
+{
+  "method": "Node CPU generation and opponent animation only. Scene inventory includes invisible meshes, excludes GPU passes and VFX. Not browser FPS or GPU cost.",
+  "assetGenerationMs": 127.8114,
+  "characterBuildMs": 201.4772,
+  "opponentSkinTriangles": 61600,
+  "opponentEquipmentTriangles": 62824,
+  "firstPerson": {
+    "triangles": 25816,
+    "geometryGroups": 10,
+    "geometries": 2,
+    "materials": 8
+  },
+  "scene": {
+    "triangles": 237980,
+    "geometryGroups": 204,
+    "geometries": 37,
+    "materials": 130
+  },
+  "animationUpdateMs": {
+    "p50": 0.037399999999990996,
+    "p95": 0.05740000000002965,
+    "p99": 0.088799999999992
+  },
+  "browser": {
+    "fps": null,
+    "p50": null,
+    "p95": null,
+    "p99": null,
+    "drawCalls": null,
+    "renderedTriangles": null,
+    "textures": null,
+    "programs": null,
+    "firstFrameMs": null
+  }
+}

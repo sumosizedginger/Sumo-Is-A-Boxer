@@ -118,8 +118,8 @@ family('cornerBlue', { color: 0x1c3560, roughness: 0.62, metalness: 0.05 }, { va
 family('cornerNeutral', { color: 0x6d6659, roughness: 0.70, metalness: 0.04 }, { variants: 3, spread: 0.035, name: 'Neutral Corner Padding' });
 
 // --- Fighters --------------------------------------------------------------
-family('skin', { color: 0x87684f, roughness: 0.7, metalness: 0.02 }, { variants: 3, spread: 0.03, name: 'Fighter Skin' });
-family('skinPlayer', { color: 0xa07f62, roughness: 0.64, metalness: 0.03 }, { variants: 2, spread: 0.02, name: 'Player Skin' });
+family('skin', { color: 0x87684f, roughness: 0.7, metalness: 0 }, { variants: 3, spread: 0.03, name: 'Fighter Skin' });
+family('skinPlayer', { color: 0xa07f62, roughness: 0.64, metalness: 0 }, { variants: 2, spread: 0.02, name: 'Player Skin' });
 family('leatherRed', { color: 0x761a16, roughness: 0.38, metalness: 0.1 }, { variants: 3, spread: 0.035, name: 'Red Glove Leather' });
 family('leatherBlue', { color: 0x1b3566, roughness: 0.46, metalness: 0.08 }, { variants: 3, spread: 0.035, name: 'Blue Glove Leather' });
 family('leatherBlack', { color: 0x17161a, roughness: 0.46, metalness: 0.08 }, { variants: 3, spread: 0.025, name: 'Black Leather' });
@@ -146,6 +146,12 @@ family('bulbBlue', { color: 0x8ab6ff, roughness: 0.35, metalness: 0.0, emissive:
 family('exitSign', { color: 0x1c2a20, roughness: 0.6, metalness: 0.1, emissive: 0x1f8a3c, emissiveIntensity: 2.2 }, { variants: 1, name: 'Exit Sign' });
 
 /** Every MaterialDefinition this game authors. Handed to the presentation layer. */
+family('faceRecess', { color: 0x35231e, roughness: .88, metalness: 0 }, { variants: 1 });
+family('eyeWhite', { color: 0xaaa08a, roughness: .38, metalness: 0 }, { variants: 1 });
+family('eyeIris', { color: 0x302820, roughness: .26, metalness: 0 }, { variants: 1 });
+family('lip', { color: 0x795547, roughness: .64, metalness: 0 }, { variants: 1 });
+family('scar', { color: 0x97725a, roughness: .78, metalness: 0 }, { variants: 1 });
+family('hairFade', { color: 0x39302a, roughness: .92, metalness: 0 }, { variants: 1 });
 export const MATERIAL_DEFINITIONS = Object.freeze([...definitions]);
 
 /** family -> variant ids. */

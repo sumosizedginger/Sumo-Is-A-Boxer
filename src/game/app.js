@@ -27,6 +27,7 @@ import { buildFighterKitAssets } from './assets/fighter-kit.js';
 import { composeArenaScene } from './scene/arena-scene.js';
 import { createAssetLibrary } from './presentation/asset-library.js';
 import { createArenaPresentation } from './presentation/presenter.js';
+import { applyCharacterSurface } from './presentation/character-surfaces.js';
 import { createProceduralMaterials } from './presentation/procedural-materials.js';
 import { createLightRig } from './presentation/lighting.js';
 import { createCameraRig } from './presentation/camera-rig.js';
@@ -61,7 +62,8 @@ export function buildAllAssets() {
  */
 export function createGame(host, { appBootstrapStart = performance.now() } = {}) {
   const timing = createTiming(appBootstrapStart);
-  const validationMode = import.meta.env.DEV && new URLSearchParams(location.search).get('validation') === 'phase1';
+  const validationQuery = new URLSearchParams(location.search).get('validation');
+  const validationMode = validationQuery === 'models' || (import.meta.env.DEV && validationQuery === 'phase1');
   let validation = null;
 
   // --- stage ---------------------------------------------------------------
@@ -109,6 +111,7 @@ export function createGame(host, { appBootstrapStart = performance.now() } = {})
   const opponent = createOpponentBoxer({ library });
   scene.add(opponent.group);
   surfaceDetail.apply(opponent.character.material, 'opponent-skin', 'mat.skin.0');
+  applyCharacterSurface(opponent.character.material, 'opponent-skin', 'mat.skin.0');
 
   const fists = createPlayerFists({ library, camera: rig.camera });
 
@@ -529,6 +532,7 @@ export function createGame(host, { appBootstrapStart = performance.now() } = {})
       hud.rematchButton.removeEventListener('click', rematch);
       router.detach();
       audio.dispose();
+      validation?.dispose();
       hud.dispose();
       fists.dispose();
       opponent.dispose();
@@ -553,7 +557,7 @@ export function createGame(host, { appBootstrapStart = performance.now() } = {})
     dust.points.visible = false;
     sparks.clear();
     lights.update(0);
-    validation = createValidation({ game, rig, sparks, lights });
+    validation = createValidation({ game, rig, sparks, lights, modelMode:validationQuery==='models' });
     game.validation = validation;
   }
   return game;
