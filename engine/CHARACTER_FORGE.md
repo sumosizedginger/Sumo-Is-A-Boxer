@@ -98,9 +98,9 @@ Humanoid meshes are generated using lofted cross-sectional rings.
 ### 4.1 Topology Rules
 
 1. **Continuous Limb Tubes**: Limbs are generated as continuous parametric tubes spanning proximal to distal joints (shoulder $\to$ elbow $\to$ wrist, hip $\to$ knee $\to$ ankle). Internal interior dome caps are strictly prohibited between adjacent limb segments. Proximal limb origins (deltoid and femoral head) utilize coaxial dome caps aligned with the limb's longitudinal axis to prevent angular fins and bat-wing distortion.
-2. **Joint Loop Clusters**: Exactly 3 edge loops are clustered within $\pm 2.0\text{ cm}$ of the bend axis at knees, elbows, and waist. When bones rotate, these rings distribute the curvature evenly.
-3. **Flared Torso Shoulders & Trapezius**: The upper chest flaring reaches $0.82 \times \text{shoulderHalf}$ at shoulder level with a dedicated trapezius station at $0.56 \times \text{shoulderHalf}$, seamlessly nesting the upper arm deltoid domes ($0.94 \times \text{shoulderHalf}$) without underarm gaps or lateral hollow notches.
-4. **Anatomical Head & Neck Proportion**: The cervical column lofts smoothly into the mandible without horizontal collar shelves or inverted face normals. Cranial volume ellipsoid has height $H_{\text{head}} = 0.13 \times H$ ($\approx 23.4\text{ cm}$), width $16.6\text{ cm}$, and depth $20.8\text{ cm}$, tapering at the jaw.
+2. Articulated regions must contain sufficient directionally arranged support topology to preserve silhouette and volume throughout the certified pose envelope. Density follows deformation need, never a universal fixed loop count.
+3. Shoulder and trapezius continuity must be established by shared indexed topology and validated seams. Adjacent or overlapping deltoid and torso lofts do not establish continuity.
+4. Head and neck continuity requires a validated shared boundary connection. A smooth-looking cervical loft or nested skull is not proof of continuity. Proportions and pose silhouette require separate visual validation.
 5. **Flat Foot Base**: The sole of the foot geometry rests cleanly on the ground plane $Y = 0$ (lowest vertices $|Y| \le 0.001\text{ m}$), guaranteeing zero penetration beneath the floor.
 6. **Dynamic Segment Resolution**: Mesh polygon resolution scales dynamically with definition parameters `torsoSegments` and `limbSegments`.
 7. **Semantic Body Regions**: Vertices carry explicit semantic region IDs (`REGIONS.PELVIS` through `REGIONS.FOOT_R`, including `REGIONS.TORSO`). Torso vertices are attributed exclusively to axial spine bones (`pelvis`, `spine`, `chest`).
@@ -109,7 +109,9 @@ Humanoid meshes are generated using lofted cross-sectional rings.
 
 ## 5. Canonical 22-Bone Skeleton Hierarchy
 
-The bone tree is strictly ordered such that every parent precedes its descendants:
+The canonical 22 bones form the stable core gameplay and animation skeleton, not a maximum deformation rig. Names, indices 0 through 21, and core parent relationships remain stable. Deterministic helper joints append at index 22 onward, with unique names and an earlier core or helper parent. Helpers never replace or reparent a core bone. Gameplay continues to address the core semantic names.
+
+The core bone tree is ordered such that every parent precedes its descendants:
 
 ```text
 Index  Bone Name      Parent Bone    Landmark Anchor
@@ -224,6 +226,25 @@ License: MIT
 4. Path: src/character/canonical-humanoid.js
    Classification: REFERENCE
    Why: Provided architectural precedent for procedural assembly of SkinnedMesh from generated buffers.
-   Material Changes: Re-implemented cleanly from first principles to ensure single continuous axial loft and zero mesh seams.
+   Material Changes: Re-implemented loft authoring. Historical claims of zero mesh seams did not establish shared topology; certification now requires the executable gate below.
    Tests: tests/character.test.js ('builds complete SkinnedMesh for average, athletic, and heavy presets').
 ```
+
+
+## 10. Hero topology and artifact foundation (CHAR-FOUNDATION-001)
+
+Buffer concatenation is not topology fusion. mergeMeshes, game fuse, and concatenateTopologySurfaces batch independent geometry. They do not weld vertices, bridge loops, or certify a body. Deliberately separate eyeballs, teeth, tongue, hair, garments, gloves, boots and equipment are legitimate components. Continuous body skin must pass its own policy independently of that equipment.
+
+The public full package exports createTopologySurface, findBoundaryEdges, extractBoundaryLoops, weldTopologyVertices, bridgeTopologyLoops, stitchTopologySurfaces, analyzeTopology and validateTopology. These execute on MeshIR, indexed BufferGeometry data or TopologySurface v1. Geometry authoring remains renderer-independent. The legacy MeshIR v1 codec does not carry extended hero attributes: retain the TopologySurface or HeroCharacterArtifact instead of routing extended data through that codec.
+
+Boundary loops follow existing triangle winding, start deterministically, and can be selected by regionId, region, surfaceId and centroid into explicit semantic names. Ambiguous selectors and branched/non-manifold boundaries fail with diagnostics. A bridge reverses the correspondence of the second boundary, adds indexed faces, and validates the result. Weld stitching joins only explicit compatible seam pairs. Equal-sized loops are supported; unequal counts fail. Author the loop correspondence and bounded span intentionally. This validator proves combinatorial continuity and finite nonzero-area faces, not freedom from geometric self-intersection or anatomical quality.
+
+Welding uses spatial buckets with a comparison budget, or explicit disjoint candidate pairs. Positions must be within tolerance; UV, semantic attributes, tangent frames and morph values must be compatible. The default preserves categorical boundaries. An explicit representative semantic policy can choose the lowest source vertex and emits a warning. Welds remap every supported attribute, remove duplicate/degenerate triangles with diagnostics, compact unused vertices and expose oldToNew. Four skin influences are accumulated, deterministically ranked, truncated and renormalized. Normals are preserved compatibly or recomputed from indexed faces. Morph normal recomputation requires target positions. Recomputing normals with existing tangents fails explicitly: regenerate tangent frames after topology authoring. Unknown attributes and mismatched schemas fail; critical data is never silently zero-filled.
+
+Policies are composable: OPEN_SURFACE_ALLOWED permits intentional boundaries and multiple components; CLOSED_MANIFOLD forbids boundaries; SINGLE_COMPONENT requires one component; DEFORMATION_SURFACE rejects isolated vertices. All reject malformed numeric/index data, duplicate or degenerate faces, inconsistent edge winding, non-manifold edges and non-manifold vertex links. certifyHeroBody always reapplies CLOSED_MANIFOLD + SINGLE_COMPONENT + DEFORMATION_SURFACE and requires UV, normal and normalized skin attributes. A permissive artifact policy cannot weaken this gate.
+
+createHeroCharacterArtifact produces an owned, deeply immutable, JSON-serializable versioned snapshot containing geometry, coreSkeleton, deformationSkeleton, semanticRegions, semanticLandmarks, materialRegions, attachmentAnchors, attribute availability (uv/normal/tangent/skinIndex/skinWeight), morphRegistry, poseDriverRegistry, topologyReport, topologyPolicy, closedBodyTopology, certifiedClosedBody, lod and provenance. Position/normal/UV/tangent/semantic/skinning buffers and morph metadata live in geometry, not anonymous runtime fields. instantiateHeroCharacterArtifact creates fresh runtime buffers and the core/helper skeleton with explicit disposal. Its initial material adapter supports one material identity; multiple identities fail pending an explicit binding map. Definition-side material regions remain intact.
+
+createPoseDriverDefinition represents a named primary semantic joint, rest quaternion, local twist axis, optional neighboring joints and named pose samples with output morph identities and radii. decomposeSwingTwist computes rest-inverse times current orientation, a signed swing rotation vector, and signed principal twist radians. Opposite equal-angle swings and twists remain distinct. evaluatePoseDriver exposes values, distances and bounded compact radial output weights. This is a directional foundation, not a fitted RBF solver or final PSD shapes. The 180-degree perpendicular swing singularity fails explicitly. Evaluation allocates result objects and is an authoring/reference evaluator, not an allocation-free combat update loop.
+
+The existing boxer still concatenates separate body sections. It now carries an explicitly uncertified legacy artifact and a real topology report. Its existing magnitude-based corrective activation remains unchanged; directional driver definitions are available for later replacement. Turn 1 certifies the machinery and synthetic fixture, not the legacy body or its visual quality. Future continuous body authoring must call certifyHeroBody and test its own deformation envelope.

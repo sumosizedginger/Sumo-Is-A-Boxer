@@ -63,7 +63,7 @@ export function buildAllAssets() {
 export function createGame(host, { appBootstrapStart = performance.now() } = {}) {
   const timing = createTiming(appBootstrapStart);
   const validationQuery = new URLSearchParams(location.search).get('validation');
-  const validationMode = validationQuery === 'models' || (import.meta.env.DEV && validationQuery === 'phase1');
+  const validationMode = validationQuery === 'models' || validationQuery === 'topology' || (import.meta.env.DEV && validationQuery === 'phase1');
   let validation = null;
 
   // --- stage ---------------------------------------------------------------
@@ -557,7 +557,14 @@ export function createGame(host, { appBootstrapStart = performance.now() } = {})
     dust.points.visible = false;
     sparks.clear();
     lights.update(0);
-    validation = createValidation({ game, rig, sparks, lights, modelMode:validationQuery==='models' });
+    validation = createValidation({
+      game,
+      rig,
+      sparks,
+      lights,
+      modelMode: validationQuery === 'models',
+      topologyMode: validationQuery === 'topology'
+    });
     game.validation = validation;
   }
   return game;

@@ -43,7 +43,7 @@ export {
  * @param {object} [materialOptions={}] - Optional Three.js material options.
  * @returns {object} Assembled character object with mesh, skeleton, geometry, landmarks.
  */
-export function buildHumanoidCharacter(input = 'average', materialOptions = {}) {
+export function buildHumanoidCharacter(input = 'average', materialOptions = {}, rigOptions = {}) {
   let definition;
   if (input && input.type === 'character' && input.data) {
     definition = input;
@@ -54,7 +54,7 @@ export function buildHumanoidCharacter(input = 'average', materialOptions = {}) 
   const { parameters, diagnostics } = resolveHumanoidParameters(definition.data.parameters);
   const landmarks = computeSemanticLandmarks(parameters);
   const { geometry, rawData } = createHumanoidGeometry(parameters, landmarks);
-  const { skeleton, rootBone, bonesByName, bones, bonesData } = createHumanoidSkeleton(landmarks);
+  const { skeleton, rootBone, bonesByName, bones, bonesData, coreBones, coreBonesByName, deformationJoints, deformationBones } = createHumanoidSkeleton(landmarks, rigOptions);
   const skinningResult = applyHumanoidSkinning(geometry, landmarks);
 
   // Build standard shaded material (soft studio clay aesthetic)
@@ -77,6 +77,7 @@ export function buildHumanoidCharacter(input = 'average', materialOptions = {}) 
     landmarks,
     geometry,
     geometryData: rawData,
+    coreBones, coreBonesByName, deformationJoints, deformationBones,
     skeleton,
     rootBone,
     bonesByName,

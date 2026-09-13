@@ -8,6 +8,7 @@
  */
 
 import { Bone, Skeleton, Matrix4 } from 'three';
+import { validateDeformationJoints } from './rig-contract.js';
 
 /**
  * Canonical humanoid bone definitions.
@@ -56,7 +57,7 @@ export const BONE_NAME_TO_INDEX = Object.freeze(
  * @param {object} landmarks - Semantic landmark dictionary { x, y, z }.
  * @returns {object} { skeleton, rootBone, bonesByName, bones, bonesData }
  */
-export function createHumanoidSkeleton(landmarks) {
+export function createHumanoidSkeleton(landmarks, {helpers=[]}={}) {
   const bones = [];
   const bonesByName = {};
   const bonesData = [];
@@ -104,6 +105,13 @@ export function createHumanoidSkeleton(landmarks) {
     }));
   }
 
+  const coreBones=bones.slice(),coreBonesByName={...bonesByName};
+  const deformationJoints=validateDeformationJoints(helpers);
+  for(const def of deformationJoints){
+    const bone=new Bone();bone.name=def.name;bone.position.fromArray(def.restLocalPosition);bone.quaternion.fromArray(def.restOrientation);
+    bonesByName[def.parent].add(bone);bonesByName[def.name]=bone;bones.push(bone);
+    bonesData.push(Object.freeze({...def,index:bones.length-1,parentIndex:bones.findIndex(b=>b.name===def.parent)}));
+  }
   const rootBone = bonesByName.root;
   rootBone.updateWorldMatrix(true, true);
 
@@ -112,6 +120,7 @@ export function createHumanoidSkeleton(landmarks) {
 
   return {
     skeleton,
+    coreBones, coreBonesByName, deformationJoints, deformationBones:bones.slice(22),
     rootBone,
     bonesByName,
     bones,

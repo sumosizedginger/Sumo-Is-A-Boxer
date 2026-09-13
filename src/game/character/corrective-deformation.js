@@ -1,3 +1,4 @@
+import { createPoseDriverDefinition } from '@sumosizedginger/my-game-engine-1.0/full';
 import { BufferGeometry, Float32BufferAttribute } from 'three';
 import { bell } from './anatomy-fields.js';
 
@@ -59,6 +60,10 @@ export function createAnatomicalCorrections(character) {
   const influences=character.mesh.morphTargetInfluences;
   const limits=Object.freeze(channels.map(c=>c.limit));
   return {
+    // The live shapes retain their legacy magnitude activation in Turn 1.
+    // Directional authoring metadata is now explicit and ready for Turn 6.
+    poseDrivers:channels.map(c=>createPoseDriverDefinition({id:'driver.'+c.name,bone:c.bone.name,restOrientation:c.rest.toArray(),twistAxis:[0,1,0]})),
+    activationMode:'legacy-angular-magnitude',
     names:Object.freeze(channels.map(c=>c.name)), limits, influences,
     update() {
       for(let i=0;i<channels.length;i++) {

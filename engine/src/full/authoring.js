@@ -330,6 +330,7 @@ export const AUTHORING_SURFACE = Object.freeze({
       accepted: 'Proof B2',
       publicSince: 'PUBLIC-SURFACE-001',
       capabilities: Object.freeze([
+        'TOPOLOGY_SURFACE_VERSION', 'TOPOLOGY_ATTRIBUTE_SIZES', 'TopologyError', 'createTopologySurface', 'concatenateTopologySurfaces', 'TOPOLOGY_POLICIES', 'analyzeTopology', 'validateTopology', 'findBoundaryEdges', 'extractBoundaryLoops', 'weldTopologyVertices', 'bridgeTopologyLoops', 'stitchTopologySurfaces',
         'SURFACE_TYPES', 'SURFACE_NAMES', 'CONSTRAINT_FLAGS', 'GEOMETRY_REGIONS',
         'ROOM_PARAMETER_BOUNDS', 'PILLAR_PARAMETER_BOUNDS', 'ROOM_PRESETS',
         'resolveRoomParameters', 'createRoomDefinition', 'generateProceduralRoom'
@@ -353,6 +354,7 @@ export const AUTHORING_SURFACE = Object.freeze({
       accepted: 'Proof B1',
       publicSince: 'PUBLIC-SURFACE-001',
       capabilities: Object.freeze([
+        'CHARACTER_CORE_SKELETON', 'HERO_CHARACTER_ARTIFACT_VERSION', 'HERO_BODY_TOPOLOGY_POLICY', 'createHeroCharacterArtifact', 'certifyHeroBody', 'instantiateHeroCharacterArtifact', 'createPoseDriverDefinition', 'decomposeSwingTwist', 'poseDriverDistance', 'evaluatePoseDriver',
         'HUMANOID_PARAMETER_BOUNDS', 'HUMANOID_PRESETS', 'resolveHumanoidParameters',
         'createCharacterDefinition', 'computeSemanticLandmarks', 'buildHumanoidCharacter',
         'CHARACTER_REGIONS'
@@ -476,3 +478,11 @@ export const AUTHORING_SURFACE = Object.freeze({
     'A Forge result that owns Three.js resources must be disposed by its consumer.'
   ])
 });
+
+// CHAR-FOUNDATION-001: executable topology and hero representation seam.
+export {TOPOLOGY_SURFACE_VERSION,TOPOLOGY_ATTRIBUTE_SIZES,TopologyError,createTopologySurface,concatenateTopologySurfaces} from '../geometry/topology-surface.js';
+export {TOPOLOGY_POLICIES,analyzeTopology,validateTopology,findBoundaryEdges,extractBoundaryLoops} from '../geometry/topology-analysis.js';
+export {weldTopologyVertices,bridgeTopologyLoops,stitchTopologySurfaces} from '../geometry/topology-ops.js';
+export {CHARACTER_CORE_SKELETON} from '../character/rig-contract.js';
+export {HERO_CHARACTER_ARTIFACT_VERSION,HERO_BODY_TOPOLOGY_POLICY,createHeroCharacterArtifact,certifyHeroBody,instantiateHeroCharacterArtifact} from '../character/hero-artifact.js';
+export {createPoseDriverDefinition,decomposeSwingTwist,poseDriverDistance,evaluatePoseDriver} from '../character/pose-drivers.js';

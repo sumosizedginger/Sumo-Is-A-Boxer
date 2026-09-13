@@ -1,4 +1,5 @@
 import { createModelInspection } from './models.js';
+import { createTopologyInspection } from './topology.js';
 import { Raycaster, Vector2 } from 'three';
 import { PRESETS, motionCamera } from './presets.js';
 
@@ -6,7 +7,7 @@ const copy = value => JSON.parse(JSON.stringify(value));
 const nextFrame = () => new Promise(resolve => requestAnimationFrame(resolve));
 const percentile = (sorted, p) => sorted[Math.min(sorted.length - 1, Math.floor(sorted.length * p))] ?? null;
 
-export function createValidation({ game, rig, sparks, lights, modelMode=false }) {
+export function createValidation({ game, rig, sparks, lights, modelMode=false, topologyMode=false }) {
   const { renderer, scene, camera, match, opponent, fists, surfaceDetail } = game;
   const shaderErrors = [];
   renderer.debug.checkShaderErrors = true;
@@ -136,9 +137,10 @@ export function createValidation({ game, rig, sparks, lights, modelMode=false })
     return { dataUrl, mimeType, requestedDurationSeconds: durationSeconds, actualDurationMs: performance.now() - start, fps, frames,
       method: 'Canvas captureStream(0), requestFrame, MediaRecorder. Exact indexed camera path; encoder delivery/timestamps may differ. Pose held fixed, no punch/deformation claim.' };
   }
-  applyPreset('gloves_gameplay', 1111, false);
-  const models=modelMode?createModelInspection(game):null;
-  return { models, dispose(){models?.dispose();}, presets: copy(PRESETS), frame: now=>{models?.frame(now);render();}, render, applyPreset, state, coverage, resources, diagnostics, sample, settle, recordMotion,
+  if (!topologyMode) applyPreset('gloves_gameplay', 1111, false);
+  const models = modelMode ? createModelInspection(game) : null;
+  const topology = topologyMode ? createTopologyInspection(game) : null;
+  return { models, topology, dispose(){models?.dispose(); topology?.dispose();}, presets: copy(PRESETS), frame: now=>{models?.frame(now); topology?.frame(now); render();}, render, applyPreset, state, coverage, resources, diagnostics, sample, settle, recordMotion,
     setDetail: enabled => { surfaceDetail.setEnabled(enabled); render(); },
     capture: () => { render(); return renderer.domElement.toDataURL('image/png'); },
     motionFrame: (name, progress) => { setCamera(motionCamera(name, progress)); render(); return state().camera; },

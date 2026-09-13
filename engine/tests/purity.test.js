@@ -55,6 +55,7 @@ const FORBIDDEN_NAMESPACE_NAMES = [
 
 /** Everything engine/runtime must never expose. */
 const RUNTIME_FORBIDDEN = [
+  'TOPOLOGY_SURFACE_VERSION', 'TOPOLOGY_ATTRIBUTE_SIZES', 'TopologyError', 'createTopologySurface', 'concatenateTopologySurfaces', 'TOPOLOGY_POLICIES', 'analyzeTopology', 'validateTopology', 'findBoundaryEdges', 'extractBoundaryLoops', 'weldTopologyVertices', 'bridgeTopologyLoops', 'stitchTopologySurfaces', 'CHARACTER_CORE_SKELETON', 'HERO_CHARACTER_ARTIFACT_VERSION', 'HERO_BODY_TOPOLOGY_POLICY', 'createHeroCharacterArtifact', 'certifyHeroBody', 'instantiateHeroCharacterArtifact', 'createPoseDriverDefinition', 'decomposeSwingTwist', 'poseDriverDistance', 'evaluatePoseDriver',
   ...UNEARNED_SYSTEMS,
   ...FORBIDDEN_NAMESPACE_NAMES,
   'compile', 'compileDefinition', 'createMesh', 'createBoxMesh', 'createPreviewable',
@@ -78,6 +79,8 @@ const RUNTIME_FORBIDDEN = [
  * deliberate act requiring human authorization.
  */
 const ALLOWED_FULL_ADDITIONS = new Set([
+  // CHAR-FOUNDATION-001 explicitly authorizes these topology/artifact seams.
+  'TOPOLOGY_SURFACE_VERSION', 'TOPOLOGY_ATTRIBUTE_SIZES', 'TopologyError', 'createTopologySurface', 'concatenateTopologySurfaces', 'TOPOLOGY_POLICIES', 'analyzeTopology', 'validateTopology', 'findBoundaryEdges', 'extractBoundaryLoops', 'weldTopologyVertices', 'bridgeTopologyLoops', 'stitchTopologySurfaces', 'CHARACTER_CORE_SKELETON', 'HERO_CHARACTER_ARTIFACT_VERSION', 'HERO_BODY_TOPOLOGY_POLICY', 'createHeroCharacterArtifact', 'certifyHeroBody', 'instantiateHeroCharacterArtifact', 'createPoseDriverDefinition', 'decomposeSwingTwist', 'poseDriverDistance', 'evaluatePoseDriver',
   // Definition seam (pre-existing).
   'compileDefinition', 'createEngineFull',
   // MeshIR.

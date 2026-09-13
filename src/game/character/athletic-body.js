@@ -1,6 +1,6 @@
 // Game-authored skin, Character Forge skeleton. No engine geometry mutation.
 import { Float32BufferAttribute, Uint16BufferAttribute } from 'three';
-import { createPreviewable } from '@sumosizedginger/my-game-engine-1.0/full';
+import { createPreviewable, createHeroCharacterArtifact } from '@sumosizedginger/my-game-engine-1.0/full';
 import { sculpt } from '../assets/sculpt.js';
 import { fuse } from '../assets/kit.js';
 import { bell, sampleSections, shapeFace, shapeTorso } from './anatomy-fields.js';
@@ -18,6 +18,7 @@ export function rebuildAthleticBody(character, skinDefinition) {
   const meshes = [], weights = [], joints = [];
   const boneIndex = Object.fromEntries(character.bones.map((b, i) => [b.name, i]));
   function add(mesh, weightAt) {
+    mesh.attributes.regionId.fill(meshes.length+1);
     const p = mesh.attributes.position;
     for (let i = 0; i < p.length; i += 3) {
       const w = weightAt(p[i], p[i + 1], p[i + 2]);
@@ -113,6 +114,7 @@ export function rebuildAthleticBody(character, skinDefinition) {
   // from the same numbers; see the note there.
   add(sculpt({name:'athletic-fighter-skull',segments:80,sections:sampleSections(SKULL_SECTIONS,.0035),shape:shapeFace}),()=>[['head',1]]);
 
+  // Batching only. These remain separate surfaces until Turn 2.
   const meshIR=fuse(meshes,{id:'asset.boxer.athletic-skin',semanticName:'boxer-athletic-skin',materialId:skinDefinition.id});
   const preview=createPreviewable({mesh:meshIR,materials:[skinDefinition],type:'game-asset'});
   const geometry=preview.geometry.clone();
@@ -123,5 +125,12 @@ export function rebuildAthleticBody(character, skinDefinition) {
   character.geometry=geometry;
   character.mesh.geometry=geometry;
   const corrections = createAnatomicalCorrections(character);
+  character.heroArtifact=createHeroCharacterArtifact({
+    id:'hero.boxer.legacy-body',geometry,coreSkeleton:character.bonesData.slice(0,22),
+    deformationSkeleton:character.deformationJoints??[],semanticLandmarks:character.landmarks,
+    semanticRegions:meshes.map((m,i)=>({id:i+1,name:m.parts[0].semanticName})),
+    poseDrivers:corrections.poseDrivers,topologyPolicy:'OPEN_SURFACE_ALLOWED',
+    provenance:{status:'legacy-uncertified',assembly:'buffer-concatenation',activation:corrections.activationMode}
+  });
   return {meshIR,vertices:weights.length/4,triangles:geometry.index.count/3,corrections};
 }

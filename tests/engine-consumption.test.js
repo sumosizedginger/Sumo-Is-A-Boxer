@@ -7,7 +7,7 @@
  *   1. every engine import goes through the published package specifier;
  *   2. nothing deep-imports `engine/src/**` or reaches across with `../engine`;
  *   3. every engine name the game imports is actually exported by engine/full;
- *   4. no file under `engine/` is modified by the game's build.
+ *   4. engine changes remain inside the explicitly authorized foundation scope.
  *
  * If someone later "fixes" a problem by reaching into the engine, this fails.
  */
@@ -113,14 +113,22 @@ test('the game imports only from a documented set of engine capabilities', async
   for (const name of used) assert.ok(name in surface, `${name} missing from engine/full`);
 });
 
-test('the engine subtree is untouched by the game', () => {
-  // The real proof is version control: the engine was imported as a committed
-  // subtree, so if the game "fixed" anything inside it, git says so.
-  const status = execFileSync('git', ['status', '--porcelain', '--', 'engine'], {
-    cwd: ROOT, encoding: 'utf8'
-  }).trim();
-  assert.equal(status, '', `the engine subtree has uncommitted modifications:
-${status}`);
+test('engine edits stay inside the explicit CHAR-FOUNDATION-001 authorization', () => {
+  // This engine foundation order supersedes the preceding game-only tranche.
+  // Exact paths keep unrelated engine changes visible; public import checks above remain mandatory.
+  const allowed = new Set([
+    'engine/CHARACTER_FORGE.md', 'engine/GEOMETRY_FORGE.md',
+    'engine/src/character/index.js', 'engine/src/character/skeleton.js',
+    'engine/src/character/hero-artifact.js', 'engine/src/character/pose-drivers.js',
+    'engine/src/character/rig-contract.js', 'engine/src/full/authoring.js',
+    'engine/src/geometry/topology-surface.js', 'engine/src/geometry/topology-analysis.js',
+    'engine/src/geometry/topology-ops.js', 'engine/tests/purity.test.js',
+    'engine/tests/topology-foundation.test.js', 'engine/tests/hero-foundation.test.js',
+    'engine/tests/fixtures/topology-proof.js'
+  ]);
+  const status = execFileSync('git', ['status', '--porcelain', '--untracked-files=all', '--', 'engine'], {cwd:ROOT,encoding:'utf8'});
+  const unexpected=status.split(/\r?\n/).filter(Boolean).map(line=>line.slice(3)).filter(path=>!allowed.has(path));
+  assert.deepEqual(unexpected, [], 'Engine changes outside the authorized foundation scope');
 
   // Belt and braces for a checkout without git history: the imported public
   // barrel must still be the accepted one.

@@ -191,6 +191,8 @@ function readAttr(mesh, name, itemSize, vertexTotal, fill) {
  * @param {Array<object>} [options.anchors]
  * @returns {object} Single-part MeshIR.
  */
+// Buffer concatenation for batching only. No welding, stitching, bridging or
+// continuity guarantee. Deforming body seams require the public topology APIs.
 export function fuse(meshes, { semanticName, id = null, materialId = null, regionId = 0, surfaceId = 0, anchors = EMPTY } = {}) {
   const list = meshes.filter(Boolean);
   if (list.length === 0) throw new Error(`fuse("${semanticName}") received no geometry`);

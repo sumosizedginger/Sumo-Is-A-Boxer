@@ -157,3 +157,10 @@ Every compliant Geometry Forge implementation must demonstrate:
 3. **Single Source of Truth**: Room bounds in the collision structure exactly match the outer geometry dimensions minus wall thickness.
 4. **Collision Enclosure**: Entities cannot escape perimeter walls or clip through interior pillars under arbitrary velocities.
 5. **Unit Tests**: Full coverage in `tests/geometry.test.js`.
+
+
+## Topology-aware authoring boundary (CHAR-FOUNDATION-001)
+
+Buffer merging and concatenation preserve disconnected components. They provide no continuity guarantee. Public full exports now include executable boundary detection, ordered semantic loops, compatible spatial-hash welding, equal-loop bridges/stitches, and policy-based topology validation. See CHARACTER_FORGE.md section 10 for the exact continuity and attribute contract.
+
+TopologySurface v1 accepts MeshIR and indexed BufferGeometry-shaped input without importing the renderer. It extends the authoring seam to uv, normal, tangent, regionId/region, surfaceId, skinIndex/skinWeight and morph registries. Legacy MeshIR v1 serialization remains unchanged and must not be used to serialize these extra fields. Unsupported attributes or incompatible schemas fail explicitly. Topology certification does not certify absence of geometric self-intersections, pose quality or visual quality.
