@@ -26,8 +26,9 @@ Output: D:\Boxing\validation\phase1\
 Read manifest.json first. Its status identifies complete versus failed evidence;
 its file inventory and SHA-256 hashes identify the artifacts belonging to that
 run. Older files may remain in the directory and are not evidence for the current
-run unless included in that inventory. Existing earlier manually produced
-phase1_validation artifacts are not consumed or overwritten by this workflow.
+run unless included in that inventory. Legacy manually produced
+phase1_validation artifacts have been retired; authoritative Phase 1 evidence
+is maintained in validation/phase1/.
 
 Instrumentation repair
 

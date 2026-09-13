@@ -13,8 +13,8 @@ Current inspection URLs:
 
 The off switch bypasses detail sampling while retaining the same material/shader
 setup and texture allocations. It supports visual comparison, not a measurement
-of the original build's boot cost. The original source is preserved separately
-under artifacts/visual-quality-003/before/src/.
+of the original build's boot cost. The original source is preserved in Git
+history (with baseline hashes retained in artifacts/visual-quality-003/).
 
 Files changed in Phase 1
 

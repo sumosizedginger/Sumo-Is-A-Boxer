@@ -45,9 +45,9 @@ success remains pending in every category.
 
 3. Before/after captures
 
-None available. The before source is preserved under
-artifacts/visual-quality-001/before/src/ for reproduction. Source comparisons
-and CPU tests are not substitutes for captures.
+None available. The before source is preserved in Git commit history for
+reproduction (with comparison metadata retained in artifacts/visual-quality-001/).
+Source comparisons and CPU tests are not substitutes for captures.
 
 The following views remain uninspected for all six stages: title/establishing
 shot, default first-person view, opponent close and medium range, opponent jab
