@@ -4,6 +4,8 @@ export const MODEL_STATES = Object.freeze({
   front_neutral:{angle:0,pose:'neutral'}, rear_neutral:{angle:180,pose:'neutral'},
   left_profile:{angle:90,pose:'neutral'},right_profile:{angle:-90,pose:'neutral'},
   three_quarter_front:{angle:35,pose:'neutral'},three_quarter_rear:{angle:145,pose:'neutral'},
+  punch_extension:{angle:35,pose:'extended'},
+  arm_raised:{angle:25,pose:'raised'},
   high_guard:{angle:20,state:'block'},low_guard:{angle:20,pose:'guardLow'},
   jab_extension:{angle:30,attack:'JAB'},cross_extension:{angle:-30,attack:'HOOK'},
   deep_elbow_flex:{angle:60,pose:'deepFlex'},deep_knee_flex:{angle:50,crouch:.23,lean:.28},

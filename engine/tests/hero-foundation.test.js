@@ -30,7 +30,7 @@ test('immutable hero artifact survives JSON, topology certification and real Buf
   assert.equal(artifact.morphRegistry[0].name,'test-flex');assert.equal(artifact.poseDriverRegistry[0].bone,'forearm_l');
   assert.ok(Object.isFrozen(artifact.geometry.attributes.position));assert.deepEqual(JSON.parse(JSON.stringify(artifact)),artifact);
   const instance=instantiateHeroCharacterArtifact(JSON.parse(JSON.stringify(artifact)));
-  try{assert.equal(instance.skeleton.bones.length,23);assert.equal(instance.geometry.attributes.skinIndex.array[0],22);assert.equal(instance.geometry.morphAttributes.position.length,1);assert.equal(instance.geometry.groups.length,surface.parts.length);assert.equal(instance.mesh.morphTargetDictionary['test-flex'],0);assert.notEqual(instance.geometry.attributes.position.array,artifact.geometry.attributes.position);}
+  try{assert.equal(instance.skeleton.bones.length,23);assert.equal(instance.geometry.attributes.skinIndex.array[0],22);assert.ok(instance.geometry.attributes.skinIndex.array instanceof Float32Array,'standard shader needs float GPU bindings');assert.equal(instance.geometry.morphAttributes.position.length,1);assert.equal(instance.geometry.groups.length,surface.parts.length);assert.equal(instance.mesh.morphTargetDictionary['test-flex'],0);assert.notEqual(instance.geometry.attributes.position.array,artifact.geometry.attributes.position);}
   finally{instance.dispose();instance.dispose();base.geometry.dispose();base.material.dispose();base.skeleton.dispose();}
   const forged=JSON.parse(JSON.stringify(artifact));forged.geometry.indices.splice(0,3);forged.geometry.parts=[];
   assert.throws(()=>certifyHeroBody(forged));

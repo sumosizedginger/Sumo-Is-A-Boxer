@@ -1,0 +1,22 @@
+{
+  "views": [
+    "front",
+    "rear",
+    "left_profile",
+    "right_profile",
+    "front_three_quarter",
+    "rear_three_quarter",
+    "neck",
+    "left_shoulder",
+    "right_shoulder",
+    "left_axilla",
+    "right_axilla",
+    "pelvis_hip",
+    "glute_hip",
+    "elbow",
+    "knee"
+  ],
+  "visiblePixels": 82383,
+  "errors": [],
+  "url": "http://127.0.0.1:5182/?validation=models"
+}

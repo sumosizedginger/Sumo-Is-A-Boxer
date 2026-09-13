@@ -85,6 +85,14 @@ function buildPoseTargets(landmarks) {
       left: [.33, shoulderY-.40, .12], right: [-.33, shoulderY-.40, .12],
       pelvisYaw: 0, chestYaw: 0, headPitch: .02, lean: .025
     },
+    extended: {
+      left: [.2365,shoulderY,.627],right: [-.23,shoulderY-.12,.24],
+      pelvisYaw: 0,chestYaw: 0,headPitch: 0,lean: 0
+    },
+    raised: {
+      left: [.29,shoulderY+.56,.10],right: [-.30,shoulderY+.52,.12],
+      pelvisYaw: 0,chestYaw: 0,headPitch: 0,lean: 0
+    },
     deepFlex: {
       left: [.28, shoulderY+.12, .13], right: [-.28, shoulderY+.11, .13],
       pelvisYaw: -.22, chestYaw: .03, headPitch: .08, lean: .08

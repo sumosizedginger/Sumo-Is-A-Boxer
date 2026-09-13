@@ -1,4 +1,4 @@
-import {BufferGeometry,Float32BufferAttribute,Uint32BufferAttribute,SkinnedMesh,MeshStandardMaterial} from 'three';
+import {BufferGeometry,Float32BufferAttribute,SkinnedMesh,MeshStandardMaterial} from 'three';
 import {createTopologySurface,TOPOLOGY_ATTRIBUTE_SIZES,copyJson,fail} from '../geometry/topology-surface.js';
 import {validateTopology} from '../geometry/topology-analysis.js';
 import {CHARACTER_CORE_SKELETON,validateDeformationJoints} from './rig-contract.js';
@@ -44,6 +44,23 @@ export function certifyHeroBody(artifact){
   return frozen(copyJson(report));
 }
 
+// Standard Three skinning/semantic shaders declare float attributes. Uint32 GPU
+// bindings use integer vertex pointers and cannot feed those declarations.
+export function createHeroRuntimeGeometry(input){
+  const s=createTopologySurface(input);
+  const modes=new Set(s.morphTargets.map(m=>m.relative)),schemas=new Set(s.morphTargets.map(m=>Object.keys(m.attributes).sort().join(',')));
+  if(modes.size>1||schemas.size>1||s.morphTargets.some(m=>m.attributes.tangent))fail('MORPH_RUNTIME_ATTRIBUTE','Unsupported runtime morph schema');
+  for(const name of ['skinIndex','regionId','region','surfaceId'])if(s.attributes[name]?.some(v=>v>16777216))fail('GPU_ATTRIBUTE_PRECISION','Integer attribute exceeds exact Float32 runtime range',{name});
+  const geometry=new BufferGeometry();
+  for(const [name,a]of Object.entries(s.attributes))geometry.setAttribute(name,new Float32BufferAttribute(a,TOPOLOGY_ATTRIBUTE_SIZES[name]));
+  for(const part of s.parts)geometry.addGroup(part.indexStart,part.indexCount,0);
+  geometry.setIndex(Array.from(s.indices));geometry.morphTargetsRelative=s.morphTargets[0]?.relative??true;
+  for(const m of s.morphTargets)for(const [name,a]of Object.entries(m.attributes)){
+    geometry.morphAttributes[name]??=[];const attr=new Float32BufferAttribute(a,TOPOLOGY_ATTRIBUTE_SIZES[name]);attr.name=m.name;geometry.morphAttributes[name].push(attr);
+  }
+  return geometry;
+}
+
 export function instantiateHeroCharacterArtifact(artifact,{materialOptions={}}={}){
   // Revalidate definitions even when loaded from JSON rather than our factory.
   const checked=createHeroCharacterArtifact({...artifact,poseDrivers:artifact.poseDriverRegistry}),s=checked.geometry;
@@ -59,14 +76,7 @@ export function instantiateHeroCharacterArtifact(artifact,{materialOptions={}}={
     if(def.restOrientation){const q=def.restOrientation;if(q.length!==4||!q.every(Number.isFinite)||Math.abs(Math.hypot(...q)-1)>1e-6)fail('CORE_REST','Invalid core rest quaternion');bone.quaternion.fromArray(q);}
   }
   rig.rootBone.updateWorldMatrix(true,true);rig.skeleton.calculateInverses();
-  const geometry=new BufferGeometry();
-  for(const [name,a]of Object.entries(s.attributes))geometry.setAttribute(name,['skinIndex','regionId','region','surfaceId'].includes(name)?new Uint32BufferAttribute(a,TOPOLOGY_ATTRIBUTE_SIZES[name]):new Float32BufferAttribute(a,TOPOLOGY_ATTRIBUTE_SIZES[name]));
-  for(const part of s.parts)geometry.addGroup(part.indexStart,part.indexCount,0);
-  geometry.setIndex(s.indices);geometry.morphTargetsRelative=s.morphTargets[0]?.relative??true;
-  if(s.morphTargets.some(m=>m.relative!==geometry.morphTargetsRelative))fail('MIXED_MORPH_MODE','Renderer instance requires one shared absolute/relative morph mode');
-  for(const m of s.morphTargets)for(const [name,a]of Object.entries(m.attributes)){
-    geometry.morphAttributes[name]??=[];const attr=new Float32BufferAttribute(a,TOPOLOGY_ATTRIBUTE_SIZES[name]);attr.name=m.name;geometry.morphAttributes[name].push(attr);
-  }
+  const geometry=createHeroRuntimeGeometry(s);
   const material=new MeshStandardMaterial(materialOptions),mesh=new SkinnedMesh(geometry,material);mesh.name=checked.id;mesh.add(rig.rootBone);mesh.bind(rig.skeleton);
   let disposed=false;
   return {...rig,artifact:checked,geometry,material,mesh,dispose(){if(disposed)return;disposed=true;mesh.removeFromParent();geometry.dispose();material.dispose();rig.skeleton.dispose();mesh.clear();}};

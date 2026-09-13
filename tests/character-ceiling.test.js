@@ -27,11 +27,11 @@ test('character equipment rebuilds byte-identically with valid named material gr
   for(const name of ['boxer-eyes-sclera','boxer-eyes-iris','boxer-lips','boxer-hair-fade'])assert.ok(face.parts.some(p=>p.semanticName===name),name);
   assert.notEqual(facePoint(.033,1.756)[2],facePoint(-.033,1.756)[2]);
 });
-test('all 25 inspection states are reproducible after unrelated poses and have finite deformed skin',()=>{
+test('all 27 inspection states are reproducible after unrelated poses and have finite deformed skin',()=>{
   const f=fixture(),v=new Vector3();
   const snapshot=()=>f.opponent.character.bones.flatMap(b=>b.matrixWorld.elements).concat(f.fists.arms.flatMap(a=>a.pivot.matrixWorld.elements),f.opponent.corrections.influences);
   try{
-    assert.equal(Object.keys(MODEL_STATES).length,25);
+    assert.equal(Object.keys(MODEL_STATES).length,27);
     for(const name of Object.keys(MODEL_STATES)){
       poseModels(f,name);const before=snapshot();
       poseModels(f,'body_reaction');poseModels(f,name);const after=snapshot();

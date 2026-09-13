@@ -39,3 +39,6 @@ ehthumbs.db
 .vscode/
 *.swp
 *~
+
+# Reproducible Turn 2 evidence keeps summaries and captures, not transient runner logs.
+artifacts/char-topology-002/*.log
