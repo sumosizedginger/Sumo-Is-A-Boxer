@@ -1,0 +1,11 @@
+{
+  "assetBuildMs": 74.23990000000003,
+  "assets": 34,
+  "authoredTriangles": 51072,
+  "authoredParts": 131,
+  "auditor": {
+    "triangles": 88000,
+    "drawCalls": "195-205",
+    "fps": 60
+  }
+}

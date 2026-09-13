@@ -1,0 +1,176 @@
+{
+  "before": {
+    "method": "CPU-only. No WebGL render, frustum culling, shadows, lights or VFX. Counts are not renderer.info or FPS.",
+    "assetBuildMsSamples": [
+      75.12150000000001,
+      43.496399999999994,
+      41.9392
+    ],
+    "assetBuildMsMedian": 43.496399999999994,
+    "presentationCompileMs": 46.69100000000003,
+    "authoredAssets": 34,
+    "authoredTriangles": 51072,
+    "authoredParts": 131,
+    "opponentSkinTriangles": 2676,
+    "allPlacementTriangles": 89776,
+    "allPlacementParts": 196,
+    "uniqueGeometries": 35,
+    "uniqueMaterials": 122,
+    "runtimeFPS": null,
+    "runtimeDrawCalls": null,
+    "runtimeTextures": null,
+    "initialLoadMs": null,
+    "equipment": {
+      "asset.ring.platform": {
+        "triangles": 2356,
+        "parts": 7
+      },
+      "asset.ring.posts": {
+        "triangles": 3904,
+        "parts": 5
+      },
+      "asset.ring.ropes": {
+        "triangles": 4416,
+        "parts": 14
+      },
+      "asset.ring.steps.red": {
+        "triangles": 588,
+        "parts": 3
+      },
+      "asset.ring.steps.blue": {
+        "triangles": 588,
+        "parts": 3
+      },
+      "asset.fp.arm.left": {
+        "triangles": 1416,
+        "parts": 5
+      },
+      "asset.fp.arm.right": {
+        "triangles": 1416,
+        "parts": 5
+      },
+      "asset.boxer.glove.left": {
+        "triangles": 912,
+        "parts": 3
+      },
+      "asset.boxer.glove.right": {
+        "triangles": 912,
+        "parts": 3
+      },
+      "asset.boxer.trunks": {
+        "triangles": 728,
+        "parts": 2
+      },
+      "asset.boxer.boot.left": {
+        "triangles": 388,
+        "parts": 3
+      },
+      "asset.boxer.boot.right": {
+        "triangles": 388,
+        "parts": 3
+      },
+      "asset.boxer.head.detail": {
+        "triangles": 1116,
+        "parts": 4
+      }
+    }
+  },
+  "after": {
+    "method": "CPU-only. No WebGL render, frustum culling, shadows, lights or VFX. Counts are not renderer.info or FPS.",
+    "assetBuildMsSamples": [
+      68.5233,
+      50.160199999999975,
+      46.85729999999995
+    ],
+    "assetBuildMsMedian": 50.160199999999975,
+    "presentationCompileMs": 34.22890000000007,
+    "authoredAssets": 36,
+    "authoredTriangles": 66236,
+    "authoredParts": 135,
+    "opponentSkinTriangles": 4800,
+    "allPlacementTriangles": 107064,
+    "allPlacementParts": 200,
+    "uniqueGeometries": 37,
+    "uniqueMaterials": 126,
+    "runtimeFPS": null,
+    "runtimeDrawCalls": null,
+    "runtimeTextures": null,
+    "initialLoadMs": null,
+    "equipment": {
+      "asset.ring.platform": {
+        "triangles": 2644,
+        "parts": 7
+      },
+      "asset.ring.posts": {
+        "triangles": 5728,
+        "parts": 5
+      },
+      "asset.ring.ropes": {
+        "triangles": 7968,
+        "parts": 14
+      },
+      "asset.ring.steps.red": {
+        "triangles": 588,
+        "parts": 3
+      },
+      "asset.ring.steps.blue": {
+        "triangles": 588,
+        "parts": 3
+      },
+      "asset.fp.arm.left": {
+        "triangles": 3148,
+        "parts": 5
+      },
+      "asset.fp.arm.right": {
+        "triangles": 3148,
+        "parts": 5
+      },
+      "asset.boxer.glove.left": {
+        "triangles": 1624,
+        "parts": 3
+      },
+      "asset.boxer.glove.right": {
+        "triangles": 1624,
+        "parts": 3
+      },
+      "asset.boxer.trunks.left": {
+        "triangles": 472,
+        "parts": 2
+      },
+      "asset.boxer.trunks.right": {
+        "triangles": 472,
+        "parts": 2
+      },
+      "asset.boxer.trunks": {
+        "triangles": 320,
+        "parts": 2
+      },
+      "asset.boxer.boot.left": {
+        "triangles": 1332,
+        "parts": 3
+      },
+      "asset.boxer.boot.right": {
+        "triangles": 1332,
+        "parts": 3
+      },
+      "asset.boxer.head.detail": {
+        "triangles": 1052,
+        "parts": 4
+      }
+    }
+  },
+  "engine": {
+    "filesChecked": 197,
+    "changed": []
+  },
+  "browser": {
+    "available": false,
+    "captures": [],
+    "reason": "CUA inventory returned apps: [], browsers: []"
+  },
+  "auditorBaseline": {
+    "fps": 60,
+    "drawCalls": "195-205",
+    "triangles": 88000
+  }
+}

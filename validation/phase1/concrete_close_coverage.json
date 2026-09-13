@@ -1,0 +1,942 @@
+{
+  "method": "13x9 first-visible-mesh ray grid; geometric coverage, not a visual-quality score",
+  "hits": [
+    {
+      "x": 0,
+      "y": 0,
+      "object": "warehouse-walls",
+      "asset": "asset.warehouse.walls",
+      "material": "mat.paintGreen.0",
+      "detailKind": null
+    },
+    {
+      "x": 1,
+      "y": 0,
+      "object": "warehouse-walls",
+      "asset": "asset.warehouse.walls",
+      "material": "mat.paintGreen.0",
+      "detailKind": null
+    },
+    {
+      "x": 2,
+      "y": 0,
+      "object": "warehouse-doors",
+      "asset": "asset.warehouse.doors",
+      "material": "mat.steel.1",
+      "detailKind": null
+    },
+    {
+      "x": 3,
+      "y": 0,
+      "object": "warehouse-walls",
+      "asset": "asset.warehouse.walls",
+      "material": "mat.paintGreen.0",
+      "detailKind": null
+    },
+    {
+      "x": 4,
+      "y": 0,
+      "object": "warehouse-walls",
+      "asset": "asset.warehouse.walls",
+      "material": "mat.concreteDark.0",
+      "detailKind": "concrete"
+    },
+    {
+      "x": 5,
+      "y": 0,
+      "object": "warehouse-walls",
+      "asset": "asset.warehouse.walls",
+      "material": "mat.concreteDark.0",
+      "detailKind": "concrete"
+    },
+    {
+      "x": 6,
+      "y": 0,
+      "object": "warehouse-walls",
+      "asset": "asset.warehouse.walls",
+      "material": "mat.paintGreen.0",
+      "detailKind": null
+    },
+    {
+      "x": 7,
+      "y": 0,
+      "object": "warehouse-walls",
+      "asset": "asset.warehouse.walls",
+      "material": "mat.paintGreen.0",
+      "detailKind": null
+    },
+    {
+      "x": 8,
+      "y": 0,
+      "object": "warehouse-walls",
+      "asset": "asset.warehouse.walls",
+      "material": "mat.paintGreen.0",
+      "detailKind": null
+    },
+    {
+      "x": 9,
+      "y": 0,
+      "object": "warehouse-walls",
+      "asset": "asset.warehouse.walls",
+      "material": "mat.paintGreen.0",
+      "detailKind": null
+    },
+    {
+      "x": 10,
+      "y": 0,
+      "object": "warehouse-walls",
+      "asset": "asset.warehouse.walls",
+      "material": "mat.paintGreen.0",
+      "detailKind": null
+    },
+    {
+      "x": 11,
+      "y": 0,
+      "object": "warehouse-walls",
+      "asset": "asset.warehouse.walls",
+      "material": "mat.paintGreen.0",
+      "detailKind": null
+    },
+    {
+      "x": 12,
+      "y": 0,
+      "object": "warehouse-walls",
+      "asset": "asset.warehouse.walls",
+      "material": "mat.paintGreen.0",
+      "detailKind": null
+    },
+    {
+      "x": 0,
+      "y": 1,
+      "object": "warehouse-walls",
+      "asset": "asset.warehouse.walls",
+      "material": "mat.paintGreen.0",
+      "detailKind": null
+    },
+    {
+      "x": 1,
+      "y": 1,
+      "object": "warehouse-walls",
+      "asset": "asset.warehouse.walls",
+      "material": "mat.paintGreen.0",
+      "detailKind": null
+    },
+    {
+      "x": 2,
+      "y": 1,
+      "object": "warehouse-doors",
+      "asset": "asset.warehouse.doors",
+      "material": "mat.steel.1",
+      "detailKind": null
+    },
+    {
+      "x": 3,
+      "y": 1,
+      "object": "warehouse-walls",
+      "asset": "asset.warehouse.walls",
+      "material": "mat.paintGreen.0",
+      "detailKind": null
+    },
+    {
+      "x": 4,
+      "y": 1,
+      "object": "warehouse-walls",
+      "asset": "asset.warehouse.walls",
+      "material": "mat.paintGreen.0",
+      "detailKind": null
+    },
+    {
+      "x": 5,
+      "y": 1,
+      "object": "warehouse-walls",
+      "asset": "asset.warehouse.walls",
+      "material": "mat.concreteDark.0",
+      "detailKind": "concrete"
+    },
+    {
+      "x": 6,
+      "y": 1,
+      "object": "warehouse-walls",
+      "asset": "asset.warehouse.walls",
+      "material": "mat.paintGreen.0",
+      "detailKind": null
+    },
+    {
+      "x": 7,
+      "y": 1,
+      "object": "warehouse-walls",
+      "asset": "asset.warehouse.walls",
+      "material": "mat.paintGreen.0",
+      "detailKind": null
+    },
+    {
+      "x": 8,
+      "y": 1,
+      "object": "warehouse-walls",
+      "asset": "asset.warehouse.walls",
+      "material": "mat.paintGreen.0",
+      "detailKind": null
+    },
+    {
+      "x": 9,
+      "y": 1,
+      "object": "warehouse-walls",
+      "asset": "asset.warehouse.walls",
+      "material": "mat.paintGreen.0",
+      "detailKind": null
+    },
+    {
+      "x": 10,
+      "y": 1,
+      "object": "warehouse-walls",
+      "asset": "asset.warehouse.walls",
+      "material": "mat.paintGreen.0",
+      "detailKind": null
+    },
+    {
+      "x": 11,
+      "y": 1,
+      "object": "warehouse-walls",
+      "asset": "asset.warehouse.walls",
+      "material": "mat.paintGreen.0",
+      "detailKind": null
+    },
+    {
+      "x": 12,
+      "y": 1,
+      "object": "warehouse-walls",
+      "asset": "asset.warehouse.walls",
+      "material": "mat.paintGreen.0",
+      "detailKind": null
+    },
+    {
+      "x": 0,
+      "y": 2,
+      "object": "warehouse-walls",
+      "asset": "asset.warehouse.walls",
+      "material": "mat.paintGreen.0",
+      "detailKind": null
+    },
+    {
+      "x": 1,
+      "y": 2,
+      "object": "bleacher-north",
+      "asset": "asset.bleacher",
+      "material": "mat.steel.1",
+      "detailKind": null
+    },
+    {
+      "x": 2,
+      "y": 2,
+      "object": "warehouse-walls",
+      "asset": "asset.warehouse.walls",
+      "material": "mat.paintGreen.0",
+      "detailKind": null
+    },
+    {
+      "x": 3,
+      "y": 2,
+      "object": "warehouse-walls",
+      "asset": "asset.warehouse.walls",
+      "material": "mat.paintGreen.0",
+      "detailKind": null
+    },
+    {
+      "x": 4,
+      "y": 2,
+      "object": "warehouse-walls",
+      "asset": "asset.warehouse.walls",
+      "material": "mat.paintGreen.0",
+      "detailKind": null
+    },
+    {
+      "x": 5,
+      "y": 2,
+      "object": "warehouse-walls",
+      "asset": "asset.warehouse.walls",
+      "material": "mat.concreteDark.0",
+      "detailKind": "concrete"
+    },
+    {
+      "x": 6,
+      "y": 2,
+      "object": "warehouse-walls",
+      "asset": "asset.warehouse.walls",
+      "material": "mat.paintGreen.0",
+      "detailKind": null
+    },
+    {
+      "x": 7,
+      "y": 2,
+      "object": "warehouse-walls",
+      "asset": "asset.warehouse.walls",
+      "material": "mat.paintGreen.0",
+      "detailKind": null
+    },
+    {
+      "x": 8,
+      "y": 2,
+      "object": "warehouse-walls",
+      "asset": "asset.warehouse.walls",
+      "material": "mat.paintGreen.0",
+      "detailKind": null
+    },
+    {
+      "x": 9,
+      "y": 2,
+      "object": "warehouse-walls",
+      "asset": "asset.warehouse.walls",
+      "material": "mat.paintGreen.0",
+      "detailKind": null
+    },
+    {
+      "x": 10,
+      "y": 2,
+      "object": "warehouse-walls",
+      "asset": "asset.warehouse.walls",
+      "material": "mat.paintGreen.0",
+      "detailKind": null
+    },
+    {
+      "x": 11,
+      "y": 2,
+      "object": "warehouse-walls",
+      "asset": "asset.warehouse.walls",
+      "material": "mat.paintGreen.0",
+      "detailKind": null
+    },
+    {
+      "x": 12,
+      "y": 2,
+      "object": "warehouse-walls",
+      "asset": "asset.warehouse.walls",
+      "material": "mat.paintGreen.0",
+      "detailKind": null
+    },
+    {
+      "x": 0,
+      "y": 3,
+      "object": "warehouse-floor",
+      "asset": "asset.warehouse.floor",
+      "material": "mat.paintYellow.0",
+      "detailKind": null
+    },
+    {
+      "x": 1,
+      "y": 3,
+      "object": "warehouse-floor",
+      "asset": "asset.warehouse.floor",
+      "material": "mat.paintYellow.0",
+      "detailKind": null
+    },
+    {
+      "x": 2,
+      "y": 3,
+      "object": "warehouse-floor",
+      "asset": "asset.warehouse.floor",
+      "material": "mat.paintYellow.0",
+      "detailKind": null
+    },
+    {
+      "x": 3,
+      "y": 3,
+      "object": "warehouse-floor",
+      "asset": "asset.warehouse.floor",
+      "material": "mat.concreteStain.1",
+      "detailKind": "concrete"
+    },
+    {
+      "x": 4,
+      "y": 3,
+      "object": "warehouse-floor",
+      "asset": "asset.warehouse.floor",
+      "material": "mat.paintYellow.0",
+      "detailKind": null
+    },
+    {
+      "x": 5,
+      "y": 3,
+      "object": "warehouse-floor",
+      "asset": "asset.warehouse.floor",
+      "material": "mat.paintYellow.0",
+      "detailKind": null
+    },
+    {
+      "x": 6,
+      "y": 3,
+      "object": "warehouse-floor",
+      "asset": "asset.warehouse.floor",
+      "material": "mat.paintYellow.0",
+      "detailKind": null
+    },
+    {
+      "x": 7,
+      "y": 3,
+      "object": "warehouse-floor",
+      "asset": "asset.warehouse.floor",
+      "material": "mat.paintYellow.0",
+      "detailKind": null
+    },
+    {
+      "x": 8,
+      "y": 3,
+      "object": "warehouse-floor",
+      "asset": "asset.warehouse.floor",
+      "material": "mat.paintYellow.0",
+      "detailKind": null
+    },
+    {
+      "x": 9,
+      "y": 3,
+      "object": "warehouse-floor",
+      "asset": "asset.warehouse.floor",
+      "material": "mat.paintYellow.0",
+      "detailKind": null
+    },
+    {
+      "x": 10,
+      "y": 3,
+      "object": "warehouse-floor",
+      "asset": "asset.warehouse.floor",
+      "material": "mat.concreteStain.1",
+      "detailKind": "concrete"
+    },
+    {
+      "x": 11,
+      "y": 3,
+      "object": "warehouse-floor",
+      "asset": "asset.warehouse.floor",
+      "material": "mat.concreteStain.1",
+      "detailKind": "concrete"
+    },
+    {
+      "x": 12,
+      "y": 3,
+      "object": "warehouse-floor",
+      "asset": "asset.warehouse.floor",
+      "material": "mat.concreteStain.1",
+      "detailKind": "concrete"
+    },
+    {
+      "x": 0,
+      "y": 4,
+      "object": "warehouse-floor",
+      "asset": "asset.warehouse.floor",
+      "material": "mat.concreteStain.1",
+      "detailKind": "concrete"
+    },
+    {
+      "x": 1,
+      "y": 4,
+      "object": "warehouse-floor",
+      "asset": "asset.warehouse.floor",
+      "material": "mat.concreteStain.1",
+      "detailKind": "concrete"
+    },
+    {
+      "x": 2,
+      "y": 4,
+      "object": "warehouse-floor",
+      "asset": "asset.warehouse.floor",
+      "material": "mat.concreteStain.1",
+      "detailKind": "concrete"
+    },
+    {
+      "x": 3,
+      "y": 4,
+      "object": "warehouse-floor",
+      "asset": "asset.warehouse.floor",
+      "material": "mat.concreteStain.1",
+      "detailKind": "concrete"
+    },
+    {
+      "x": 4,
+      "y": 4,
+      "object": "warehouse-floor",
+      "asset": "asset.warehouse.floor",
+      "material": "mat.concreteDark.2",
+      "detailKind": "concrete"
+    },
+    {
+      "x": 5,
+      "y": 4,
+      "object": "warehouse-floor",
+      "asset": "asset.warehouse.floor",
+      "material": "mat.concreteStain.1",
+      "detailKind": "concrete"
+    },
+    {
+      "x": 6,
+      "y": 4,
+      "object": "warehouse-floor",
+      "asset": "asset.warehouse.floor",
+      "material": "mat.concreteStain.1",
+      "detailKind": "concrete"
+    },
+    {
+      "x": 7,
+      "y": 4,
+      "object": "warehouse-floor",
+      "asset": "asset.warehouse.floor",
+      "material": "mat.concreteStain.1",
+      "detailKind": "concrete"
+    },
+    {
+      "x": 8,
+      "y": 4,
+      "object": "warehouse-floor",
+      "asset": "asset.warehouse.floor",
+      "material": "mat.concreteStain.1",
+      "detailKind": "concrete"
+    },
+    {
+      "x": 9,
+      "y": 4,
+      "object": "warehouse-floor",
+      "asset": "asset.warehouse.floor",
+      "material": "mat.concreteStain.1",
+      "detailKind": "concrete"
+    },
+    {
+      "x": 10,
+      "y": 4,
+      "object": "warehouse-floor",
+      "asset": "asset.warehouse.floor",
+      "material": "mat.concreteStain.1",
+      "detailKind": "concrete"
+    },
+    {
+      "x": 11,
+      "y": 4,
+      "object": "warehouse-floor",
+      "asset": "asset.warehouse.floor",
+      "material": "mat.paintYellow.0",
+      "detailKind": null
+    },
+    {
+      "x": 12,
+      "y": 4,
+      "object": "warehouse-floor",
+      "asset": "asset.warehouse.floor",
+      "material": "mat.concreteStain.1",
+      "detailKind": "concrete"
+    },
+    {
+      "x": 0,
+      "y": 5,
+      "object": "warehouse-floor",
+      "asset": "asset.warehouse.floor",
+      "material": "mat.concreteStain.1",
+      "detailKind": "concrete"
+    },
+    {
+      "x": 1,
+      "y": 5,
+      "object": "warehouse-floor",
+      "asset": "asset.warehouse.floor",
+      "material": "mat.concreteStain.1",
+      "detailKind": "concrete"
+    },
+    {
+      "x": 2,
+      "y": 5,
+      "object": "warehouse-floor",
+      "asset": "asset.warehouse.floor",
+      "material": "mat.concreteStain.1",
+      "detailKind": "concrete"
+    },
+    {
+      "x": 3,
+      "y": 5,
+      "object": "warehouse-floor",
+      "asset": "asset.warehouse.floor",
+      "material": "mat.concreteStain.1",
+      "detailKind": "concrete"
+    },
+    {
+      "x": 4,
+      "y": 5,
+      "object": "warehouse-floor",
+      "asset": "asset.warehouse.floor",
+      "material": "mat.concreteStain.1",
+      "detailKind": "concrete"
+    },
+    {
+      "x": 5,
+      "y": 5,
+      "object": "warehouse-floor",
+      "asset": "asset.warehouse.floor",
+      "material": "mat.concreteStain.1",
+      "detailKind": "concrete"
+    },
+    {
+      "x": 6,
+      "y": 5,
+      "object": "warehouse-floor",
+      "asset": "asset.warehouse.floor",
+      "material": "mat.concreteStain.1",
+      "detailKind": "concrete"
+    },
+    {
+      "x": 7,
+      "y": 5,
+      "object": "warehouse-floor",
+      "asset": "asset.warehouse.floor",
+      "material": "mat.concreteStain.1",
+      "detailKind": "concrete"
+    },
+    {
+      "x": 8,
+      "y": 5,
+      "object": "warehouse-floor",
+      "asset": "asset.warehouse.floor",
+      "material": "mat.concreteStain.1",
+      "detailKind": "concrete"
+    },
+    {
+      "x": 9,
+      "y": 5,
+      "object": "warehouse-floor",
+      "asset": "asset.warehouse.floor",
+      "material": "mat.concreteStain.1",
+      "detailKind": "concrete"
+    },
+    {
+      "x": 10,
+      "y": 5,
+      "object": "warehouse-floor",
+      "asset": "asset.warehouse.floor",
+      "material": "mat.concreteStain.1",
+      "detailKind": "concrete"
+    },
+    {
+      "x": 11,
+      "y": 5,
+      "object": "warehouse-floor",
+      "asset": "asset.warehouse.floor",
+      "material": "mat.concreteStain.1",
+      "detailKind": "concrete"
+    },
+    {
+      "x": 12,
+      "y": 5,
+      "object": "warehouse-floor",
+      "asset": "asset.warehouse.floor",
+      "material": "mat.concreteStain.1",
+      "detailKind": "concrete"
+    },
+    {
+      "x": 0,
+      "y": 6,
+      "object": "warehouse-floor",
+      "asset": "asset.warehouse.floor",
+      "material": "mat.concreteStain.1",
+      "detailKind": "concrete"
+    },
+    {
+      "x": 1,
+      "y": 6,
+      "object": "warehouse-floor",
+      "asset": "asset.warehouse.floor",
+      "material": "mat.concreteStain.1",
+      "detailKind": "concrete"
+    },
+    {
+      "x": 2,
+      "y": 6,
+      "object": "warehouse-floor",
+      "asset": "asset.warehouse.floor",
+      "material": "mat.concreteStain.1",
+      "detailKind": "concrete"
+    },
+    {
+      "x": 3,
+      "y": 6,
+      "object": "warehouse-floor",
+      "asset": "asset.warehouse.floor",
+      "material": "mat.concreteDark.2",
+      "detailKind": "concrete"
+    },
+    {
+      "x": 4,
+      "y": 6,
+      "object": "warehouse-floor",
+      "asset": "asset.warehouse.floor",
+      "material": "mat.concreteStain.1",
+      "detailKind": "concrete"
+    },
+    {
+      "x": 5,
+      "y": 6,
+      "object": "warehouse-floor",
+      "asset": "asset.warehouse.floor",
+      "material": "mat.concreteStain.1",
+      "detailKind": "concrete"
+    },
+    {
+      "x": 6,
+      "y": 6,
+      "object": "warehouse-floor",
+      "asset": "asset.warehouse.floor",
+      "material": "mat.concreteStain.1",
+      "detailKind": "concrete"
+    },
+    {
+      "x": 7,
+      "y": 6,
+      "object": "warehouse-floor",
+      "asset": "asset.warehouse.floor",
+      "material": "mat.concreteStain.1",
+      "detailKind": "concrete"
+    },
+    {
+      "x": 8,
+      "y": 6,
+      "object": "warehouse-floor",
+      "asset": "asset.warehouse.floor",
+      "material": "mat.concreteStain.1",
+      "detailKind": "concrete"
+    },
+    {
+      "x": 9,
+      "y": 6,
+      "object": "warehouse-floor",
+      "asset": "asset.warehouse.floor",
+      "material": "mat.concreteStain.1",
+      "detailKind": "concrete"
+    },
+    {
+      "x": 10,
+      "y": 6,
+      "object": "warehouse-floor",
+      "asset": "asset.warehouse.floor",
+      "material": "mat.concreteStain.1",
+      "detailKind": "concrete"
+    },
+    {
+      "x": 11,
+      "y": 6,
+      "object": "warehouse-floor",
+      "asset": "asset.warehouse.floor",
+      "material": "mat.concreteStain.1",
+      "detailKind": "concrete"
+    },
+    {
+      "x": 12,
+      "y": 6,
+      "object": "warehouse-floor",
+      "asset": "asset.warehouse.floor",
+      "material": "mat.concreteStain.1",
+      "detailKind": "concrete"
+    },
+    {
+      "x": 0,
+      "y": 7,
+      "object": "warehouse-floor",
+      "asset": "asset.warehouse.floor",
+      "material": "mat.concreteStain.1",
+      "detailKind": "concrete"
+    },
+    {
+      "x": 1,
+      "y": 7,
+      "object": "warehouse-floor",
+      "asset": "asset.warehouse.floor",
+      "material": "mat.concreteStain.1",
+      "detailKind": "concrete"
+    },
+    {
+      "x": 2,
+      "y": 7,
+      "object": "warehouse-floor",
+      "asset": "asset.warehouse.floor",
+      "material": "mat.concreteDark.2",
+      "detailKind": "concrete"
+    },
+    {
+      "x": 3,
+      "y": 7,
+      "object": "warehouse-floor",
+      "asset": "asset.warehouse.floor",
+      "material": "mat.concreteStain.1",
+      "detailKind": "concrete"
+    },
+    {
+      "x": 4,
+      "y": 7,
+      "object": "warehouse-floor",
+      "asset": "asset.warehouse.floor",
+      "material": "mat.concreteStain.1",
+      "detailKind": "concrete"
+    },
+    {
+      "x": 5,
+      "y": 7,
+      "object": "warehouse-floor",
+      "asset": "asset.warehouse.floor",
+      "material": "mat.concreteStain.1",
+      "detailKind": "concrete"
+    },
+    {
+      "x": 6,
+      "y": 7,
+      "object": "warehouse-floor",
+      "asset": "asset.warehouse.floor",
+      "material": "mat.concreteStain.1",
+      "detailKind": "concrete"
+    },
+    {
+      "x": 7,
+      "y": 7,
+      "object": "warehouse-floor",
+      "asset": "asset.warehouse.floor",
+      "material": "mat.concreteStain.1",
+      "detailKind": "concrete"
+    },
+    {
+      "x": 8,
+      "y": 7,
+      "object": "warehouse-floor",
+      "asset": "asset.warehouse.floor",
+      "material": "mat.concreteStain.1",
+      "detailKind": "concrete"
+    },
+    {
+      "x": 9,
+      "y": 7,
+      "object": "warehouse-floor",
+      "asset": "asset.warehouse.floor",
+      "material": "mat.concreteStain.1",
+      "detailKind": "concrete"
+    },
+    {
+      "x": 10,
+      "y": 7,
+      "object": "warehouse-floor",
+      "asset": "asset.warehouse.floor",
+      "material": "mat.concreteStain.1",
+      "detailKind": "concrete"
+    },
+    {
+      "x": 11,
+      "y": 7,
+      "object": "warehouse-floor",
+      "asset": "asset.warehouse.floor",
+      "material": "mat.concreteStain.1",
+      "detailKind": "concrete"
+    },
+    {
+      "x": 12,
+      "y": 7,
+      "object": "warehouse-floor",
+      "asset": "asset.warehouse.floor",
+      "material": "mat.concreteStain.1",
+      "detailKind": "concrete"
+    },
+    {
+      "x": 0,
+      "y": 8,
+      "object": "warehouse-floor",
+      "asset": "asset.warehouse.floor",
+      "material": "mat.concreteStain.1",
+      "detailKind": "concrete"
+    },
+    {
+      "x": 1,
+      "y": 8,
+      "object": "warehouse-floor",
+      "asset": "asset.warehouse.floor",
+      "material": "mat.concreteStain.1",
+      "detailKind": "concrete"
+    },
+    {
+      "x": 2,
+      "y": 8,
+      "object": "warehouse-floor",
+      "asset": "asset.warehouse.floor",
+      "material": "mat.concreteStain.1",
+      "detailKind": "concrete"
+    },
+    {
+      "x": 3,
+      "y": 8,
+      "object": "warehouse-floor",
+      "asset": "asset.warehouse.floor",
+      "material": "mat.concreteStain.1",
+      "detailKind": "concrete"
+    },
+    {
+      "x": 4,
+      "y": 8,
+      "object": "warehouse-floor",
+      "asset": "asset.warehouse.floor",
+      "material": "mat.concreteStain.1",
+      "detailKind": "concrete"
+    },
+    {
+      "x": 5,
+      "y": 8,
+      "object": "warehouse-floor",
+      "asset": "asset.warehouse.floor",
+      "material": "mat.concreteStain.1",
+      "detailKind": "concrete"
+    },
+    {
+      "x": 6,
+      "y": 8,
+      "object": "warehouse-floor",
+      "asset": "asset.warehouse.floor",
+      "material": "mat.concreteStain.1",
+      "detailKind": "concrete"
+    },
+    {
+      "x": 7,
+      "y": 8,
+      "object": "warehouse-floor",
+      "asset": "asset.warehouse.floor",
+      "material": "mat.concreteStain.1",
+      "detailKind": "concrete"
+    },
+    {
+      "x": 8,
+      "y": 8,
+      "object": "warehouse-floor",
+      "asset": "asset.warehouse.floor",
+      "material": "mat.concreteStain.1",
+      "detailKind": "concrete"
+    },
+    {
+      "x": 9,
+      "y": 8,
+      "object": "warehouse-floor",
+      "asset": "asset.warehouse.floor",
+      "material": "mat.concreteStain.1",
+      "detailKind": "concrete"
+    },
+    {
+      "x": 10,
+      "y": 8,
+      "object": "warehouse-floor",
+      "asset": "asset.warehouse.floor",
+      "material": "mat.concreteStain.1",
+      "detailKind": "concrete"
+    },
+    {
+      "x": 11,
+      "y": 8,
+      "object": "warehouse-floor",
+      "asset": "asset.warehouse.floor",
+      "material": "mat.concreteStain.1",
+      "detailKind": "concrete"
+    },
+    {
+      "x": 12,
+      "y": 8,
+      "object": "warehouse-floor",
+      "asset": "asset.warehouse.floor",
+      "material": "mat.concreteStain.1",
+      "detailKind": "concrete"
+    }
+  ],
+  "targetFraction": 0.6153846153846154
+}

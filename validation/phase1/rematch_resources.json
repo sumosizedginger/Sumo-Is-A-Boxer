@@ -1,0 +1,58 @@
+{
+  "cycles": [
+    {
+      "cycle": 0,
+      "seed": null,
+      "timestamp": 22258.80000001192,
+      "geometries": 34,
+      "textures": 11,
+      "programs": 10,
+      "deltaFromBaseline": {
+        "geometries": 0,
+        "textures": 0,
+        "programs": 0
+      }
+    },
+    {
+      "cycle": 1,
+      "seed": 1111,
+      "timestamp": 23475.69999998808,
+      "geometries": 34,
+      "textures": 11,
+      "programs": 10,
+      "deltaFromBaseline": {
+        "geometries": 0,
+        "textures": 0,
+        "programs": 0
+      }
+    },
+    {
+      "cycle": 2,
+      "seed": 2222,
+      "timestamp": 24690.80000001192,
+      "geometries": 34,
+      "textures": 11,
+      "programs": 10,
+      "deltaFromBaseline": {
+        "geometries": 0,
+        "textures": 0,
+        "programs": 0
+      }
+    },
+    {
+      "cycle": 3,
+      "seed": 3333,
+      "timestamp": 25910.40000000596,
+      "geometries": 34,
+      "textures": 11,
+      "programs": 10,
+      "deltaFromBaseline": {
+        "geometries": 0,
+        "textures": 0,
+        "programs": 0
+      }
+    }
+  ],
+  "status": "TRACKED GPU RESOURCE COUNTS STABLE",
+  "scope": "Deterministic match.reset plus presentation resets, frozen renderer settling. Not a heap/VRAM leak proof or full played bouts."
+}

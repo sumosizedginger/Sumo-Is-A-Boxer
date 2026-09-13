@@ -1,0 +1,9 @@
+{
+  "description": "OBSERVED FRAME-TIME DELTA IN THIS SAMPLE",
+  "deltaOnMinusOffMs": {
+    "p50": 1.8189894035458565e-12,
+    "p95": 0,
+    "p99": 1.8189894035458565e-12
+  },
+  "interpretation": "Identical values, if present, mean identical at recorded telemetry resolution; they do not establish zero overhead."
+}

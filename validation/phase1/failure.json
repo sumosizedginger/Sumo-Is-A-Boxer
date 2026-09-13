@@ -1,0 +1,5 @@
+{
+  "error": "Error: Validation boot failed. See boot_failure.json; requires Vite development server and ?validation=phase1.\n    at file:///D:/Boxing/scripts/validate-phase1.mjs:120:11",
+  "checkpoints": [],
+  "browserEvents": []
+}

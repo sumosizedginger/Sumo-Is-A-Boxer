@@ -1,0 +1,519 @@
+{
+  "url": "http://localhost:5180/?validation=phase1",
+  "ready": "complete",
+  "body": "",
+  "game": true,
+  "report": {
+    "engine": "My Game Engine 1.0 0.1.0",
+    "assets": 36,
+    "materials": 114,
+    "sceneId": "sumo.is.a.boxer.midnight.bout.v1",
+    "sceneNodes": 66,
+    "sceneHash": "c38d4437373c5b62",
+    "placements": 54,
+    "uploads": 26,
+    "triangles": 51712,
+    "unresolvedAssets": [],
+    "assetBuildMs": 124,
+    "proceduralMaterials": {
+      "enabled": true,
+      "seed": 310903,
+      "generationMs": 195.40000000596046,
+      "textures": 6,
+      "bindings": 24,
+      "inventory": [
+        {
+          "kind": "concrete",
+          "width": 256,
+          "height": 256,
+          "bytes": 262144,
+          "mipBytesEstimate": 349526
+        },
+        {
+          "kind": "steel",
+          "width": 256,
+          "height": 256,
+          "bytes": 262144,
+          "mipBytesEstimate": 349526
+        },
+        {
+          "kind": "canvas",
+          "width": 256,
+          "height": 256,
+          "bytes": 262144,
+          "mipBytesEstimate": 349526
+        },
+        {
+          "kind": "canvasHistory",
+          "width": 512,
+          "height": 512,
+          "bytes": 1048576,
+          "mipBytesEstimate": 1398102
+        },
+        {
+          "kind": "leather",
+          "width": 256,
+          "height": 256,
+          "bytes": 262144,
+          "mipBytesEstimate": 349526
+        },
+        {
+          "kind": "skin",
+          "width": 256,
+          "height": 256,
+          "bytes": 262144,
+          "mipBytesEstimate": 349526
+        }
+      ],
+      "gpuBytesEstimate": 3145732,
+      "disposed": false
+    },
+    "drawCalls": 0,
+    "renderedTriangles": 0,
+    "geometries": 0,
+    "textures": 0,
+    "compiledMaterials": 125,
+    "timing": {
+      "clock": "performance.now(), milliseconds relative to performance.timeOrigin",
+      "timeOrigin": 1789243790305.1,
+      "markers": {
+        "navigationOrigin": 0,
+        "appBootstrapStart": 776.0999999940395,
+        "gameCreateStart": 776.3999999761581,
+        "assetBuildStart": 788.5999999940395,
+        "assetBuildEnd": 912.2999999821186,
+        "presentationStart": 912.3999999761581,
+        "proceduralGenerationStart": 936.0999999940395,
+        "proceduralGenerationEnd": 1199.0999999940395,
+        "presentationEnd": 1201.3999999761581
+      },
+      "generationIntervals": [
+        {
+          "kind": "concrete",
+          "start": 936.0999999940395,
+          "end": 947.0999999940395
+        },
+        {
+          "kind": "steel",
+          "start": 959.5999999940395,
+          "end": 970.8999999761581
+        },
+        {
+          "kind": "canvas",
+          "start": 979.0999999940395,
+          "end": 994.5999999940395
+        },
+        {
+          "kind": "canvasHistory",
+          "start": 994.5999999940395,
+          "end": 1109.7999999821186
+        },
+        {
+          "kind": "leather",
+          "start": 1152.8999999761581,
+          "end": 1182.5
+        },
+        {
+          "kind": "skin",
+          "start": 1186.2999999821186,
+          "end": 1199.0999999940395
+        }
+      ],
+      "durations": {
+        "assetBuildMs": 123.69999998807907,
+        "presentationTotalMs": 289,
+        "proceduralGenerationMs": 263,
+        "proceduralGenerationWorkMs": 195.40000000596046,
+        "firstFrameSinceGameCreateMs": null,
+        "firstFrameSinceNavigationMs": null
+      },
+      "checks": {
+        "presentationContainsGeneration": true,
+        "navigationContainsGameCreate": true
+      },
+      "semantics": {
+        "proceduralGenerationMs": "Envelope from first lazy texture generation start to last end; includes interleaved setup.",
+        "proceduralGenerationWorkMs": "Sum of disjoint per-texture CPU generation/allocation intervals; excludes GPU upload.",
+        "presentationTotalMs": "Scene composition, material preparation, lights, VFX and fighter presentation.",
+        "firstRenderedFrameEnd": "CPU return from first renderer.render; not GPU completion or screen presentation.",
+        "appBootstrapStart": "Entry-module body start after static imports have evaluated."
+      }
+    },
+    "firstFrameMs": null,
+    "firstFrameSinceNavigationMs": null,
+    "programs": 0,
+    "skinTriangles": 5360,
+    "presentationBuildMs": 289,
+    "sceneMaterialCount": 128,
+    "frameMs": {
+      "p50": 0,
+      "p95": 0,
+      "p99": 0
+    },
+    "fps": 0,
+    "phase": "validation",
+    "boxer": {
+      "bones": 22,
+      "landmarks": 27,
+      "gaitPhase": 0,
+      "gaitScale": 0,
+      "gaitDistance": 0,
+      "height": 1.86,
+      "skinTriangles": 5360
+    }
+  },
+  "resources": [
+    {
+      "name": "http://localhost:5180/@vite/client",
+      "duration": 8.300000011920929
+    },
+    {
+      "name": "http://localhost:5180/src/game/hud/hud.css",
+      "duration": 11.099999994039536
+    },
+    {
+      "name": "http://localhost:5180/src/main.js?t=1789239618904",
+      "duration": 12
+    },
+    {
+      "name": "http://localhost:5180/src/game/app.js?t=1789239618904",
+      "duration": 3.5
+    },
+    {
+      "name": "http://localhost:5180/node_modules/.vite/deps/three.js?v=aedddd44",
+      "duration": 48.599999994039536
+    },
+    {
+      "name": "http://localhost:5180/engine/src/full/index.js",
+      "duration": 50.5
+    },
+    {
+      "name": "http://localhost:5180/src/game/config.js",
+      "duration": 52.400000005960464
+    },
+    {
+      "name": "http://localhost:5180/src/game/assets/materials.js",
+      "duration": 56.5
+    },
+    {
+      "name": "http://localhost:5180/src/game/assets/ring.js",
+      "duration": 61.599999994039536
+    },
+    {
+      "name": "http://localhost:5180/src/game/assets/warehouse.js",
+      "duration": 65.80000001192093
+    },
+    {
+      "name": "http://localhost:5180/src/game/assets/dressing.js",
+      "duration": 68.30000001192093
+    },
+    {
+      "name": "http://localhost:5180/src/game/assets/fighter-kit.js",
+      "duration": 73
+    },
+    {
+      "name": "http://localhost:5180/src/game/scene/arena-scene.js",
+      "duration": 76.5
+    },
+    {
+      "name": "http://localhost:5180/src/game/presentation/asset-library.js",
+      "duration": 78.5
+    },
+    {
+      "name": "http://localhost:5180/src/game/presentation/presenter.js",
+      "duration": 80.09999999403954
+    },
+    {
+      "name": "http://localhost:5180/src/game/presentation/procedural-materials.js?t=1789239104493",
+      "duration": 82.69999998807907
+    },
+    {
+      "name": "http://localhost:5180/src/game/presentation/lighting.js",
+      "duration": 85.30000001192093
+    },
+    {
+      "name": "http://localhost:5180/src/game/presentation/camera-rig.js",
+      "duration": 87.5
+    },
+    {
+      "name": "http://localhost:5180/src/game/presentation/vfx.js",
+      "duration": 89.7000000178814
+    },
+    {
+      "name": "http://localhost:5180/src/game/character/opponent-boxer.js",
+      "duration": 92.59999999403954
+    },
+    {
+      "name": "http://localhost:5180/src/game/character/player-fists.js",
+      "duration": 94.59999999403954
+    },
+    {
+      "name": "http://localhost:5180/src/game/input/input-router.js",
+      "duration": 97
+    },
+    {
+      "name": "http://localhost:5180/src/game/combat/match.js",
+      "duration": 100.59999999403954
+    },
+    {
+      "name": "http://localhost:5180/src/game/audio/audio.js",
+      "duration": 103.2000000178814
+    },
+    {
+      "name": "http://localhost:5180/src/game/validation/timing.js",
+      "duration": 104.80000001192093
+    },
+    {
+      "name": "http://localhost:5180/src/game/validation/harness.js?t=1789239577329",
+      "duration": 107.30000001192093
+    },
+    {
+      "name": "http://localhost:5180/src/game/hud/hud.js",
+      "duration": 109.09999999403954
+    },
+    {
+      "name": "http://localhost:5180/engine/src/runtime/index.js",
+      "duration": 58.80000001192093
+    },
+    {
+      "name": "http://localhost:5180/engine/src/full/compiler.js",
+      "duration": 60.099999994039536
+    },
+    {
+      "name": "http://localhost:5180/engine/src/full/authoring.js",
+      "duration": 63.30000001192093
+    },
+    {
+      "name": "http://localhost:5180/src/game/assets/kit.js",
+      "duration": 61.29999998211861
+    },
+    {
+      "name": "http://localhost:5180/src/game/assets/sculpt.js",
+      "duration": 57.400000005960464
+    },
+    {
+      "name": "http://localhost:5180/src/game/assets/skull-sections.js",
+      "duration": 47.79999998211861
+    },
+    {
+      "name": "http://localhost:5180/src/game/character/boxing-feet.js",
+      "duration": 29.400000005960464
+    },
+    {
+      "name": "http://localhost:5180/src/game/character/athletic-body.js",
+      "duration": 31.099999994039536
+    },
+    {
+      "name": "http://localhost:5180/src/game/input/actions.js",
+      "duration": 28.30000001192093
+    },
+    {
+      "name": "http://localhost:5180/src/game/combat/fighters.js",
+      "duration": 26.099999994039536
+    },
+    {
+      "name": "http://localhost:5180/src/game/combat/resolve.js",
+      "duration": 27.299999982118607
+    },
+    {
+      "name": "http://localhost:5180/src/game/combat/ai.js",
+      "duration": 29.299999982118607
+    },
+    {
+      "name": "http://localhost:5180/src/game/validation/presets.js?t=1789239577329",
+      "duration": 24
+    },
+    {
+      "name": "http://localhost:5180/engine/src/runtime/entities.js",
+      "duration": 22.400000005960464
+    },
+    {
+      "name": "http://localhost:5180/engine/src/runtime/transforms.js",
+      "duration": 24.299999982118607
+    },
+    {
+      "name": "http://localhost:5180/engine/src/runtime/clock.js",
+      "duration": 25.80000001192093
+    },
+    {
+      "name": "http://localhost:5180/engine/src/runtime/input.js",
+      "duration": 28.80000001192093
+    },
+    {
+      "name": "http://localhost:5180/engine/src/runtime/collision.js",
+      "duration": 30.099999994039536
+    },
+    {
+      "name": "http://localhost:5180/engine/src/runtime/state.js",
+      "duration": 31.5
+    },
+    {
+      "name": "http://localhost:5180/engine/src/runtime/rules.js",
+      "duration": 32.69999998807907
+    },
+    {
+      "name": "http://localhost:5180/engine/src/scene/instance.js",
+      "duration": 34.400000005960464
+    },
+    {
+      "name": "http://localhost:5180/engine/src/geometry/mesh.js",
+      "duration": 32.29999998211861
+    },
+    {
+      "name": "http://localhost:5180/engine/src/geometry/mesh-codec.js",
+      "duration": 34.099999994039536
+    },
+    {
+      "name": "http://localhost:5180/engine/src/geometry/mesh-ops.js",
+      "duration": 39.099999994039536
+    },
+    {
+      "name": "http://localhost:5180/engine/src/geometry/anchors.js",
+      "duration": 40.69999998807907
+    },
+    {
+      "name": "http://localhost:5180/engine/src/material/index.js",
+      "duration": 41.69999998807907
+    },
+    {
+      "name": "http://localhost:5180/engine/src/preview/previewable.js",
+      "duration": 43.099999994039536
+    },
+    {
+      "name": "http://localhost:5180/engine/src/preview/lab.js",
+      "duration": 46.099999994039536
+    },
+    {
+      "name": "http://localhost:5180/engine/src/preview/budget.js",
+      "duration": 47.79999998211861
+    },
+    {
+      "name": "http://localhost:5180/engine/src/preview/views.js",
+      "duration": 50.80000001192093
+    },
+    {
+      "name": "http://localhost:5180/engine/src/preview/manifest.js",
+      "duration": 52.400000005960464
+    },
+    {
+      "name": "http://localhost:5180/engine/src/scene/definition.js",
+      "duration": 53.900000005960464
+    },
+    {
+      "name": "http://localhost:5180/engine/src/scene/validation.js",
+      "duration": 56
+    },
+    {
+      "name": "http://localhost:5180/engine/src/scene/codec.js",
+      "duration": 57.5
+    },
+    {
+      "name": "http://localhost:5180/engine/src/scene/compiler.js",
+      "duration": 59.19999998807907
+    },
+    {
+      "name": "http://localhost:5180/engine/src/scene/affine.js",
+      "duration": 60.80000001192093
+    },
+    {
+      "name": "http://localhost:5180/engine/src/geometry/index.js",
+      "duration": 61.70000001788139
+    },
+    {
+      "name": "http://localhost:5180/engine/src/character/index.js",
+      "duration": 62.70000001788139
+    },
+    {
+      "name": "http://localhost:5180/engine/src/motion/index.js",
+      "duration": 63.70000001788139
+    },
+    {
+      "name": "http://localhost:5180/engine/src/world/index.js",
+      "duration": 64.80000001192093
+    },
+    {
+      "name": "http://localhost:5180/engine/src/material/definition.js",
+      "duration": 24
+    },
+    {
+      "name": "http://localhost:5180/engine/src/material/palettes.js",
+      "duration": 25
+    },
+    {
+      "name": "http://localhost:5180/engine/src/material/compiler.js",
+      "duration": 26
+    },
+    {
+      "name": "http://localhost:5180/engine/src/render/mesh-adapter.js",
+      "duration": 26.30000001192093
+    },
+    {
+      "name": "http://localhost:5180/engine/src/geometry/semantics.js",
+      "duration": 8.5
+    },
+    {
+      "name": "http://localhost:5180/engine/src/geometry/definition.js",
+      "duration": 9.799999982118607
+    },
+    {
+      "name": "http://localhost:5180/engine/src/geometry/primitives.js",
+      "duration": 11.699999988079071
+    },
+    {
+      "name": "http://localhost:5180/engine/src/geometry/room.js",
+      "duration": 13.799999982118607
+    },
+    {
+      "name": "http://localhost:5180/engine/src/character/definition.js",
+      "duration": 14.199999988079071
+    },
+    {
+      "name": "http://localhost:5180/engine/src/character/landmarks.js",
+      "duration": 15.5
+    },
+    {
+      "name": "http://localhost:5180/engine/src/character/geometry.js",
+      "duration": 20.5
+    },
+    {
+      "name": "http://localhost:5180/engine/src/character/skeleton.js",
+      "duration": 22.299999982118607
+    },
+    {
+      "name": "http://localhost:5180/engine/src/character/skinning.js",
+      "duration": 24.5
+    },
+    {
+      "name": "http://localhost:5180/engine/src/motion/definition.js",
+      "duration": 24.899999976158142
+    },
+    {
+      "name": "http://localhost:5180/engine/src/motion/ik.js",
+      "duration": 26
+    },
+    {
+      "name": "http://localhost:5180/engine/src/motion/grounding.js",
+      "duration": 27.19999998807907
+    },
+    {
+      "name": "http://localhost:5180/engine/src/motion/generator.js",
+      "duration": 30
+    },
+    {
+      "name": "http://localhost:5180/engine/src/motion/root-motion.js",
+      "duration": 31
+    },
+    {
+      "name": "http://localhost:5180/engine/src/world/recipe.js",
+      "duration": 30.900000005960464
+    },
+    {
+      "name": "http://localhost:5180/engine/src/world/fields.js",
+      "duration": 31.80000001192093
+    },
+    {
+      "name": "http://localhost:5180/engine/src/world/volumes.js",
+      "duration": 32.900000005960464
+    }
+  ]
+}

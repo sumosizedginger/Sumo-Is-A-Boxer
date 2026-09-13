@@ -1,0 +1,355 @@
+/*
+ * SUMO IS A BOXER — fight presentation.
+ *
+ * DOM UI, deliberately restrained. The fight is the picture; the HUD is the
+ * card at the bottom of it. Nothing here animates continuously, nothing sits on
+ * top of the ring, and every panel is anchored to a screen edge so the centre
+ * of the frame belongs to the opponent.
+ */
+
+:root {
+  --ink: #f2e9d8;
+  --ink-dim: #9a9184;
+  --amber: #ffb757;
+  --red: #d8352a;
+  --blue: #3f7fff;
+  --panel: rgba(9, 9, 11, 0.78);
+  --edge: rgba(242, 233, 216, 0.26);
+  --hud-font: "Segoe UI Semibold", "Segoe UI", Inter, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+  background: #040406;
+  color: var(--ink);
+  font-family: var(--hud-font);
+  -webkit-font-smoothing: antialiased;
+}
+
+#app { position: fixed; inset: 0; }
+
+.stage { position: absolute; inset: 0; }
+.stage canvas { display: block; width: 100%; height: 100%; }
+
+.hud {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  user-select: none;
+  font-size: 13px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+/* Any overlay silences the transient combat banner. */
+.hud.overlaid .combat-message { opacity: 0; }
+
+/* Title and result screens: the fight HUD stands down. */
+.hud.menu .opponent-panel,
+.hud.menu .round-strip,
+.hud.menu .player-panel,
+.hud.menu .guard-indicator,
+.hud.menu .combat-message,
+.hud.menu .reticle,
+.hud.menu .damage-flash {
+  opacity: 0;
+  transition: opacity 200ms ease-out;
+}
+
+/* --- shared bar ---------------------------------------------------------- */
+.bar {
+  position: relative;
+  height: 14px;
+  background: rgba(0, 0, 0, 0.62);
+  border: 1px solid var(--edge);
+  overflow: hidden;
+}
+.bar > i {
+  position: absolute;
+  inset: 1px;
+  transform-origin: left center;
+  display: block;
+  transition: transform 90ms linear;
+}
+.bar.slim { height: 9px; }
+.bar.health > i { background: linear-gradient(180deg, #ff7b5c, #c42a1f); box-shadow: 0 0 12px rgba(255,90,50,0.45); }
+.bar.stamina > i { background: linear-gradient(180deg, #ffe09a, #d99622); box-shadow: 0 0 10px rgba(255,190,70,0.35); }
+.bar.guard > i { background: linear-gradient(180deg, #a9daff, #3577dc); box-shadow: 0 0 10px rgba(90,150,255,0.35); }
+.bar.enemy-health > i { background: linear-gradient(180deg, #ff9b86, #a11711); box-shadow: 0 0 14px rgba(255,70,40,0.4); }
+.bar.enemy-guard > i { background: linear-gradient(180deg, #d6cbb2, #8a7f63); }
+.bar.low > i { animation: pulse 0.7s ease-in-out infinite; }
+
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.45; } }
+
+.label {
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  color: var(--ink-dim);
+  margin-bottom: 5px;
+}
+
+/* A dark drop shadow under every panel so the HUD never dissolves into the
+   venue behind it. The room is deliberately almost black; the card on top of
+   it has to hold its own edge. */
+.opponent-panel, .player-panel, .guard-indicator {
+  box-shadow: 0 8px 34px rgba(0, 0, 0, 0.72);
+}
+
+/* --- opponent, top ------------------------------------------------------- */
+.opponent-panel {
+  position: absolute;
+  top: 22px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(520px, 52vw);
+  padding: 12px 16px 13px;
+  background: var(--panel);
+  border: 1px solid var(--edge);
+  border-top: 2px solid var(--red);
+  backdrop-filter: blur(3px);
+}
+.opponent-panel .name {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: 14px;
+  letter-spacing: 0.28em;
+  margin-bottom: 7px;
+}
+.opponent-panel .corner { color: var(--red); font-size: 10px; letter-spacing: 0.32em; }
+.opponent-panel .bar + .bar { margin-top: 5px; }
+
+/* --- timer --------------------------------------------------------------- */
+.timer {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translate(-50%, -100%);
+  font-size: 30px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-shadow: 0 0 24px rgba(255, 140, 60, 0.45), 2px 2px 0 #4a0f0c;
+  display: none;
+}
+
+.round-strip {
+  position: absolute;
+  top: calc(22px + 96px);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 11px;
+  color: var(--ink-dim);
+}
+.round-strip .clock {
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: 0.08em;
+  text-shadow: 0 0 18px rgba(255, 150, 70, 0.35);
+}
+.round-strip .clock.urgent { color: #ff7a5c; }
+.round-strip .knocks { display: flex; gap: 5px; }
+.round-strip .knocks b {
+  width: 9px; height: 9px; border: 1px solid var(--edge); display: block; background: transparent;
+}
+.round-strip .knocks b.on { background: var(--red); border-color: var(--red); }
+
+/* --- player, bottom-left ------------------------------------------------- */
+.player-panel {
+  position: absolute;
+  left: 26px;
+  bottom: 24px;
+  width: min(330px, 36vw);
+  padding: 13px 16px 14px;
+  background: var(--panel);
+  border: 1px solid var(--edge);
+  border-bottom: 2px solid var(--blue);
+  backdrop-filter: blur(3px);
+}
+.player-panel .bar + .label { margin-top: 9px; }
+.player-panel .row { display: flex; justify-content: space-between; align-items: baseline; }
+.player-panel .row span { color: var(--ink-dim); font-size: 10px; letter-spacing: 0.26em; }
+
+.guard-indicator {
+  position: absolute;
+  right: 26px;
+  bottom: 24px;
+  min-width: 168px;
+  padding: 12px 16px;
+  background: var(--panel);
+  border: 1px solid var(--edge);
+  text-align: right;
+  backdrop-filter: blur(3px);
+}
+.guard-indicator .state {
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: var(--amber);
+}
+.guard-indicator .state.blocking { color: #8fd0ff; }
+.guard-indicator .hint { font-size: 9.5px; color: var(--ink-dim); letter-spacing: 0.2em; margin-top: 6px; }
+
+/* --- centre feedback ----------------------------------------------------- */
+.reticle {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 26px;
+  height: 26px;
+  margin: -13px 0 0 -13px;
+  opacity: 0.4;
+}
+.reticle::before, .reticle::after {
+  content: ""; position: absolute; background: var(--ink);
+}
+.reticle::before { left: 50%; top: 0; width: 1px; height: 7px; margin-left: -0.5px; }
+.reticle::after { left: 50%; bottom: 0; width: 1px; height: 7px; margin-left: -0.5px; }
+.reticle i { position: absolute; top: 50%; width: 7px; height: 1px; margin-top: -0.5px; background: var(--ink); }
+.reticle i:first-child { left: 0; }
+.reticle i:last-child { right: 0; }
+
+.combat-message {
+  position: absolute;
+  left: 50%;
+  top: 38%;
+  transform: translate(-50%, -50%);
+  font-size: clamp(26px, 5vw, 52px);
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-shadow: 0 0 34px rgba(255, 90, 40, 0.5), 3px 3px 0 #5c1410;
+  opacity: 0;
+  transition: opacity 140ms ease-out;
+}
+.combat-message.show { opacity: 1; }
+
+.vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse at center, rgba(0,0,0,0) 38%, rgba(0,0,0,0.72) 100%);
+}
+.damage-flash {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse at center, rgba(150,0,0,0) 30%, rgba(190,20,10,0.85) 100%);
+  opacity: 0;
+}
+
+/* --- overlays ------------------------------------------------------------ */
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+  background: radial-gradient(ellipse at center, rgba(6,6,9,0.62) 0%, rgba(3,3,5,0.93) 78%);
+  pointer-events: auto;
+  text-align: center;
+  padding: 32px;
+}
+.overlay.show { display: flex; }
+
+/* The title screen doubles as the arena overview: the venue is orbiting behind
+   it and should be legible, so this one leans on a bottom-weighted scrim rather
+   than a full blackout. */
+.overlay.title {
+  justify-content: flex-start;
+  padding-top: 7vh;
+  gap: 16px;
+  background:
+    linear-gradient(180deg, rgba(3,3,5,0.94) 0%, rgba(4,4,7,0.55) 34%, rgba(3,3,5,0.2) 52%, rgba(3,3,5,0.88) 88%);
+}
+.overlay.title .controls { margin-top: auto; }
+.overlay.title .prompt { margin-bottom: 4vh; }
+
+.overlay h1 {
+  margin: 0;
+  font-size: clamp(38px, 8vw, 86px);
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  line-height: 0.95;
+  text-shadow: 0 0 40px rgba(255, 110, 50, 0.4), 4px 4px 0 #5c1410;
+}
+.overlay h1 em { display: block; font-style: normal; font-size: 0.42em; letter-spacing: 0.42em; color: var(--amber); margin-top: 14px; }
+.overlay h2 { margin: 0; font-size: clamp(24px, 4vw, 40px); letter-spacing: 0.22em; font-weight: 800; }
+.overlay .sub { color: var(--ink-dim); font-size: 12px; letter-spacing: 0.3em; max-width: 620px; line-height: 2; }
+
+.controls {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(190px, 250px));
+  gap: 7px 34px;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: var(--ink-dim);
+}
+.controls div { display: flex; justify-content: space-between; gap: 18px; border-bottom: 1px solid rgba(242,233,216,0.08); padding-bottom: 5px; }
+.controls kbd {
+  font-family: inherit;
+  color: var(--ink);
+  background: rgba(242,233,216,0.09);
+  border: 1px solid var(--edge);
+  padding: 2px 8px;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+}
+
+.prompt {
+  margin-top: 8px;
+  padding: 13px 34px;
+  border: 1px solid var(--amber);
+  color: var(--amber);
+  font-size: 13px;
+  letter-spacing: 0.3em;
+  background: rgba(255, 183, 87, 0.06);
+  cursor: pointer;
+  transition: background 140ms ease, color 140ms ease;
+}
+.prompt:hover { background: var(--amber); color: #120a02; }
+
+.result-line { display: flex; gap: 42px; font-size: 11px; letter-spacing: 0.24em; color: var(--ink-dim); }
+.result-line b { display: block; color: var(--ink); font-size: 22px; letter-spacing: 0.1em; margin-top: 7px; font-weight: 700; }
+
+.diagnostics {
+  position: absolute;
+  top: 16px;
+  left: 18px;
+  font-size: 10px;
+  letter-spacing: 0.05em;
+  text-transform: none;
+  color: rgba(242, 233, 216, 0.5);
+  line-height: 1.6;
+  font-family: ui-monospace, "Cascadia Mono", Consolas, monospace;
+  display: none;
+  white-space: pre;
+}
+.diagnostics.show { display: block; }
+
+.corner-tag {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 9px;
+  letter-spacing: 0.42em;
+  color: rgba(242, 233, 216, 0.22);
+}
+
+@media (max-width: 720px) {
+  .player-panel { width: 44vw; left: 14px; bottom: 14px; padding: 9px 11px; }
+  .guard-indicator { right: 14px; bottom: 14px; min-width: 120px; padding: 9px 11px; }
+  .opponent-panel { width: 78vw; top: 12px; padding: 9px 11px; }
+  .round-strip { top: 92px; }
+  .controls { grid-template-columns: 1fr; }
+}
