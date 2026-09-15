@@ -1,0 +1,171 @@
+{
+  "baseline-steady": {
+    "shaded": {
+      "fps": 60.001200024000475,
+      "frameMs": {
+        "p50": 16.69999999999891,
+        "p95": 16.800000000000182,
+        "p99": 16.899999999999636
+      },
+      "animationMs": {
+        "p50": 0,
+        "p95": 0,
+        "p99": 0
+      },
+      "drawCalls": 4,
+      "renderedTriangles": 93410,
+      "skinTriangles": 46704,
+      "scene": {
+        "triangles": 223086,
+        "materials": 131,
+        "geometries": 38
+      },
+      "geometries": 11,
+      "textures": 10,
+      "programs": 19,
+      "materials": 133,
+      "timing": {
+        "assetBuildMs": 96.69999998807907,
+        "presentationTotalMs": 2817.900000035763,
+        "proceduralGenerationMs": 2793.5,
+        "proceduralGenerationWorkMs": 107.80000007152557,
+        "firstFrameSinceGameCreateMs": 3850.600000023842,
+        "firstFrameSinceNavigationMs": 4530.600000023842
+      }
+    },
+    "production": {
+      "fps": 59.998800023999536,
+      "frameMs": {
+        "p50": 16.69999999999891,
+        "p95": 16.80000000000109,
+        "p99": 16.899999999997817
+      },
+      "animationMs": {
+        "p50": 0,
+        "p95": 0,
+        "p99": 0
+      },
+      "drawCalls": 56,
+      "renderedTriangles": 219058,
+      "skinTriangles": 46704,
+      "scene": {
+        "triangles": 223086,
+        "materials": 131,
+        "geometries": 38
+      },
+      "geometries": 11,
+      "textures": 10,
+      "programs": 19,
+      "materials": 133,
+      "timing": {
+        "assetBuildMs": 96.69999998807907,
+        "presentationTotalMs": 2817.900000035763,
+        "proceduralGenerationMs": 2793.5,
+        "proceduralGenerationWorkMs": 107.80000007152557,
+        "firstFrameSinceGameCreateMs": 3850.600000023842,
+        "firstFrameSinceNavigationMs": 4530.600000023842
+      }
+    }
+  },
+  "final": {
+    "shaded": {
+      "fps": 60.003600216012906,
+      "frameMs": {
+        "p50": 16.69999999999709,
+        "p95": 16.899999999997817,
+        "p99": 16.900000000001455
+      },
+      "animationMs": {
+        "p50": 0,
+        "p95": 0,
+        "p99": 0
+      },
+      "drawCalls": 6,
+      "renderedTriangles": 248278,
+      "skinTriangles": 112042,
+      "scene": {
+        "triangles": 302752,
+        "materials": 127,
+        "geometries": 40
+      },
+      "geometries": 13,
+      "textures": 10,
+      "programs": 22,
+      "materials": 129,
+      "timing": {
+        "assetBuildMs": 95.39999997615814,
+        "presentationTotalMs": 16227.699999988079,
+        "proceduralGenerationMs": 16195.5,
+        "proceduralGenerationWorkMs": 115.69999992847443,
+        "firstFrameSinceGameCreateMs": 17437.700000047684,
+        "firstFrameSinceNavigationMs": 17716.100000023842
+      }
+    },
+    "production": {
+      "fps": 60.00120002400046,
+      "frameMs": {
+        "p50": 16.69999999999709,
+        "p95": 16.80000000000291,
+        "p99": 16.900000000001455
+      },
+      "animationMs": {
+        "p50": 0,
+        "p95": 0,
+        "p99": 0
+      },
+      "drawCalls": 46,
+      "renderedTriangles": 354198,
+      "skinTriangles": 112042,
+      "scene": {
+        "triangles": 302752,
+        "materials": 127,
+        "geometries": 40
+      },
+      "geometries": 13,
+      "textures": 10,
+      "programs": 22,
+      "materials": 129,
+      "timing": {
+        "assetBuildMs": 95.39999997615814,
+        "presentationTotalMs": 16227.699999988079,
+        "proceduralGenerationMs": 16195.5,
+        "proceduralGenerationWorkMs": 115.69999992847443,
+        "firstFrameSinceGameCreateMs": 17437.700000047684,
+        "firstFrameSinceNavigationMs": 17716.100000023842
+      }
+    },
+    "motion": {
+      "fps": 59.998800023999536,
+      "frameMs": {
+        "p50": 16.69999999999709,
+        "p95": 16.80000000000291,
+        "p99": 16.900000000001455
+      },
+      "animationMs": {
+        "p50": 0.3999999761581421,
+        "p95": 1,
+        "p99": 12.099999964237213
+      },
+      "drawCalls": 46,
+      "renderedTriangles": 354198,
+      "skinTriangles": 112042,
+      "scene": {
+        "triangles": 302752,
+        "materials": 127,
+        "geometries": 40
+      },
+      "geometries": 13,
+      "textures": 10,
+      "programs": 22,
+      "materials": 129,
+      "timing": {
+        "assetBuildMs": 95.39999997615814,
+        "presentationTotalMs": 16227.699999988079,
+        "proceduralGenerationMs": 16195.5,
+        "proceduralGenerationWorkMs": 115.69999992847443,
+        "firstFrameSinceGameCreateMs": 17437.700000047684,
+        "firstFrameSinceNavigationMs": 17716.100000023842
+      }
+    }
+  }
+}

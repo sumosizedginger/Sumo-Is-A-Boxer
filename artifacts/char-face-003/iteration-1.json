@@ -1,0 +1,209 @@
+{
+  "certification": {
+    "vertexCount": 68090,
+    "triangleCount": 136176,
+    "edgeCount": 204264,
+    "boundaryEdgeCount": 0,
+    "boundaryLoopCount": 0,
+    "nonManifoldEdgeCount": 0,
+    "nonManifoldVertexCount": 0,
+    "inconsistentWindingEdgeCount": 0,
+    "degenerateTriangleCount": 0,
+    "duplicateTriangleCount": 0,
+    "isolatedVertexCount": 0,
+    "connectedComponentCount": 1,
+    "invalidNumericCount": 0,
+    "invalidIndexCount": 0,
+    "boundaryEdges": [],
+    "boundaryLoops": [],
+    "diagnostics": [],
+    "policy": [
+      "CLOSED_MANIFOLD",
+      "SINGLE_COMPONENT",
+      "DEFORMATION_SURFACE"
+    ],
+    "valid": true,
+    "skinWeightViolationCount": 0,
+    "source": "live opponent.character.geometry",
+    "template": "hero-skin-indexed-v1"
+  },
+  "metrics": {
+    "state": "front_neutral",
+    "playing": false,
+    "animationUpdateMs": 0,
+    "opponentSkinTriangles": 136176,
+    "opponentEquipmentTriangles": 52960,
+    "firstPerson": {
+      "triangles": 25816,
+      "materials": 8,
+      "geometries": 2
+    },
+    "scene": {
+      "triangles": 302694,
+      "materials": 125,
+      "geometries": 38
+    },
+    "report": {
+      "engine": "My Game Engine 1.0 0.1.0",
+      "assets": 36,
+      "materials": 120,
+      "sceneId": "sumo.is.a.boxer.midnight.bout.v1",
+      "sceneNodes": 66,
+      "sceneHash": "c38d4437373c5b62",
+      "placements": 54,
+      "uploads": 26,
+      "triangles": 51712,
+      "unresolvedAssets": [],
+      "assetBuildMs": 179,
+      "proceduralMaterials": {
+        "enabled": true,
+        "seed": 310903,
+        "generationMs": 234.99999997019768,
+        "textures": 6,
+        "bindings": 24,
+        "inventory": [
+          {
+            "kind": "concrete",
+            "width": 256,
+            "height": 256,
+            "bytes": 262144,
+            "mipBytesEstimate": 349526
+          },
+          {
+            "kind": "steel",
+            "width": 256,
+            "height": 256,
+            "bytes": 262144,
+            "mipBytesEstimate": 349526
+          },
+          {
+            "kind": "canvas",
+            "width": 256,
+            "height": 256,
+            "bytes": 262144,
+            "mipBytesEstimate": 349526
+          },
+          {
+            "kind": "canvasHistory",
+            "width": 512,
+            "height": 512,
+            "bytes": 1048576,
+            "mipBytesEstimate": 1398102
+          },
+          {
+            "kind": "leather",
+            "width": 256,
+            "height": 256,
+            "bytes": 262144,
+            "mipBytesEstimate": 349526
+          },
+          {
+            "kind": "skin",
+            "width": 256,
+            "height": 256,
+            "bytes": 262144,
+            "mipBytesEstimate": 349526
+          }
+        ],
+        "gpuBytesEstimate": 3145732,
+        "disposed": false
+      },
+      "drawCalls": 4,
+      "renderedTriangles": 272354,
+      "geometries": 11,
+      "textures": 10,
+      "compiledMaterials": 123,
+      "timing": {
+        "clock": "performance.now(), milliseconds relative to performance.timeOrigin",
+        "timeOrigin": 1789344783741.2,
+        "markers": {
+          "navigationOrigin": 0,
+          "appBootstrapStart": 474.5,
+          "gameCreateStart": 474.7999999821186,
+          "assetBuildStart": 494.39999997615814,
+          "assetBuildEnd": 673.1999999880791,
+          "presentationStart": 673.2999999821186,
+          "proceduralGenerationStart": 689.7999999821186,
+          "proceduralGenerationEnd": 11407.59999999404,
+          "presentationEnd": 11430.699999988079,
+          "firstRAFStart": 12666.899999976158,
+          "firstRenderedFrameEnd": 12752.59999999404
+        },
+        "generationIntervals": [
+          {
+            "kind": "concrete",
+            "start": 689.7999999821186,
+            "end": 698.1999999880791
+          },
+          {
+            "kind": "steel",
+            "start": 709,
+            "end": 716.8999999761581
+          },
+          {
+            "kind": "canvas",
+            "start": 722,
+            "end": 735.5999999940395
+          },
+          {
+            "kind": "canvasHistory",
+            "start": 735.5999999940395,
+            "end": 914.8999999761581
+          },
+          {
+            "kind": "leather",
+            "start": 11353.899999976158,
+            "end": 11370.699999988079
+          },
+          {
+            "kind": "skin",
+            "start": 11398.59999999404,
+            "end": 11407.59999999404
+          }
+        ],
+        "durations": {
+          "assetBuildMs": 178.80000001192093,
+          "presentationTotalMs": 10757.40000000596,
+          "proceduralGenerationMs": 10717.800000011921,
+          "proceduralGenerationWorkMs": 234.99999997019768,
+          "firstFrameSinceGameCreateMs": 12277.800000011921,
+          "firstFrameSinceNavigationMs": 12752.59999999404
+        },
+        "checks": {
+          "presentationContainsGeneration": true,
+          "navigationContainsGameCreate": true
+        },
+        "semantics": {
+          "proceduralGenerationMs": "Envelope from first lazy texture generation start to last end; includes interleaved setup.",
+          "proceduralGenerationWorkMs": "Sum of disjoint per-texture CPU generation/allocation intervals; excludes GPU upload.",
+          "presentationTotalMs": "Scene composition, material preparation, lights, VFX and fighter presentation.",
+          "firstRenderedFrameEnd": "CPU return from first renderer.render; not GPU completion or screen presentation.",
+          "appBootstrapStart": "Entry-module body start after static imports have evaluated."
+        }
+      },
+      "firstFrameMs": 12277.800000011921,
+      "firstFrameSinceNavigationMs": 12752.59999999404,
+      "programs": 18,
+      "skinTriangles": 136176,
+      "presentationBuildMs": 10757,
+      "sceneMaterialCount": 127,
+      "frameMs": {
+        "p50": 16.700000762939453,
+        "p95": 12283.099609375,
+        "p99": 12283.099609375
+      },
+      "fps": 1.5,
+      "phase": "validation",
+      "boxer": {
+        "bones": 22,
+        "landmarks": 27,
+        "gaitPhase": 0,
+        "gaitScale": 0,
+        "gaitDistance": 0,
+        "height": 1.86,
+        "skinTriangles": 136176
+      }
+    }
+  },
+  "errors": []
+}

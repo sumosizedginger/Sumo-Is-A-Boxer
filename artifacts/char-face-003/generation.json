@@ -1,0 +1,45 @@
+{
+  "method": "createOpponentBoxer with prebuilt shared equipment library; three builds in one Node process",
+  "generationMs": [
+    19805.8708,
+    18894.8102,
+    19442.9882
+  ],
+  "sculptMs": [
+    13158.404,
+    12516.543099999999,
+    12834.2952
+  ],
+  "certification": {
+    "vertexCount": 56023,
+    "triangleCount": 112042,
+    "edgeCount": 168063,
+    "boundaryEdgeCount": 0,
+    "boundaryLoopCount": 0,
+    "nonManifoldEdgeCount": 0,
+    "nonManifoldVertexCount": 0,
+    "inconsistentWindingEdgeCount": 0,
+    "degenerateTriangleCount": 0,
+    "duplicateTriangleCount": 0,
+    "isolatedVertexCount": 0,
+    "connectedComponentCount": 1,
+    "invalidNumericCount": 0,
+    "invalidIndexCount": 0,
+    "boundaryEdges": [],
+    "boundaryLoops": [],
+    "diagnostics": [],
+    "policy": [
+      "CLOSED_MANIFOLD",
+      "SINGLE_COMPONENT",
+      "DEFORMATION_SURFACE"
+    ],
+    "valid": true
+  },
+  "beforeGenerationMs": [
+    4486.1723,
+    4258.3891,
+    4594.768899999999
+  ],
+  "beforeMeanMs": 4446.443433333333,
+  "afterMeanMs": 19381.223066666666
+}

@@ -331,7 +331,7 @@ export const AUTHORING_SURFACE = Object.freeze({
       publicSince: 'PUBLIC-SURFACE-001',
       capabilities: Object.freeze([
         'TOPOLOGY_SURFACE_VERSION', 'TOPOLOGY_ATTRIBUTE_SIZES', 'TopologyError', 'createTopologySurface', 'concatenateTopologySurfaces', 'TOPOLOGY_POLICIES', 'analyzeTopology', 'validateTopology', 'findBoundaryEdges', 'extractBoundaryLoops', 'weldTopologyVertices', 'bridgeTopologyLoops', 'stitchTopologySurfaces',
-        'SURFACE_TYPES', 'SURFACE_NAMES', 'CONSTRAINT_FLAGS', 'GEOMETRY_REGIONS',
+        'createFeatureFrame', 'ellipsoidMask', 'composeSculptMasks', 'semanticSculptMask', 'directionalSculptField', 'ellipsoidSculptField', 'normalSculptField', 'planeSculptField', 'ridgeSculptField', 'creaseSculptField', 'applySculptFields', 'relaxSculptSurface', 'rebuildSculptNormals', 'refineSculptTopology', 'SURFACE_TYPES', 'SURFACE_NAMES', 'CONSTRAINT_FLAGS', 'GEOMETRY_REGIONS',
         'ROOM_PARAMETER_BOUNDS', 'PILLAR_PARAMETER_BOUNDS', 'ROOM_PRESETS',
         'resolveRoomParameters', 'createRoomDefinition', 'generateProceduralRoom'
       ]),
@@ -486,3 +486,5 @@ export {weldTopologyVertices,bridgeTopologyLoops,stitchTopologySurfaces} from '.
 export {CHARACTER_CORE_SKELETON} from '../character/rig-contract.js';
 export {HERO_CHARACTER_ARTIFACT_VERSION,HERO_BODY_TOPOLOGY_POLICY,createHeroCharacterArtifact,certifyHeroBody,instantiateHeroCharacterArtifact,createHeroRuntimeGeometry} from '../character/hero-artifact.js';
 export {createPoseDriverDefinition,decomposeSwingTwist,poseDriverDistance,evaluatePoseDriver} from '../character/pose-drivers.js';
+
+export {createFeatureFrame,ellipsoidMask,composeSculptMasks,semanticSculptMask,directionalSculptField,ellipsoidSculptField,normalSculptField,planeSculptField,ridgeSculptField,creaseSculptField,applySculptFields,relaxSculptSurface,rebuildSculptNormals,refineSculptTopology} from '../geometry/sculpt-fields.js';

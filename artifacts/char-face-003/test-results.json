@@ -1,0 +1,47 @@
+[
+  {
+    "command": "node --test tests/*.test.js",
+    "tests": 102,
+    "pass": 102,
+    "fail": 0,
+    "durationMs": 113260.6313
+  },
+  {
+    "command": "npm --prefix engine test",
+    "tests": 592,
+    "pass": 592,
+    "fail": 0,
+    "durationMs": 22274.9503
+  },
+  {
+    "command": "npm run build",
+    "exitCode": 0,
+    "log": "game-build.log"
+  },
+  {
+    "command": "npm --prefix engine run build",
+    "exitCode": 0,
+    "log": "engine-build.log"
+  },
+  {
+    "command": "node scripts/validate-hero-face.mjs final",
+    "exitCode": 0,
+    "captures": 41
+  },
+  {
+    "command": "node scripts/measure-hero-face.mjs",
+    "exitCode": 0
+  },
+  {
+    "command": "node scripts/smoke-hero-face.mjs",
+    "exitCode": 0,
+    "actions": [
+      "start via focused button and Enter",
+      "wait for countdown",
+      "advance",
+      "jab",
+      "cross"
+    ],
+    "errors": 0
+  }
+]

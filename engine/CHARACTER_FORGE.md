@@ -251,3 +251,9 @@ Turn 1 certified the machinery and synthetic fixture, not the legacy boxer body.
 
 
 Runtime adapter correction (CHAR-TOPOLOGY-002): createHeroRuntimeGeometry is the public renderer seam for TopologySurface data. It retains Uint32 authoring identities but supplies Float32 GPU attributes to the standard Three skinning shader. Uint32 vertex attribute bindings are integer inputs and cannot feed its floating-point skinIndex declaration. Categorical values exceeding exact Float32 range fail explicitly. Both artifact instantiation and the game body use this adapter. The actual browser test additionally checks visible skin pixels, so a numerically valid but invisible mesh cannot pass.
+
+## Sculpted hero surfaces
+
+Hero authoring may use Geometry Forge local fields and conforming refinement before the artifact's skinning, morph and tangent stages. Character identity fields and facial layouts belong to the game. Durable semantic regions and model-space landmarks belong in the artifact. Definition-side geometry metadata can record authoring parameters, feature frames and separate component placement such as eye centers.
+
+Orbital pockets and auricular patches can remain part of a single closed skin by stitching their ordered boundaries through the public topology API. A globe may occlude a recessed, connected orbital skin pocket. Neither overlapping primitives nor concatenation establish this connection. Closed-manifold certification remains mandatory, and does not substitute for visual inspection of folds, self-intersection, facial form or eye seating.

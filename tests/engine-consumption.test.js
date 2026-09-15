@@ -124,7 +124,8 @@ test('engine edits stay inside the explicit CHAR-FOUNDATION-001 authorization', 
     'engine/src/geometry/topology-surface.js', 'engine/src/geometry/topology-analysis.js',
     'engine/src/geometry/topology-ops.js', 'engine/tests/purity.test.js',
     'engine/tests/topology-foundation.test.js', 'engine/tests/hero-foundation.test.js',
-    'engine/tests/fixtures/topology-proof.js'
+    'engine/tests/fixtures/topology-proof.js',
+    'engine/src/geometry/sculpt-fields.js', 'engine/tests/sculpt-fields.test.js'
   ]);
   const status = execFileSync('git', ['status', '--porcelain', '--untracked-files=all', '--', 'engine'], {cwd:ROOT,encoding:'utf8'});
   const unexpected=status.split(/\r?\n/).filter(Boolean).map(line=>line.slice(3)).filter(path=>!allowed.has(path));

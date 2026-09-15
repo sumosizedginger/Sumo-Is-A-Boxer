@@ -1,3 +1,4 @@
+import {createBoxerEyes} from './hero-eyes.js';
 /**
  * Boxing presentation on the accepted Character Forge skeleton.
  * The game owns the athletic skin, stance, punch chain, reactions and world
@@ -180,6 +181,7 @@ export function createOpponentBoxer({ library }) {
   });
 
   const anatomy = rebuildAthleticBody(character, skinDefinition);
+  const eyeRig=createBoxerEyes(character);character.eyeRig=eyeRig;
 
   // Landmarks recomputed from parameters alone, proving the semantic layer is
   // usable without the built character, and used for every rest direction.
@@ -556,6 +558,7 @@ export function createOpponentBoxer({ library }) {
      * materials belong to the shared asset library.
      */
     dispose() {
+      eyeRig.dispose();
       if (disposed) return;
       disposed = true;
       for (const holder of attachments) {

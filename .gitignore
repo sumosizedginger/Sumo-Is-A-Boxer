@@ -42,3 +42,17 @@ ehthumbs.db
 
 # Reproducible Turn 2 evidence keeps summaries and captures, not transient runner logs.
 artifacts/char-topology-002/*.log
+
+# Turn 3 runner logs are reproducible, not checkpoint artifacts.
+artifacts/char-face-003/*.log
+artifacts/char-face-003/iteration-*.png
+!artifacts/char-face-003/iteration-1-front_left_three_quarter.png
+!artifacts/char-face-003/iteration-2-front_left_three_quarter.png
+!artifacts/char-face-003/iteration-3-front_left_three_quarter.png
+!artifacts/char-face-003/iteration-4-front_left_three_quarter.png
+!artifacts/char-face-003/iteration-5-front_left_three_quarter.png
+!artifacts/char-face-003/iteration-6-front_left_three_quarter.png
+!artifacts/char-face-003/iteration-17-full-front_left_three_quarter.png
+!artifacts/char-face-003/iteration-24-full-left_ear.png
+!artifacts/char-face-003/iteration-30-full-front_left_three_quarter.png
+!artifacts/char-face-003/iteration-32-full-left_ear.png

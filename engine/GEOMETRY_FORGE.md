@@ -161,6 +161,22 @@ Every compliant Geometry Forge implementation must demonstrate:
 
 ## Topology-aware authoring boundary (CHAR-FOUNDATION-001)
 
-Buffer merging and concatenation preserve disconnected components. They provide no continuity guarantee. Public full exports now include executable boundary detection, ordered semantic loops, compatible spatial-hash welding, equal-loop bridges/stitches, and policy-based topology validation. See CHARACTER_FORGE.md section 10 for the exact continuity and attribute contract.
+Buffer merging and concatenation preserve disconnected components. They provide no continuity guarantee. Public full exports now include executable boundary detection, ordered semantic loops, compatible spatial-hash welding, equal-loop and explicitly parameterized unequal-loop bridges/stitches, and policy-based topology validation. See CHARACTER_FORGE.md section 10 for the exact continuity and attribute contract.
 
 TopologySurface v1 accepts MeshIR and indexed BufferGeometry-shaped input without importing the renderer. It extends the authoring seam to uv, normal, tangent, regionId/region, surfaceId, skinIndex/skinWeight and morph registries. Legacy MeshIR v1 serialization remains unchanged and must not be used to serialize these extra fields. Unsupported attributes or incompatible schemas fail explicitly. Topology certification does not certify absence of geometric self-intersections, pose quality or visual quality.
+
+## Local sculpt authoring
+
+The public full surface provides renderer-independent sculpt fields on TopologySurface data. createFeatureFrame defines orthonormal local coordinates. ellipsoidMask, semanticSculptMask and composeSculptMasks scope fields. directionalSculptField, ellipsoidSculptField, normalSculptField, planeSculptField, ridgeSculptField and creaseSculptField return executable displacement operators. Ridge points are local to their supplied frame; plane points and normals are in model coordinates.
+
+applySculptFields clones input, applies fields in order, rejects nonfinite displacements and rebuilds area-weighted shared normals. Mask callbacks receive (position, vertexIndex, surface); fields receive (position, normal, vertexIndex, surface). Normal displacement uses the input normal field for that application. Use separate applications when an intervening normal rebuild is required.
+
+relaxSculptSurface supports supplied masks, pinned vertex indices, feature masks, bounded iterations and optional tangential Laplacian updates. An optional direction constrains relaxation to one model-space axis and requires tangential: false; transverse coordinates remain unchanged. A feature-mask value of one prevents movement. refineSculptTopology performs conforming local triangle refinement with shared edge midpoints. It returns surface and sourceVertex ancestry. It accepts position, normal and UV before categorical attributes, skinning, morphs and semantic anchors are authored; unsupported data fails explicitly.
+
+Sculpting rebuilds normals and rejects existing tangent or morph data. Author sculpt, topology and constraints before skinning, tangent frames and corrective targets. Position-only sculpting does not establish manifold continuity or rule out self-intersections. Run topology certification and inspect the resulting surface.
+
+### Explicit boundary correspondence
+
+bridgeTopologyLoops(input, loopA, loopB, options) and stitchTopologySurfaces(left, right, options) accept loopParameters: {a, b}. Each array must match its traversal length, start at zero, increase strictly and remain below one. Parameters describe corresponding positions around an authored cyclic domain. The a traversal follows the first boundary; b follows the reversed second boundary starting at offset. A monotonic zipper emits n + m triangles, preserving both existing oriented boundaries and all original vertex attributes. Unequal counts without explicit correspondence fail. Weld mode still requires equal counts.
+
+With equal-count implicit correspondence, maxSpan retains its original meaning: the distance between corresponding vertex pairs. For explicit parametric correspondence it bounds all new cross-boundary edges. Neither mode promises that arbitrary incompatible geometric loops avoid self-intersections. The caller must author compatible ordered loops and inspect their embedding; structural validation rejects degenerate triangles, invalid winding and non-manifold joins.

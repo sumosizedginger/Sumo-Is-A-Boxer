@@ -25,6 +25,21 @@ test('ordered boundaries distinguish open planes, open tubes and closed bodies',
   assert.equal(validateTopology(plane(),{policy:'CLOSED_MANIFOLD'}).valid,false);
   assert.throws(()=>extractBoundaryLoops(tube,{selectors:[{name:'ambiguous',regionId:7}]}),rejected('BOUNDARY_SELECTOR'));
 });
+
+test('explicit parametric bridging joins unequal boundary samples without changing attributes',()=>{
+  const a=section('coarse',0,1,{segments:8}),b=section('fine',1.2,2,{segments:13,cap:'top'});
+  const options={loopA:'join',loopB:'join',loopParameters:{a:Array.from({length:8},(_,i)=>i/8),b:Array.from({length:13},(_,i)=>i/13)}};
+  const first=stitchTopologySurfaces(a,b,options),again=stitchTopologySurfaces(a,b,options);
+  assert.deepEqual(first.surface,again.surface);
+  assert.equal(first.addedTriangleCount,21);
+  const report=validateTopology(first.surface,{policy:'CLOSED_MANIFOLD'});
+  assert.equal(report.valid,true,JSON.stringify(report.diagnostics));
+  for(const key of ['boundaryEdgeCount','nonManifoldEdgeCount','inconsistentWindingEdgeCount','degenerateTriangleCount','duplicateTriangleCount'])assert.equal(report[key],0,key);
+  assert.equal(report.connectedComponentCount,1);
+  for(const key of ['position','uv','regionId','surfaceId','skinIndex','skinWeight'])assert.deepEqual(Array.from(first.surface.attributes[key]),[...a.attributes[key],...b.attributes[key]]);
+  assert.throws(()=>stitchTopologySurfaces(a,b,{...options,maxSpan:.01}),rejected('BRIDGE_SPAN'));
+  for(const values of [[0,0],Array(8).fill(0),[0,.1,.2,.3,.4,.5,.6,Infinity]])assert.throws(()=>stitchTopologySurfaces(a,b,{...options,loopParameters:{...options.loopParameters,a:values}}),rejected('BRIDGE_PARAMETERS'));
+});
 test('validator diagnoses bad triangles, indices, numeric data, components and vertex bow ties',()=>{
   const p=plane();
   assert.equal(validateTopology({...p,indices:[...p.indices,0,1,2]}).duplicateTriangleCount,1);

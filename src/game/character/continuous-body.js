@@ -1,7 +1,6 @@
 // Canonical indexed skin. Branches share boundary edges; no internal caps.
 import {createTopologySurface,extractBoundaryLoops,weldTopologyVertices,stitchTopologySurfaces,validateTopology,HERO_BODY_TOPOLOGY_POLICY} from '@sumosizedginger/my-game-engine-1.0/full';
 import {skullAt} from '../assets/skull-sections.js';
-import {shapeFace} from './anatomy-fields.js';
 
 export const BODY_REGIONS=Object.freeze(Object.fromEntries(['head','neck','chest','back','abdomen','pelvis','shoulder_l','shoulder_r','upperarm_l','upperarm_r','elbow_l','elbow_r','forearm_l','forearm_r','hip_l','hip_r','thigh_l','thigh_r','knee_l','knee_r','calf_l','calf_r'].map((n,i)=>[n,i+1])));
 const clamp=t=>Math.max(0,Math.min(1,t));
@@ -9,7 +8,7 @@ const smooth=t=>{t=clamp(t);return t*t*(3-2*t);};
 function lerpRows(rows,y){for(let i=0;i<rows.length-1;i++)if(y<=rows[i+1][0]){const a=rows[i],b=rows[i+1],t=clamp((y-a[0])/(b[0]-a[0]));return a.slice(1).map((v,k)=>v+(b[k+1]-v)*t);}return rows.at(-1).slice(1);}
 const torsoRows=[[.95,.174,.112,-.009],[1.01,.184,.134,-.009],[1.10,.167,.123,0],[1.18,.15,.112,0],[1.27,.186,.138,0],[1.36,.192,.15,0],[1.43,.202,.152,0],[1.48,.19,.128,-.004],[1.52,.17,.098,-.008],[1.56,.094,.077,-.01],[1.60,.071,.069,-.011],[1.64,.065,.071,-.006],[1.67,.066,.075,.009]];
 function axial(y,t){const c=Math.cos(t),s=Math.sin(t);let p;
-  if(y>=1.69){const h=skullAt(y);p=[h.cx+c*h.width,y,h.cz+s*h.depth];shapeFace(p,{y,c,s});}
+  if(y>=1.69){const h=skullAt(y);p=[h.cx+c*h.width,y,h.cz+s*h.depth];}
   else {const [w,d,z]=lerpRows(torsoRows,y);p=[c*w,y,z+s*d];if(y>1.67){const h=skullAt(1.69),a=(y-1.67)/.02;p=[p[0]*(1-a)+c*h.width*a,y,p[2]*(1-a)+(h.cz+s*h.depth)*a];}
     // Broad chest/back planes, with room for later anatomy shaping.
     if(y>1.17&&y<1.50)p[2]+=.008*Math.sin((y-1.17)/.33*Math.PI)*Math.sign(s)*Math.pow(Math.abs(s),.5);

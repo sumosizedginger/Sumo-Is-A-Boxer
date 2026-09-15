@@ -1,5 +1,5 @@
 import {validateTopology,HERO_BODY_TOPOLOGY_POLICY} from '@sumosizedginger/my-game-engine-1.0/full';
-import { Color, Group, HemisphereLight, DirectionalLight, Mesh, PlaneGeometry, MeshStandardMaterial, Vector3 } from 'three';
+import { Color, Group, HemisphereLight, DirectionalLight, Mesh, PlaneGeometry, MeshStandardMaterial, MeshBasicMaterial, MeshNormalMaterial, Vector3 } from 'three';
 import { MODEL_STATES, poseModels, prepareModelPose } from './model-poses.js';
 
 export function createModelInspection(game) {
@@ -71,7 +71,7 @@ export function createModelInspection(game) {
     if(playing||spin)cameraView();
   }
   function inventory(root){let triangles=0;const materials=new Set(),geometries=new Set();root.traverse(o=>{if(o.isMesh){triangles+=(o.geometry.index?.count??o.geometry.attributes.position.count)/3;geometries.add(o.geometry);for(const m of Array.isArray(o.material)?o.material:[o.material])materials.add(m);}});return {triangles,materials:materials.size,geometries:geometries.size};}
-  function metrics(){return {state:name,playing,animationUpdateMs:animationMs,opponentSkinTriangles:opponent.character.geometry.index.count/3,opponentEquipmentTriangles:inventory(opponent.group).triangles-opponent.character.geometry.index.count/3,firstPerson:inventory(fists.root),scene:inventory(scene),report:game.report()};}
+  function metrics(){return {headGenerationMs:opponent.character.faceDesign?.generationMs??null,eyeballDrawCalls:opponent.character.eyeRig?.eyes.length??0,state:name,playing,animationUpdateMs:animationMs,opponentSkinTriangles:opponent.character.geometry.index.count/3,opponentEquipmentTriangles:inventory(opponent.group).triangles-opponent.character.geometry.index.count/3,firstPerson:inventory(fists.root),scene:inventory(scene),report:game.report()};}
   async function sample(durationMs=5000){
     const intervals=[],costs=[],start=performance.now();let previous=await new Promise(requestAnimationFrame);
     while(performance.now()-start<durationMs){
@@ -114,11 +114,30 @@ export function createModelInspection(game) {
   }
   button('Body skin',()=>bodyMode('shaded'));button('Wireframe',()=>bodyMode('wireframe'));button('Topology diagnostics',()=>bodyMode('diagnostic'));button('Equipment',()=>bodyMode('production'));
   const bodySelect=document.createElement('select');bodySelect.setAttribute('aria-label','Body topology view');for(const n of Object.keys(bodyViews)){const o=document.createElement('option');o.value=n;o.textContent=n;bodySelect.append(o);}bodySelect.onchange=()=>bodyView(bodySelect.value);controls.append(bodySelect);
+  const silhouetteMaterial=new MeshBasicMaterial({color:0x151719}),normalMaterial=new MeshNormalMaterial();
+  let headHair=false,headModeName='clay';
+  const headViews={front:[0],left_profile:[90],right_profile:[-90],front_left_three_quarter:[35],front_right_three_quarter:[-35],rear:[180],rear_left_three_quarter:[145],rear_right_three_quarter:[-145],high_angle:[20,null,.30],low_angle:[20,null,-.27],eye_closeup:[0,'eyeCenter.L'],nose_closeup:[30,'noseTip'],mouth_closeup:[15,'upperLipCenter'],left_ear:[90,'earCenter.L'],right_ear:[-90,'earCenter.R'],jaw_neck:[65,'chin']};
+  function headMode(mode='clay'){
+    if(!['clay','production','wireframe','silhouette','normals'].includes(mode))throw new Error('Unknown head mode');headModeName=mode;
+    bodyMode(mode==='production'?'production':mode==='wireframe'?'wireframe':'shaded');
+    if(mode==='normals')skin.material=normalMaterial;
+    if(mode==='silhouette'){skin.material=silhouetteMaterial;scene.background=new Color(0xc4c7ca);}else scene.background=new Color(0x303030);
+    opponent.group.traverse(o=>{if(o.userData.heroEye){o.visible=mode!=='wireframe';o.material=mode==='silhouette'?silhouetteMaterial:o.userData.eyeMaterial;}if(o.isMesh&&o.name.includes('asset.boxer.head.detail'))o.visible=headHair;});
+    renderer.render(scene,camera);
+  }
+  function headView(name){const v=headViews[name];if(!v)throw new Error('Unknown head camera');
+    angle=v[0];targetX=0;targetZ=0;targetY=1.665;elevation=targetY+.04+(v[2]??0);distance=.65;
+    const landmark=opponent.character.faceDesign?.landmarks[v[1]];
+    if(landmark){const h=opponent.character.landmarks.head;look.set(landmark[0]-h.x,landmark[1]-h.y,landmark[2]-h.z).applyMatrix4(opponent.character.bonesByName.head.matrixWorld);targetX=look.x;targetY=look.y;targetZ=look.z;elevation=targetY+.01;distance=v[1]==='chin'?.42:.25;}
+    cameraView();renderer.render(scene,camera);
+  }
+  const headSelect=document.createElement('select');headSelect.setAttribute('aria-label','Head inspection camera');for(const name of Object.keys(headViews)){const o=document.createElement('option');o.value=name;o.textContent='Head: '+name;headSelect.append(o);}headSelect.onchange=()=>headView(headSelect.value);controls.append(headSelect);
+  for(const mode of ['clay','production','wireframe','silhouette','normals'])button('Head '+mode,()=>{headMode(mode);headView(headSelect.value);});button('Hair toggle',()=>{headHair=!headHair;headMode(headModeName);});
   lighting();show(new URLSearchParams(location.search).get('model')??'front_neutral');
-  return {body:{mode:bodyMode,equipment,view:bodyView,views:Object.keys(bodyViews),certification},states:Object.keys(MODEL_STATES),show,play,pause(){playing=false;},scrub:seek,
+  return {head:{mode:headMode,view:headView,views:Object.keys(headViews),hair(on){headHair=on;headMode(headModeName);}},body:{mode:bodyMode,equipment,view:bodyView,views:Object.keys(bodyViews),certification},states:Object.keys(MODEL_STATES),show,play,pause(){playing=false;},scrub:seek,
     orbit(degrees){angle=degrees;cameraView();},focus,lighting,frame,sample,metrics,
     controls(on){controls.style.display=on?'flex':'none';},rotate(on=true){spin=on;},
     capture(){controls.style.display='none';renderer.render(scene,camera);return renderer.domElement.toDataURL('image/png');},
-    dispose(){skin.material=originalMaterial;bodyMaterial.dispose();diagnostic.remove();controls.remove();floor.removeFromParent();floor.geometry.dispose();floor.material.dispose();key.shadow.map?.dispose();neutral.removeFromParent();neutral.clear();},
+    dispose(){normalMaterial.dispose();silhouetteMaterial.dispose();skin.material=originalMaterial;bodyMaterial.dispose();diagnostic.remove();controls.remove();floor.removeFromParent();floor.geometry.dispose();floor.material.dispose();key.shadow.map?.dispose();neutral.removeFromParent();neutral.clear();},
   };
 }

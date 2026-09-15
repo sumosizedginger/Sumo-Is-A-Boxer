@@ -1,3 +1,4 @@
+import {headSection,foreheadSculptField} from '../src/game/character/head-profile.js';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { PerspectiveCamera, Vector3, ShaderLib, MeshStandardMaterial } from 'three';
@@ -11,8 +12,7 @@ import { createMatch } from '../src/game/combat/match.js';
 import { MODEL_STATES, poseModels } from '../src/game/validation/model-poses.js';
 import { createProceduralMaterials } from '../src/game/presentation/procedural-materials.js';
 import { applyCharacterSurface } from '../src/game/presentation/character-surfaces.js';
-import { facePoint } from '../src/game/assets/fighter-face.js';
-import { skullAt, HEAD_BONE_BIND_Y } from '../src/game/assets/skull-sections.js';
+import { HEAD_BONE_BIND_Y } from '../src/game/assets/skull-sections.js';
 
 const assets=buildFighterKitAssets();
 function fixture(){
@@ -24,8 +24,8 @@ test('character equipment rebuilds byte-identically with valid named material gr
   const again=buildFighterKitAssets(),ids=new Set(MATERIAL_DEFINITIONS.map(m=>m.id));
   for(const [key,mesh]of assets){assert.equal(meshHash(mesh),meshHash(again.get(key)));assert.ok(validateMesh(mesh).valid,key);for(const part of mesh.parts)assert.ok(ids.has(part.materialId));}
   const face=assets.get('asset.boxer.head.detail');
-  for(const name of ['boxer-eyes-sclera','boxer-eyes-iris','boxer-lips','boxer-hair-fade'])assert.ok(face.parts.some(p=>p.semanticName===name),name);
-  assert.notEqual(facePoint(.033,1.756)[2],facePoint(-.033,1.756)[2]);
+  for(const name of ['boxer-hair','boxer-hair-fade'])assert.ok(face.parts.some(p=>p.semanticName===name),name);
+  assert.ok(face.parts.every(p=>['boxer-hair','boxer-hair-fade'].includes(p.semanticName)), 'facial skin features live in the certified body; only hair remains separate');
 });
 test('all 27 inspection states are reproducible after unrelated poses and have finite deformed skin',()=>{
   const f=fixture(),v=new Vector3();
@@ -96,8 +96,14 @@ test('regional standard-material hook preserves Phase 1 shader integration and c
 test('actual fade geometry clears the skull and leaves the central forehead exposed',()=>{
   const mesh=assets.get('asset.boxer.head.detail'),part=mesh.parts.find(p=>p.semanticName==='boxer-hair-fade');
   for(const i of new Set(mesh.indices.slice(part.indexStart,part.indexStart+part.indexCount))){
-    const [x,localY,z]=mesh.attributes.position.slice(i*3,i*3+3),y=localY+HEAD_BONE_BIND_Y,q=skullAt(y);
-    assert.ok(Math.hypot((x-q.cx)/q.width,(z-q.cz)/q.depth)>1.025);
+    const [x,localY,z]=mesh.attributes.position.slice(i*3,i*3+3),y=localY+HEAD_BONE_BIND_Y;
+    // Undo the shared forehead field before measuring the base envelope.
+    const model=[x,y,z+.005];let q=[...model];
+    for(let pass=0;pass<6;pass++){const d=foreheadSculptField(q);q=model.map((v,k)=>v-d[k]);}
+    const [w,f,b]=headSection(q[1]);
+    const envelope=Math.pow(Math.abs(q[0]/w),2/.92)+(q[2]>=-.006?Math.pow((q[2]+.006)/f,2/.45):Math.pow((q[2]+.006)/b,2));
+    assert.ok(envelope>1,'fade clears the actual shared skull envelope');
+    assert.ok(envelope<1.35,'fade stays close to the scalp');
     if(Math.abs(x)<.04&&z>0)assert.ok(y>1.778,'fade must not cover the orbit');
   }
 });

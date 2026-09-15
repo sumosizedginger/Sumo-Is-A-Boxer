@@ -116,22 +116,35 @@ function orderedLoop(s,requested){
   if(!vertices.every((v,i)=>v===actual.vertices[(start+i)%vertices.length]))fail('LOOP_WINDING','Loop must follow the existing oriented boundary winding');
   return vertices;
 }
-export function bridgeTopologyLoops(input,loopA,loopB,{offset=0,partId='bridge',semanticName='bridge',materialId=null,normalPolicy='recompute',areaEpsilon=1e-12,maxSpan=Infinity}={}){
+export function bridgeTopologyLoops(input,loopA,loopB,{offset=0,partId='bridge',semanticName='bridge',materialId=null,normalPolicy='recompute',areaEpsilon=1e-12,maxSpan=Infinity,loopParameters=null}={}){
   if(!Number.isFinite(areaEpsilon)||areaEpsilon<0||!(maxSpan>0))fail('BRIDGE_TOLERANCE','Area must be finite and nonnegative; maxSpan must be positive');
   const s=createTopologySurface(input),a=orderedLoop(s,loopA),boundaryB=orderedLoop(s,loopB);
-  if(a.length!==boundaryB.length)fail('UNEQUAL_LOOP_COUNTS','Only equal-sized loops are supported');
+  if(!loopParameters&&a.length!==boundaryB.length)fail('UNEQUAL_LOOP_COUNTS','Unequal loops require explicit monotonic loopParameters');
   if(a.some(v=>boundaryB.includes(v)))fail('OVERLAPPING_LOOPS','Bridge loops must be vertex-disjoint');
-  if(!Number.isInteger(offset)||offset<0||offset>=a.length)fail('LOOP_OFFSET','Offset must index the second boundary');
+  if(!Number.isInteger(offset)||offset<0||offset>=boundaryB.length)fail('LOOP_OFFSET','Offset must index the second boundary');
   if(s.parts.some(p=>p.id===partId))fail('PART_ID_COLLISION','Bridge part identity is already used');
   // B is reversed so new faces oppose both old boundary half-edges.
-  const b=a.map((_,i)=>boundaryB[(offset-i+a.length)%a.length]),newIndices=[];
-  for(let i=0;i<a.length;i++){
-    const j=(i+1)%a.length;
-    const span=Math.hypot(...[0,1,2].map(k=>s.attributes.position[a[i]*3+k]-s.attributes.position[b[i]*3+k]));
-    if(span>maxSpan)fail('BRIDGE_SPAN','Bridge exceeds authored span limit',{span,maxSpan});
-    for(const tri of [[a[j],a[i],b[i]],[a[j],b[i],b[j]]]){
-      if(triangleAreaSquared(s.attributes.position,...tri)<=areaEpsilon**2)fail('DEGENERATE_BRIDGE','Bridge would contain zero-area triangles',{triangle:tri});newIndices.push(...tri);
+  const b=boundaryB.map((_,i)=>boundaryB[(offset-i+boundaryB.length)%boundaryB.length]),newIndices=[];
+  function triangle(tri){
+    if(loopParameters&&Number.isFinite(maxSpan))for(let i=0;i<3;i++){
+      const u=tri[i],v=tri[(i+1)%3];if(a.includes(u)===a.includes(v))continue;
+      const span=Math.hypot(...[0,1,2].map(k=>s.attributes.position[u*3+k]-s.attributes.position[v*3+k]));
+      if(span>maxSpan)fail('BRIDGE_SPAN','Bridge exceeds authored span limit',{span,maxSpan});
     }
+    if(triangleAreaSquared(s.attributes.position,...tri)<=areaEpsilon**2)fail('DEGENERATE_BRIDGE','Bridge would contain zero-area triangles',{triangle:tri});newIndices.push(...tri);
+  }
+  if(loopParameters){
+    const {a:pa,b:pb}=loopParameters;
+    for(const [values,count]of [[pa,a.length],[pb,b.length]])if(!Array.isArray(values)||values.length!==count||values[0]!==0||values.some((v,i)=>!Number.isFinite(v)||v<0||v>=1||(i>0&&v<=values[i-1])))fail('BRIDGE_PARAMETERS','Loop parameters must increase strictly from zero, remain below one and match traversal lengths');
+    let i=0,j=0;
+    while(i<a.length||j<b.length){
+      const nextA=i<a.length?(pa[i+1]??1):Infinity,nextB=j<b.length?(pb[j+1]??1):Infinity;
+      if(nextA<=nextB){triangle([a[(i+1)%a.length],a[i%a.length],b[j%b.length]]);i++;}
+      else {triangle([a[i%a.length],b[j%b.length],b[(j+1)%b.length]]);j++;}
+    }
+  }else for(let i=0;i<a.length;i++){
+    const span=Math.hypot(...[0,1,2].map(k=>s.attributes.position[a[i]*3+k]-s.attributes.position[b[i]*3+k]));if(span>maxSpan)fail('BRIDGE_SPAN','Bridge exceeds authored span limit',{span,maxSpan});
+    const j=(i+1)%a.length;triangle([a[j],a[i],b[i]]);triangle([a[j],b[i],b[j]]);
   }
   const parts=[...s.parts,{id:partId,semanticName,materialId,indexStart:s.indices.length,indexCount:newIndices.length,regionId:null,surfaceId:null}];
   const consumed=new Set([...a,...boundaryB]);const boundaries=Object.fromEntries(Object.entries(s.boundaries).filter(([,loop])=>!loop.some(v=>consumed.has(v))));
@@ -141,7 +154,7 @@ export function bridgeTopologyLoops(input,loopA,loopB,{offset=0,partId='bridge',
 }
 export function stitchTopologySurfaces(left,right,{loopA,loopB,mode='bridge',...options}={}){
   const a=createTopologySurface(left),b=createTopologySurface(right),la=orderedLoop(a,loopA),lb=orderedLoop(b,loopB);
-  if(la.length!==lb.length)fail('UNEQUAL_LOOP_COUNTS','Only equal-sized loops can be stitched');
+  if(la.length!==lb.length&&(mode!=='bridge'||!options.loopParameters))fail('UNEQUAL_LOOP_COUNTS','Unequal bridge loops require explicit monotonic loopParameters');
   const combined=concatenateTopologySurfaces([a,b]),shift=a.attributes.position.length/3,B=lb.map(v=>v+shift);
   if(mode==='bridge')return bridgeTopologyLoops(combined,la,B,options);
   if(mode!=='weld')fail('STITCH_MODE','Choose bridge or weld');

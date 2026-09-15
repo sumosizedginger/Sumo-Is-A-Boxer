@@ -11,29 +11,6 @@ export function sampleSections(sections, step = .009) {
   return result;
 }
 
-export function shapeFace(p, { y, s, c }) {
-  const x = p[0], ax = Math.abs(x), front = Math.max(0, s);
-  if (s > 0) {
-    // Deep orbital bowl, continuous supraorbital arch, malar shelf and hollow.
-    const eyeY = x > 0 ? 1.756 : 1.754;
-    p[2] -= .020 * bell(ax, .034, .019) * bell(y, eyeY, .011);
-    p[2] += .009 * bell(ax, .036, .028) * bell(y, eyeY + .019, .008);
-    p[2] += .010 * bell(ax, .061, .020) * bell(y, 1.727, .017);
-    p[2] -= .008 * bell(ax, .057, .022) * bell(y, 1.698, .016);
-    // Maxilla supports the lips. Philtrum and mental crease stay shallow.
-    p[2] += .005 * bell(x, -.001, .030) * bell(y, 1.700, .019);
-    p[2] -= .002 * bell(x, .001, .0035) * bell(y, 1.710, .008);
-    p[2] += .011 * bell(x, -.002, .033) * bell(y, 1.651, .014);
-    p[2] -= .003 * bell(x, 0, .027) * bell(y, 1.671, .005);
-    // Forehead flattens toward the centre; temple narrows behind the orbit.
-    p[2] += front * .003 * bell(y, 1.804, .023) * bell(x, 0, .05);
-  }
-  p[0] += Math.sign(x) * .004 * bell(y, 1.674, .015) * Math.abs(c);
-  p[0] -= Math.sign(x) * .003 * bell(y, 1.779, .020) * Math.abs(c);
-  p[0] += .0013 * bell(y, 1.688, .034);
-  p[2] += front * .0018 * bell(x, .058, .025) * bell(y, 1.713, .025);
-}
-
 export function shapeTorso(p, { y, s, c }) {
   const x = p[0], ax = Math.abs(x), front = Math.max(0,s), back = Math.max(0,-s);
   const pecY = 1.414 + (x > 0 ? .003 : 0);
