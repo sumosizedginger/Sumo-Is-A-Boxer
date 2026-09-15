@@ -40,6 +40,7 @@ engine/runtime      engine/full
       |                +-> Motion Forge
       |                +-> Material Forge
       |                +-> World Forge
+      |                +-> Voxel Forge
       |                +-> future approved compilers
       |                         |
       +-----------+-------------+

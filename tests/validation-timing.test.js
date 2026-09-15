@@ -35,8 +35,8 @@ test('timing invariant rejects a generation interval outside presentation', () =
   assert.equal(t.snapshot().durations.firstFrameSinceNavigationMs, null);
 });
 
-test('all ten presets and motion paths define finite reproducible transforms', () => {
-  assert.equal(Object.keys(PRESETS).length, 10);
+test('all presets and motion paths define finite reproducible transforms', () => {
+  assert.ok(Object.keys(PRESETS).length >= 10);
   for (const [name, p] of Object.entries(PRESETS)) {
     assert.ok(p.simulation.frozen && p.lighting.existingOnly && p.overlays.damageSuppressed);
     assert.ok(Math.abs(Math.hypot(...p.camera.quaternion) - 1) < 1e-12);

@@ -28,15 +28,15 @@ test('maps stay restrained and skin has neither color noise nor pore displacemen
 test('shared texture owner reuses resources, has no regeneration on comparison switches, and disposes once', () => {
   const owner = createProceduralMaterials(), materials = [], shaders = [], textures = new Set();
   for (let i = 0; i < 4; i++) {
-    const material = new MeshStandardMaterial(); material.name = 'mat.canvas.0';
-    owner.apply(material, 'asset.ring.platform'); materials.push(material);
+    const material = new MeshStandardMaterial(); material.name = 'mat.concrete.0';
+    owner.apply(material, 'asset.warehouse.floor'); materials.push(material);
     const shader = { uniforms: {}, vertexShader: ShaderLib.standard.vertexShader, fragmentShader: ShaderLib.standard.fragmentShader };
     material.onBeforeCompile(shader); shaders.push(shader);
     textures.add(shader.uniforms.tactileMicro.value); textures.add(shader.uniforms.tactileHistory.value);
   }
-  assert.equal(textures.size, 2);
+  assert.equal(textures.size, 1);
   const before = owner.stats();
-  for (let i = 0; i < 20; i++) { owner.setEnabled(false); owner.setEnabled(true); owner.apply(materials[0], 'asset.ring.platform'); }
+  for (let i = 0; i < 20; i++) { owner.setEnabled(false); owner.setEnabled(true); owner.apply(materials[0], 'asset.warehouse.floor'); }
   assert.deepEqual(owner.stats(), before);
   let disposals = 0;
   for (const texture of textures) {
@@ -44,7 +44,7 @@ test('shared texture owner reuses resources, has no regeneration on comparison s
     assert.equal(texture.generateMipmaps, true); assert.ok(texture.anisotropy <= 8);
   }
   owner.setEnabled(false); assert.equal(shaders[0].uniforms.tactileEnabled.value, 0);
-  owner.dispose(); owner.dispose(); assert.equal(disposals, 2); assert.equal(owner.stats().textures, 0);
+  owner.dispose(); owner.dispose(); assert.equal(disposals, 1); assert.equal(owner.stats().textures, 0);
   for (const material of materials) material.dispose();
   assert.throws(() => owner.apply(new MeshStandardMaterial()), /disposed/);
 });
@@ -52,9 +52,8 @@ test('shared texture owner reuses resources, has no regeneration on comparison s
 test('only nominated consumers receive detail; calibrated material values and existing compile hooks survive', () => {
   const owner = createProceduralMaterials();
   for (const [id, key, expected] of [
-    ['mat.hair.0', 'asset.boxer.head.detail', false], ['mat.skin.0', 'asset.boxer.head.detail', false],
-    ['mat.rope.0', 'asset.ring.ropes', false], ['mat.leatherBlack.0', 'asset.boxer.boot.left', false],
-    ['mat.concrete.0', 'asset.warehouse.floor', true], ['mat.leatherBlue.0', 'asset.fp.arm.left', true],
+    ['mat.hair.0', 'asset.hero.hair', false], ['mat.skin.0', 'asset.hero.hair', false],
+    ['mat.concrete.0', 'asset.warehouse.floor', true], ['mat.skinPlayer.0', 'asset.fp.arm.left', false],
     ['mat.skin.0', 'opponent-skin', true], ['mat.steel.0', 'asset.warehouse.gantry', true]
   ]) {
     const material = new MeshStandardMaterial({ color: 0x87684f, roughness: .7, metalness: 0 });

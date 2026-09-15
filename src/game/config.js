@@ -2,16 +2,23 @@
  * SUMO IS A BOXER — Fight tuning.
  *
  * One file, so combat feel can be read and revised without hunting through
- * systems. Values that carry forward from IRON PALMS — Midnight Bout are marked,
- * because that game's responsiveness is the bar this build has to clear.
+ * systems. Attack identifiers (JAB, CROSS, HOOK) are CURRENT GAMEPLAY MECHANICS,
+ * not evidence of boxing art direction.
  */
+
+export const VOXEL = Object.freeze({
+  /** Default boot quality. HERO (0.012m) is implemented; HIGH is the shipped default. Override with ?voxel=HERO */
+  heroQuality: 'HIGH',
+  environmentQuality: 'COARSE',
+  firstPersonQuality: 'HIGH'
+});
 
 export const SIM = Object.freeze({
   tickRate: 60,
   maxSubSteps: 6
 });
 
-export const RING_BOUNDS = Object.freeze({
+export const ARENA_BOUNDS = Object.freeze({
   half: 3.05,
   /** Fighters cannot overlap. */
   separation: 0.78

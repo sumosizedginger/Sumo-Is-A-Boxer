@@ -31,6 +31,7 @@ import * as geometryForge from '../src/geometry/index.js';
 import * as characterForge from '../src/character/index.js';
 import * as motionForge from '../src/motion/index.js';
 import * as worldForge from '../src/world/index.js';
+import * as voxelForge from '../src/voxel/index.js';
 
 import { buildPublicSurfaceCell } from '../examples/public-surface-cell/cell.js';
 
@@ -97,7 +98,13 @@ const PUBLIC_FORGE_SURFACE = {
     'createWorldFieldCache', 'createWorldFieldQuery', 'createWorldVolumeQuery',
     'generateWorld'
   ],
-  material: ['MATERIAL_PARAMETER_BOUNDS', 'MATERIAL_PRESETS', 'createMaterialDefinition']
+  material: ['MATERIAL_PARAMETER_BOUNDS', 'MATERIAL_PRESETS', 'createMaterialDefinition'],
+  voxel: [
+    'VOXEL_ARTIFACT_VERSION', 'VOXEL_QUALITY', 'VOXEL_PARAMETER_BOUNDS',
+    'resolveVoxelParameters', 'createVoxelDefinition', 'voxelizeMesh',
+    'extractVoxelSurface', 'createVoxelArtifact', 'voxelHash',
+    'instantiateVoxelArtifact'
+  ]
 };
 
 for (const [subsystem, names] of Object.entries(PUBLIC_FORGE_SURFACE)) {
@@ -199,7 +206,7 @@ test('engine/full is engine/runtime plus the authoring surface, with no loss', (
 test('AUTHORING_SURFACE describes every newly supported Forge', () => {
   const forges = pkgFull.AUTHORING_SURFACE.forges;
   assert.deepEqual(Object.keys(forges).sort(),
-    ['character', 'geometry', 'material', 'motion', 'world']);
+    ['character', 'geometry', 'material', 'motion', 'voxel', 'world']);
 
   for (const [key, descriptor] of Object.entries(forges)) {
     assert.ok(descriptor.subsystem, `${key} needs a subsystem name`);
@@ -246,6 +253,8 @@ test('AUTHORING_SURFACE reads presets and bounds from live values', () => {
   assert.deepEqual([...forges.character.parameters], Object.keys(characterForge.HUMANOID_PARAMETER_BOUNDS));
   assert.deepEqual([...forges.motion.presets], Object.keys(motionForge.MOTION_PRESETS));
   assert.deepEqual([...forges.world.parameters], Object.keys(worldForge.WORLD_PARAMETER_BOUNDS));
+  assert.deepEqual([...forges.voxel.presets], Object.keys(voxelForge.VOXEL_QUALITY));
+  assert.deepEqual([...forges.voxel.parameters], Object.keys(voxelForge.VOXEL_PARAMETER_BOUNDS));
   assert.ok(forges.geometry.presets.length > 0);
 });
 
@@ -253,7 +262,7 @@ test('AUTHORING_SURFACE stays serializable and frozen', () => {
   const json = JSON.stringify(pkgFull.AUTHORING_SURFACE);
   assert.ok(json.length > 2000, 'an agent should be able to be handed this directly');
   assert.ok(Object.isFrozen(pkgFull.AUTHORING_SURFACE.forges));
-  assert.ok(json.includes('Character Forge') && json.includes('World Forge'));
+  assert.ok(json.includes('Character Forge') && json.includes('World Forge') && json.includes('Voxel Forge'));
 });
 
 test('the laws record the public-surface contract', () => {

@@ -14,9 +14,9 @@
 import { Group, Matrix4 } from 'three';
 
 /** Tags whose objects should cast shadows into the ring. */
-const CASTS = new Set(['ring', 'posts', 'ropes', 'corner', 'fixture', 'heavybag', 'barrier']);
+const CASTS = new Set(['arena', 'platform', 'corner', 'fixture', 'heavybag', 'barrier']);
 /** Tags whose objects should receive the key light's shadow. */
-const RECEIVES = new Set(['ring', 'canvas', 'concrete', 'structure']);
+const RECEIVES = new Set(['arena', 'platform', 'concrete', 'structure']);
 
 /**
  * Builds the renderer representation of an instantiated arena scene.

@@ -38,6 +38,7 @@ Accepted implementation now includes:
 - Proof C: Bounded Procedural World.
 - Proof D: Different Genre, a bounded 3D arcade racer.
 - Proof E: Blind API Generality Test (Order Five, a bounded 3D collection/puzzle game).
+- VOXEL-PIVOT-001: Voxel Forge (occupancy, surface extraction, batched runtime).
 
 - AI-ASSET-FOUNDATION-001: engine-owned AI-native asset authoring.
 - SCENE-COMPOSITION-001: scene and composition foundation.

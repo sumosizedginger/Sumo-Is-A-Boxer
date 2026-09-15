@@ -22,10 +22,10 @@ import {
   instantiateScene,
   validateSceneDefinition
 } from '@sumosizedginger/my-game-engine-1.0/full';
-import { RING } from '../assets/ring.js';
+import { ARENA } from '../assets/arena.js';
 import { VENUE } from '../assets/warehouse.js';
 
-export const SCENE_ID = 'sumo.is.a.boxer.midnight.bout.v1';
+export const SCENE_ID = 'sumo.is.a.boxer.voxel.arena.v1';
 
 /** Height of the key lamps above the canvas. */
 const LAMP_Y = VENUE.gantryY - 0.55;
@@ -69,7 +69,7 @@ export function createArenaSceneDefinition() {
   const nodes = [];
   const push = (...entries) => nodes.push(...entries);
 
-  push(node('arena-root', 'Midnight Bout Arena', { tags: ['root'] }));
+  push(node('arena-root', 'Voxel Combat Arena', { tags: ['root'] }));
 
   // ---- VENUE SHELL -------------------------------------------------------
   push(node('venue', 'Warehouse Shell', { parent: 'arena-root', tags: ['structure'] }));
@@ -114,56 +114,35 @@ export function createArenaSceneDefinition() {
     }));
   }
   push(
-    node('corner-lamp-red', 'Red Corner Lamp', {
+    node('corner-lamp-nw', 'North-West Work Lamp', {
       parent: 'lighting-rig', at: [-4.6, CORNER_LAMP_Y, -4.6], yaw: Math.PI * 0.25,
-      asset: 'asset.lamp.red', tags: ['lighting', 'fixture', 'red']
+      asset: 'asset.lamp.work', tags: ['lighting', 'fixture']
     }),
-    node('corner-lamp-blue', 'Blue Corner Lamp', {
+    node('corner-lamp-se', 'South-East Work Lamp', {
       parent: 'lighting-rig', at: [4.6, CORNER_LAMP_Y, 4.6], yaw: Math.PI * 1.25,
-      asset: 'asset.lamp.blue', tags: ['lighting', 'fixture', 'blue']
+      asset: 'asset.lamp.work', tags: ['lighting', 'fixture']
     })
   );
 
-  // ---- THE RING ----------------------------------------------------------
-  push(node('ring', 'Fighting Ring', { parent: 'arena-root', tags: ['ring'] }));
+  // ---- COMBAT PLATFORM ---------------------------------------------------
+  push(node('arena', 'Combat Platform', { parent: 'arena-root', tags: ['arena'] }));
   push(
-    node('ring-platform', 'Ring Platform, Canvas and Apron', { parent: 'ring', asset: 'asset.ring.platform', tags: ['ring', 'canvas'] }),
-    node('ring-posts', 'Corner Posts and Padding', { parent: 'ring', asset: 'asset.ring.posts', tags: ['ring', 'posts'] }),
-    node('ring-ropes', 'Three Rope Levels', { parent: 'ring', asset: 'asset.ring.ropes', tags: ['ring', 'ropes'] }),
-    node('ring-steps-red', 'Red Corner Steps', {
-      parent: 'ring', at: [-RING.postHalf - 0.1, 0, -RING.platformHalf - 0.2], yaw: 0,
-      asset: 'asset.ring.steps.red', tags: ['ring', 'access', 'red']
-    }),
-    node('ring-steps-blue', 'Blue Corner Steps', {
-      parent: 'ring', at: [RING.postHalf + 0.1, 0, RING.platformHalf + 0.2], yaw: Math.PI,
-      asset: 'asset.ring.steps.blue', tags: ['ring', 'access', 'blue']
-    })
+    node('arena-platform', 'Voxel Combat Platform', { parent: 'arena', asset: 'asset.arena.platform', tags: ['arena', 'platform'] })
   );
 
-  // Semantic corner markers. No asset: these exist so gameplay and the AI can
-  // ask the SCENE where the red corner is instead of hard-coding a vector.
+  // Semantic corner markers. Gameplay and the AI address these pids; they are
+  // not boxing-corner dressing.
   push(
-    node('red-corner-post', 'Red Corner', { parent: 'ring', at: [-RING.postHalf, 0, -RING.postHalf], tags: ['corner', 'red'] }),
-    node('blue-corner-post', 'Blue Corner', { parent: 'ring', at: [RING.postHalf, 0, RING.postHalf], tags: ['corner', 'blue'] }),
-    node('neutral-corner-north-east', 'Neutral Corner North-East', { parent: 'ring', at: [RING.postHalf, 0, -RING.postHalf], tags: ['corner', 'neutral'] }),
-    node('neutral-corner-south-west', 'Neutral Corner South-West', { parent: 'ring', at: [-RING.postHalf, 0, RING.postHalf], tags: ['corner', 'neutral'] }),
-    node('player-spawn', 'Player Start', { parent: 'ring', at: [0.9, 0, 2.1], yaw: Math.PI, tags: ['spawn', 'player'] }),
-    node('opponent-spawn', 'Opponent Start', { parent: 'ring', at: [-0.9, 0, -2.1], yaw: 0, tags: ['spawn', 'opponent'] })
+    node('red-corner-post', 'North-West Corner', { parent: 'arena', at: [-ARENA.postHalf, 0, -ARENA.postHalf], tags: ['corner'] }),
+    node('blue-corner-post', 'South-East Corner', { parent: 'arena', at: [ARENA.postHalf, 0, ARENA.postHalf], tags: ['corner'] }),
+    node('neutral-corner-north-east', 'North-East Corner', { parent: 'arena', at: [ARENA.postHalf, 0, -ARENA.postHalf], tags: ['corner'] }),
+    node('neutral-corner-south-west', 'South-West Corner', { parent: 'arena', at: [-ARENA.postHalf, 0, ARENA.postHalf], tags: ['corner'] }),
+    node('player-spawn', 'Player Start', { parent: 'arena', at: [0.9, 0, 2.1], yaw: Math.PI, tags: ['spawn', 'player'] }),
+    node('opponent-spawn', 'Opponent Start', { parent: 'arena', at: [-0.9, 0, -2.1], yaw: 0, tags: ['spawn', 'opponent'] })
   );
 
-  push(
-    node('red-corner-kit', 'Red Corner Stool and Bucket', {
-      parent: 'ring', at: [-RING.postHalf - 0.75, RING.floorY, -RING.postHalf - 0.75], yaw: Math.PI * 0.25,
-      asset: 'asset.corner.kit.red', tags: ['corner', 'red', 'dressing']
-    }),
-    node('blue-corner-kit', 'Blue Corner Stool and Bucket', {
-      parent: 'ring', at: [RING.postHalf + 0.75, RING.floorY, RING.postHalf + 0.75], yaw: Math.PI * 1.25,
-      asset: 'asset.corner.kit.blue', tags: ['corner', 'blue', 'dressing']
-    })
-  );
-
-  // ---- RINGSIDE ----------------------------------------------------------
-  push(node('ringside', 'Ringside', { parent: 'arena-root', tags: ['dressing'] }));
+  // ---- ARENA FLOOR -------------------------------------------------------
+  push(node('ringside', 'Arena Floor', { parent: 'arena-root', tags: ['dressing'] }));
 
   const barrierRing = 6.6;
   const barrierSpots = [

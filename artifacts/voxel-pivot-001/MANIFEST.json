@@ -1,0 +1,18 @@
+{
+  "milestone": "VOXEL-PIVOT-001",
+  "branch": "game-build",
+  "quality": "HIGH",
+  "hero": {
+    "occupied": 9648,
+    "surface": 2739,
+    "visibleFaces": 4742,
+    "voxelSize": 0.028,
+    "generationMs": 155.3,
+    "drawCalls": 1
+  },
+  "captures": [
+    "hero-front.png",
+    "hero-face.png",
+    "hero-belly.png"
+  ]
+}

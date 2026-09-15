@@ -15,7 +15,7 @@
   --blue: #3f7fff;
   --panel: rgba(9, 9, 11, 0.78);
   --edge: rgba(242, 233, 216, 0.26);
-  --hud-font: "Segoe UI Semibold", "Segoe UI", Inter, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  --hud-font: "Segoe UI Semibold", "Segoe UI", ui-monospace, Inter, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
 }
 
 * { box-sizing: border-box; }
@@ -68,6 +68,7 @@ html, body {
   background: rgba(0, 0, 0, 0.62);
   border: 1px solid var(--edge);
   overflow: hidden;
+  border-radius: 0;
 }
 .bar > i {
   position: absolute;

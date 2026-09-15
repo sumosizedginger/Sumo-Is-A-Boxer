@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.1.0",
   "type": "module",
-  "description": "SUMO IS A BOXER — first-person underground boxing, built on My Game Engine 1.0",
+  "description": "SUMO IS A BOXER — high-density voxel sumo on My Game Engine 1.0",
   "engines": {
     "node": "24.21.0"
   },
@@ -12,7 +12,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "test": "node --test tests/*.test.js",
-    "validate:phase1": "node scripts/validate-phase1.mjs"
+    "validate:voxel": "node scripts/validate-voxel.mjs"
   },
   "dependencies": {
     "@sumosizedginger/my-game-engine-1.0": "file:./engine",

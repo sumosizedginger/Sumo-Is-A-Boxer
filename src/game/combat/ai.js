@@ -10,7 +10,7 @@
  * request per tick). It never writes a transform and never applies damage.
  */
 
-import { OPPONENT, RING_BOUNDS, DEFENCE } from '../config.js';
+import { OPPONENT, ARENA_BOUNDS, DEFENCE } from '../config.js';
 import { GUARD_HIGH, GUARD_LOW, directionTo, planarDistance } from './fighters.js';
 
 /** States in which the opponent may be countered. */
@@ -140,7 +140,7 @@ export function updateOpponentBrain({ opponent, player, opponentPos, playerPos, 
       // Do not circle into the ropes.
       const nextX = opponentPos.x + velocity.x * 0.5;
       const nextZ = opponentPos.z + velocity.z * 0.5;
-      if (Math.abs(nextX) > RING_BOUNDS.half - 0.25 || Math.abs(nextZ) > RING_BOUNDS.half - 0.25) {
+      if (Math.abs(nextX) > ARENA_BOUNDS.half - 0.25 || Math.abs(nextZ) > ARENA_BOUNDS.half - 0.25) {
         opponent.circleDirection *= -1;
       }
       if (opponent.stateT >= opponent.stateDuration) transition(opponent, 'idle', 0.15);

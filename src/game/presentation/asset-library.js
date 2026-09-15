@@ -7,7 +7,7 @@
  * The supported public route from MeshIR to a renderer object is
  * `createPreviewable` (engine/full). `toBufferGeometry` is deliberately
  * withheld from the public surface and the engine's own scene presentation
- * adapter is not exported (ENGINE_GAPS.md — GAP-01), so the game owns this
+ * adapter is not exported (docs/ENGINE_GAPS.md — GAP-01), so the game owns this
  * layer. One Previewable per distinct asset; every placement of that asset
  * SHARES its geometry and compiled materials, so eight structural columns and
  * nine crowd rows upload one column and three crowd rows.
@@ -15,7 +15,18 @@
 
 import { applyCharacterSurface } from './character-surfaces.js';
 import { Mesh } from 'three';
-import { createPreviewable } from '@sumosizedginger/my-game-engine-1.0/full';
+import {
+  createPreviewable,
+  createVoxelDefinition,
+  voxelizeMesh,
+  createVoxelArtifact,
+  instantiateVoxelArtifact
+} from '@sumosizedginger/my-game-engine-1.0/full';
+
+function packedRgb(color) {
+  const n = Number(color) || 0x888888;
+  return [((n >> 16) & 255) / 255, ((n >> 8) & 255) / 255, (n & 255) / 255];
+}
 
 /**
  * @param {object} options
@@ -23,10 +34,43 @@ import { createPreviewable } from '@sumosizedginger/my-game-engine-1.0/full';
  * @param {Array<object>} options.materials - MaterialDefinitions.
  * @returns {object} Library.
  */
-export function createAssetLibrary({ assets, materials, surfaceDetail = null }) {
+export function createAssetLibrary({ assets, materials, surfaceDetail = null, voxelQuality = null }) {
   const previewables = new Map();
+  const voxelRuntimes = new Map();
   const missing = new Set();
   let disposed = false;
+  const materialColor = new Map(materials.map((definition) => [definition.id, packedRgb(definition.data.parameters.color)]));
+
+  function voxelize(key) {
+    if (voxelRuntimes.has(key)) return voxelRuntimes.get(key);
+    const mesh = assets.get(key);
+    if (!mesh) {
+      missing.add(key);
+      voxelRuntimes.set(key, null);
+      return null;
+    }
+    const quality = key.startsWith('asset.fp.') ? 'HIGH' : (voxelQuality || 'COARSE');
+    const definition = createVoxelDefinition({ id: `voxel.${key}`, quality });
+    const grid = voxelizeMesh(mesh, definition.data.parameters);
+    const base = materialColor.get(mesh.parts[0]?.materialId) ?? [0.45, 0.42, 0.38];
+    const artifact = createVoxelArtifact({
+      id: `voxel.${key}`,
+      definition,
+      grid,
+      colorForCell: ({ x, y, z }) => {
+        const h = (Math.imul(x + 1, 0x9e3779b9) ^ Math.imul(y + 3, 0x85ebca6b) ^ Math.imul(z + 7, 0xc2b2ae35)) >>> 0;
+        const j = ((h & 255) / 255 - 0.5) * 0.05;
+        return [
+          Math.max(0, Math.min(1, base[0] + j)),
+          Math.max(0, Math.min(1, base[1] + j * 0.85)),
+          Math.max(0, Math.min(1, base[2] + j * 0.7))
+        ];
+      }
+    });
+    const runtime = instantiateVoxelArtifact(artifact, { mode: 'faces', name: key });
+    voxelRuntimes.set(key, runtime);
+    return runtime;
+  }
 
   /**
    * @param {string} key
@@ -67,6 +111,14 @@ export function createAssetLibrary({ assets, materials, surfaceDetail = null }) 
      * @returns {Mesh|null}
      */
     object(key, name = key) {
+      if (voxelQuality) {
+        const runtime = voxelize(key);
+        if (!runtime) return null;
+        const clone = runtime.object3D.clone();
+        clone.name = name;
+        clone.traverse((node) => { node.frustumCulled = false; });
+        return clone;
+      }
       const built = previewable(key);
       if (!built) return null;
       const mesh = new Mesh(
@@ -109,7 +161,9 @@ export function createAssetLibrary({ assets, materials, surfaceDetail = null }) 
       if (disposed) return;
       disposed = true;
       for (const built of previewables.values()) built?.dispose();
+      for (const runtime of voxelRuntimes.values()) runtime?.dispose();
       previewables.clear();
+      voxelRuntimes.clear();
     }
   };
 }

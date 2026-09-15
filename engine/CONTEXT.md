@@ -72,6 +72,7 @@ A substantial set of product and architecture decisions has already been approve
 - Motion Forge;
 - Material Forge;
 - World Forge;
+- Voxel Forge (earned by VOXEL-PIVOT-001);
 - field queries versus authoritative volume queries;
 - DOM-first hybrid game UI;
 - action-based input with keyboard and controller as first-class bindings;

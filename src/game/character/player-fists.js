@@ -3,7 +3,7 @@
  *
  * Two procedurally generated arms parented to the camera: forearm, wrist wrap
  * banding, glove, thumb, knuckle roll, laces and cuff strap, authored in
- * `assets/fighter-kit.js`.
+ * `assets/hero-kit.js`.
  *
  * They are posed as ARMS BELONGING TO A BODY JUST OUTSIDE THE FRAME, not as HUD
  * icons: the elbows sit low and outboard, the guard is asymmetric (the lead
@@ -116,22 +116,20 @@ export function createPlayerFists({ library, camera }) {
     const mesh = library.object(key, pivot.name);
     if (mesh) {
       mesh.frustumCulled = false;
-      // The arms are lit by the ring lamps like everything else, but casting
-      // shadows from geometry 40 cm off the lens buys nothing and costs a pass.
-      mesh.castShadow = false;
-      mesh.receiveShadow = false;
-      // Rendered after the world so a fighter pressed into the player's chest
-      // cannot poke through the guard.
-      mesh.renderOrder = 12;
-      if (Array.isArray(mesh.material)) {
-        for (const material of mesh.material) material.depthTest = true;
-      }
+      mesh.traverse((node) => {
+        node.frustumCulled = false;
+        if (node.isMesh) {
+          node.castShadow = false;
+          node.receiveShadow = false;
+          node.renderOrder = 12;
+        }
+      });
       rollNode.add(mesh);
     }
     root.add(pivot);
     return {
       side,
-      correction: mesh ? createEquipmentCorrection(mesh,true) : null,
+      correction: mesh?.isMesh ? createEquipmentCorrection(mesh,true) : null,
       pivot,
       rollNode,
       baseRoll:roll,

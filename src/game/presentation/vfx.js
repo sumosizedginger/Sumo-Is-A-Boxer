@@ -6,7 +6,7 @@
  * a particle object. A three-round rematch marathon costs exactly what the
  * first ten seconds cost, which is the property the performance brief asks for.
  *
- * The engine has no VFX or particle subsystem (ENGINE_GAPS.md — GAP-10), so
+ * The engine has no VFX or particle subsystem (docs/ENGINE_GAPS.md — GAP-10), so
  * this is game-owned renderer code sitting beside the renderer, not inside it.
  */
 
@@ -74,16 +74,11 @@ export function createImpactSparks({ scene, count = FEEDBACK.sparkPool }) {
   geometry.setAttribute('color', new BufferAttribute(colors, 3));
   geometry.boundingSphere = null;
 
-  const sprite = createSpriteTexture(0.3);
-  // SWEAT, NOT CONFETTI. 24 mm opaque normal-blended dots read as paper; these
-  // are 9 mm and additive, so they behave like moisture catching the overhead
-  // key and vanish into the dark instead of leaving hard edges behind.
   const material = new PointsMaterial({
-    size: 0.009,
-    map: sprite,
+    size: 0.018,
     vertexColors: true,
     transparent: true,
-    opacity: 0.9,
+    opacity: 0.92,
     depthWrite: false,
     blending: AdditiveBlending,
     sizeAttenuation: true

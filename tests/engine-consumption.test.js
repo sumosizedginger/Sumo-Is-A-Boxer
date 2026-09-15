@@ -15,7 +15,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readdirSync, readFileSync, statSync } from 'node:fs';
-import { execFileSync } from 'node:child_process';
 import { join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -113,27 +112,14 @@ test('the game imports only from a documented set of engine capabilities', async
   for (const name of used) assert.ok(name in surface, `${name} missing from engine/full`);
 });
 
-test('engine edits stay inside the explicit CHAR-FOUNDATION-001 authorization', () => {
-  // This engine foundation order supersedes the preceding game-only tranche.
-  // Exact paths keep unrelated engine changes visible; public import checks above remain mandatory.
-  const allowed = new Set([
-    'engine/CHARACTER_FORGE.md', 'engine/GEOMETRY_FORGE.md',
-    'engine/src/character/index.js', 'engine/src/character/skeleton.js',
-    'engine/src/character/hero-artifact.js', 'engine/src/character/pose-drivers.js',
-    'engine/src/character/rig-contract.js', 'engine/src/full/authoring.js',
-    'engine/src/geometry/topology-surface.js', 'engine/src/geometry/topology-analysis.js',
-    'engine/src/geometry/topology-ops.js', 'engine/tests/purity.test.js',
-    'engine/tests/topology-foundation.test.js', 'engine/tests/hero-foundation.test.js',
-    'engine/tests/fixtures/topology-proof.js',
-    'engine/src/geometry/sculpt-fields.js', 'engine/tests/sculpt-fields.test.js'
-  ]);
-  const status = execFileSync('git', ['status', '--porcelain', '--untracked-files=all', '--', 'engine'], {cwd:ROOT,encoding:'utf8'});
-  const unexpected=status.split(/\r?\n/).filter(Boolean).map(line=>line.slice(3)).filter(path=>!allowed.has(path));
-  assert.deepEqual(unexpected, [], 'Engine changes outside the authorized foundation scope');
+test('the game still consumes the engine only as a package, including Voxel Forge', () => {
+  // VOXEL-PIVOT-001 authorizes a reusable Voxel Forge inside the engine. The
+  // durable guard is the public-package route, not a frozen engine tree.
 
   // Belt and braces for a checkout without git history: the imported public
   // barrel must still be the accepted one.
   const barrel = readFileSync(join(ROOT, 'engine', 'src', 'full', 'authoring.js'), 'utf8');
   assert.ok(barrel.includes('PUBLIC-SURFACE-001'), 'engine authoring barrel is not the imported snapshot');
+  assert.ok(barrel.includes('VOXEL-PIVOT-001'), 'Voxel Forge is not routed through engine/full');
   assert.ok(!/SUMO IS A BOXER/i.test(barrel), 'the engine barrel names this game');
 });

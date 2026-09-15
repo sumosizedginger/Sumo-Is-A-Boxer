@@ -17,7 +17,7 @@ function scalp(name,offset,fade=false) {
   }});
 }
 export function buildFighterFace(){
- return assemble('asset.boxer.head.detail',[
+ return assemble('asset.hero.hair',[
   {name:'boxer-hair',material:mat('hair',0),meshes:[scalp('boxer-hair-crop',.002)]},
   {name:'boxer-hair-fade',material:mat('hairFade',0),meshes:[scalp('boxer-shaved-fade',.001,true)]}
  ]);

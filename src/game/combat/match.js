@@ -22,7 +22,7 @@ import {
   createRuleEngine,
   TRANSFORM_OWNERSHIP
 } from '@sumosizedginger/my-game-engine-1.0/full';
-import { PLAYER, OPPONENT, PUNCH, MATCH, RING_BOUNDS, DEFENCE, KNOCKOUT } from '../config.js';
+import { PLAYER, OPPONENT, PUNCH, MATCH, ARENA_BOUNDS, DEFENCE, KNOCKOUT } from '../config.js';
 import { createSeededRandom } from '../assets/kit.js';
 import {
   createPlayerState, createOpponentState, regenerate, constrainVelocity,
@@ -770,7 +770,7 @@ export function createMatch({ playerSpawn = [0.9, 0, 2.1], opponentSpawn = [-0.9
           state: opponent.state, knockdowns: opponent.knockdowns,
           out: opponent.out, count: opponent.count
         },
-        ringHalf: RING_BOUNDS.half
+        arenaHalf: ARENA_BOUNDS.half
       };
     }
   };

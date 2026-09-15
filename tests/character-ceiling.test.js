@@ -3,10 +3,10 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { PerspectiveCamera, Vector3, ShaderLib, MeshStandardMaterial } from 'three';
 import { meshHash, validateMesh } from '@sumosizedginger/my-game-engine-1.0/full';
-import { buildFighterKitAssets } from '../src/game/assets/fighter-kit.js';
+import { buildHeroKitAssets } from '../src/game/assets/hero-kit.js';
 import { MATERIAL_DEFINITIONS } from '../src/game/assets/materials.js';
 import { createAssetLibrary } from '../src/game/presentation/asset-library.js';
-import { createOpponentBoxer } from '../src/game/character/opponent-boxer.js';
+import { createOpponentSumo } from '../src/game/character/opponent-sumo.js';
 import { createPlayerFists } from '../src/game/character/player-fists.js';
 import { createMatch } from '../src/game/combat/match.js';
 import { MODEL_STATES, poseModels } from '../src/game/validation/model-poses.js';
@@ -14,16 +14,16 @@ import { createProceduralMaterials } from '../src/game/presentation/procedural-m
 import { applyCharacterSurface } from '../src/game/presentation/character-surfaces.js';
 import { HEAD_BONE_BIND_Y } from '../src/game/assets/skull-sections.js';
 
-const assets=buildFighterKitAssets();
+const assets=buildHeroKitAssets();
 function fixture(){
   const library=createAssetLibrary({assets,materials:MATERIAL_DEFINITIONS});
-  const opponent=createOpponentBoxer({library}),fists=createPlayerFists({library,camera:new PerspectiveCamera()}),match=createMatch();
+  const opponent=createOpponentSumo({library, voxelQuality: 'HIGH'}),fists=createPlayerFists({library,camera:new PerspectiveCamera()}),match=createMatch();
   return {library,opponent,fists,match,dispose(){fists.dispose();opponent.dispose();match.dispose();library.dispose();}};
 }
 test('character equipment rebuilds byte-identically with valid named material groups',()=>{
-  const again=buildFighterKitAssets(),ids=new Set(MATERIAL_DEFINITIONS.map(m=>m.id));
+  const again=buildHeroKitAssets(),ids=new Set(MATERIAL_DEFINITIONS.map(m=>m.id));
   for(const [key,mesh]of assets){assert.equal(meshHash(mesh),meshHash(again.get(key)));assert.ok(validateMesh(mesh).valid,key);for(const part of mesh.parts)assert.ok(ids.has(part.materialId));}
-  const face=assets.get('asset.boxer.head.detail');
+  const face=assets.get('asset.hero.hair');
   for(const name of ['boxer-hair','boxer-hair-fade'])assert.ok(face.parts.some(p=>p.semanticName===name),name);
   assert.ok(face.parts.every(p=>['boxer-hair','boxer-hair-fade'].includes(p.semanticName)), 'facial skin features live in the certified body; only hair remains separate');
 });
@@ -58,16 +58,16 @@ test('morph offsets have explicit metre bounds and corrective update retains fix
     assert.ok(influences.every(v=>v>=0&&v<=1));c.reset();assert.ok(influences.every(v=>v===0));
   }finally{f.dispose();}
 });
-test('stress poses keep semantic equipment attachments and planted foot heights',()=>{
+test('stress poses keep voxel hero, hair attachment and planted foot heights',()=>{
   const f=fixture(),v=new Vector3();
   try{
+    assert.ok(f.opponent.voxel?.runtime);
+    assert.ok(f.opponent.character.bonesByName.head.children.some(o=>String(o.name).includes('hair')));
     for(const name of ['high_guard','jab_extension','cross_extension','deep_knee_flex','wide_stance','close_stance','torso_twist']){
       poseModels(f,name);
       for(const side of ['l','r']){
         const bone=f.opponent.character.bonesByName['foot_'+side];bone.getWorldPosition(v);assert.ok(Math.abs(v.y-.093)<1e-5,`${name} foot ${side}: ${v.y}`);
-        const hand=f.opponent.character.bonesByName['hand_'+side];assert.ok(hand.children.some(o=>o.name==='attach:hand_'+side));
       }
-      assert.equal(f.opponent.character.bonesByName.head.children.find(o=>o.name==='attach:head').position.length(),0);
     }
   }finally{f.dispose();}
 });
@@ -94,7 +94,7 @@ test('regional standard-material hook preserves Phase 1 shader integration and c
 });
 
 test('actual fade geometry clears the skull and leaves the central forehead exposed',()=>{
-  const mesh=assets.get('asset.boxer.head.detail'),part=mesh.parts.find(p=>p.semanticName==='boxer-hair-fade');
+  const mesh=assets.get('asset.hero.hair'),part=mesh.parts.find(p=>p.semanticName==='boxer-hair-fade');
   for(const i of new Set(mesh.indices.slice(part.indexStart,part.indexStart+part.indexCount))){
     const [x,localY,z]=mesh.attributes.position.slice(i*3,i*3+3),y=localY+HEAD_BONE_BIND_Y;
     // Undo the shared forehead field before measuring the base envelope.
@@ -107,25 +107,12 @@ test('actual fade geometry clears the skull and leaves the central forehead expo
     if(Math.abs(x)<.04&&z>0)assert.ok(y>1.778,'fade must not cover the orbit');
   }
 });
-test('garment skin binds without a rest jump and its hems follow semantic thighs under flexion',()=>{
-  const f=fixture(),a=new Vector3(),b=new Vector3();
+test('boxing garments are absent; voxel hero remains the visible body',()=>{
+  const f=fixture();
   try{
     const panels=[];f.opponent.group.traverse(o=>{if(o.userData.garment)panels.push(o.userData.garment.mesh);});
-    assert.equal(panels.length,2);f.opponent.group.updateMatrixWorld(true);
-    for(const panel of panels){
-      const p=panel.geometry.attributes.position;
-      for(let i=0;i<p.count;i+=7){panel.getVertexPosition(i,a);b.fromBufferAttribute(p,i);assert.ok(a.distanceTo(b)<1e-6,'garment bind changed rest surface');}
-    }
-    for(const name of ['deep_knee_flex','cross_extension','wide_stance']){
-      poseModels(f,name);
-      for(const panel of panels){
-        const p=panel.geometry.attributes.position,w=panel.geometry.attributes.skinWeight;
-        for(let i=0;i<p.count;i+=7){
-          panel.getVertexPosition(i,a);assert.ok(Number.isFinite(a.x+a.y+a.z));
-          assert.ok(Math.abs(w.getX(i)+w.getY(i)-1)<1e-6);
-          if(p.getY(i)<-.20){b.fromBufferAttribute(p,i);assert.ok(a.distanceTo(b)<1e-5,'hem must remain thigh-local');}
-        }
-      }
-    }
+    assert.equal(panels.length,0);
+    assert.ok(f.opponent.voxel.artifact.cells.length>0);
   }finally{f.dispose();}
 });
+

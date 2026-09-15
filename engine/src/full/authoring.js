@@ -237,6 +237,23 @@ export {
   MATERIAL_PARAMETER_BOUNDS
 } from '../material/index.js';
 
+// Voxel Forge. Earned by VOXEL-PIVOT-001: occupancy, surface extraction,
+// serializable artifacts and batched runtime realization. Renderer primitives
+// stay inside instantiateVoxelArtifact; occupancy/artifact modules do not
+// import Three.js.
+export {
+  VOXEL_ARTIFACT_VERSION,
+  VOXEL_QUALITY,
+  VOXEL_PARAMETER_BOUNDS,
+  resolveVoxelParameters,
+  createVoxelDefinition,
+  voxelizeMesh,
+  extractVoxelSurface,
+  createVoxelArtifact,
+  voxelHash,
+  instantiateVoxelArtifact
+} from '../voxel/index.js';
+
 import { MESH_OP_DESCRIPTORS } from '../geometry/mesh-ops.js';
 import { MESH_IR_VERSION as IR_VERSION, ATTRIBUTE_ITEM_SIZE } from '../geometry/mesh.js';
 import { MESH_CODEC_VERSION as CODEC_VERSION } from '../geometry/mesh-codec.js';
@@ -264,6 +281,9 @@ import { WORLD_PARAMETER_BOUNDS as WORLD_BOUNDS } from '../world/index.js';
 import {
   MATERIAL_PRESETS as MATERIALS, MATERIAL_PARAMETER_BOUNDS as MATERIAL_BOUNDS
 } from '../material/index.js';
+import {
+  VOXEL_QUALITY as VOXEL_Q, VOXEL_PARAMETER_BOUNDS as VOXEL_BOUNDS
+} from '../voxel/index.js';
 
 /**
  * Machine-readable description of the public authoring capabilities.
@@ -414,6 +434,34 @@ export const AUTHORING_SURFACE = Object.freeze({
         Object.freeze({
           name: 'streaming, chunking, residency',
           reason: 'Not implemented. World generation is bounded. See ARCHITECTURE.md §46.'
+        })
+      ])
+    }),
+
+    voxel: Object.freeze({
+      subsystem: 'Voxel Forge',
+      specification: 'VOXEL_FORGE.md',
+      accepted: 'VOXEL-PIVOT-001',
+      publicSince: 'VOXEL-PIVOT-001',
+      capabilities: Object.freeze([
+        'VOXEL_ARTIFACT_VERSION', 'VOXEL_QUALITY', 'VOXEL_PARAMETER_BOUNDS',
+        'resolveVoxelParameters', 'createVoxelDefinition', 'voxelizeMesh',
+        'extractVoxelSurface', 'createVoxelArtifact', 'voxelHash',
+        'instantiateVoxelArtifact'
+      ]),
+      presets: Object.freeze(Object.keys(VOXEL_Q)),
+      parameters: Object.freeze(Object.keys(VOXEL_BOUNDS)),
+      conventions: 'voxelizeMesh(mesh, { quality | voxelSize, fillInterior }) returns occupancy. createVoxelArtifact compiles surface cells. instantiateVoxelArtifact(artifact, { mode: "instances"|"faces", bones }) owns Three.js resources: call dispose(). Cubes stay rigid under deformation. PNG projection is a reserved colorBinding hook, not implemented.',
+      ownsRendererResources: true,
+      deterministic: 'Same mesh and parameters produce the same voxelHash.',
+      notExported: Object.freeze([
+        Object.freeze({
+          name: 'grid internals (occupied Uint8Array, compact, bindPosition)',
+          reason: 'Working occupancy is a compiler intermediate. The public product is the voxel artifact plus instantiateVoxelArtifact.'
+        }),
+        Object.freeze({
+          name: 'greedy meshing',
+          reason: 'PLANNED. Aggressive greedy merge would erase cubic microstructure on the hero path. Hidden-face culling is implemented.'
         })
       ])
     }),

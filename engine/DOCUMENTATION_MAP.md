@@ -37,7 +37,7 @@ If documents conflict, use this order:
 5. Relevant permanent subsystem specification
    - grandfathered root specifications
      (GAMEPLAY_FOUNDATION, GEOMETRY_FORGE, CHARACTER_FORGE,
-      MOTION_FORGE, MATERIAL_FORGE, WORLD_FORGE)
+      MOTION_FORGE, MATERIAL_FORGE, WORLD_FORGE, VOXEL_FORGE)
    - earned specifications under docs/spec/
    Both are equal in authority within their own subsystem.
 

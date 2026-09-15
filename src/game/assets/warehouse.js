@@ -17,16 +17,16 @@ import {
   createBoxMesh, extrudeProfile, createSeededRandom, chain
 } from './kit.js';
 import { mat } from './materials.js';
-import { RING } from './ring.js';
+import { ARENA } from './arena.js';
 import { createAnchor } from '@sumosizedginger/my-game-engine-1.0/full';
 
 export const VENUE = Object.freeze({
   halfX: 15,
   halfZ: 13,
-  floorY: RING.floorY,
-  wallTop: RING.floorY + 8.4,
-  trussY: RING.floorY + 6.9,
-  gantryY: RING.floorY + 5.3,
+  floorY: ARENA.floorY,
+  wallTop: ARENA.floorY + 8.4,
+  trussY: ARENA.floorY + 6.9,
+  gantryY: ARENA.floorY + 5.3,
   columnCount: 4
 });
 

@@ -150,7 +150,7 @@ export function createProceduralMaterials({ seed = SURFACE_SEED, anisotropy = 4,
     if (id.startsWith('mat.canvas')) kind = 'canvas';
     else if (/mat\.leather(Red|Blue)\./.test(id) && /glove|fp\.arm/.test(assetKey)) kind = 'leather';
     else if (id.startsWith('mat.concrete') && /warehouse\.(floor|walls|column)/.test(assetKey)) kind = 'concrete';
-    else if (/mat\.steel(Worn)?\./.test(id) && /warehouse\.(gantry|services)|ring\.platform/.test(assetKey)) kind = 'steel';
+    else if (/mat\.steel(Worn)?\./.test(id) && /warehouse\.(gantry|services)|arena\.platform/.test(assetKey)) kind = 'steel';
     else if (id.startsWith('mat.skin.') && assetKey === 'opponent-skin') kind = 'skin';
     if (!kind) return;
     const config = SETTINGS[kind], micro = texture(kind);

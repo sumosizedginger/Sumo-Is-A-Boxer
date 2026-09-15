@@ -122,7 +122,7 @@ export function createModelInspection(game) {
     bodyMode(mode==='production'?'production':mode==='wireframe'?'wireframe':'shaded');
     if(mode==='normals')skin.material=normalMaterial;
     if(mode==='silhouette'){skin.material=silhouetteMaterial;scene.background=new Color(0xc4c7ca);}else scene.background=new Color(0x303030);
-    opponent.group.traverse(o=>{if(o.userData.heroEye){o.visible=mode!=='wireframe';o.material=mode==='silhouette'?silhouetteMaterial:o.userData.eyeMaterial;}if(o.isMesh&&o.name.includes('asset.boxer.head.detail'))o.visible=headHair;});
+    opponent.group.traverse(o=>{if(o.userData.heroEye){o.visible=mode!=='wireframe';o.material=mode==='silhouette'?silhouetteMaterial:o.userData.eyeMaterial;}if(o.isMesh&&(o.name.includes('asset.hero.hair')||o.name.includes('hero-hair')))o.visible=headHair;});
     renderer.render(scene,camera);
   }
   function headView(name){const v=headViews[name];if(!v)throw new Error('Unknown head camera');

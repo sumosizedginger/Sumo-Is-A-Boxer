@@ -5,18 +5,18 @@ import { validateMesh } from '@sumosizedginger/my-game-engine-1.0/full';
 import { buildAllAssets } from '../src/game/app.js';
 import { MATERIAL_DEFINITIONS } from '../src/game/assets/materials.js';
 import { createAssetLibrary } from '../src/game/presentation/asset-library.js';
-import { createOpponentBoxer } from '../src/game/character/opponent-boxer.js';
-import { createBoxingFeet } from '../src/game/character/boxing-feet.js';
+import { createOpponentSumo } from '../src/game/character/opponent-sumo.js';
+import { createHeroFeet } from '../src/game/character/hero-feet.js';
 import { createPlayerFists } from '../src/game/character/player-fists.js';
 import { FEEDBACK, PUNCH } from '../src/game/config.js';
 import { skullShell, skullAt, SKULL_SECTIONS, HEAD_BONE_BIND_Y, HAIR_SHELL_OFFSET, FADE_SHELL_OFFSET } from '../src/game/assets/skull-sections.js';
 
 const assets=buildAllAssets();
-function fixture(){const library=createAssetLibrary({assets,materials:MATERIAL_DEFINITIONS});const opponent=createOpponentBoxer({library});return {library,opponent,dispose(){opponent.dispose();library.dispose();}};}
+function fixture(){const library=createAssetLibrary({assets,materials:MATERIAL_DEFINITIONS});const opponent=createOpponentSumo({library, voxelQuality: 'HIGH'});return {library,opponent,dispose(){opponent.dispose();library.dispose();}};}
 const state=()=>({state:'idle',stateT:0,stateDuration:1,yaw:0,flash:0,attack:'JAB',attackZone:'high'});
 
 test('sculpted equipment is valid and dielectric concrete stays dielectric',()=>{
-  for(const key of ['asset.boxer.trunks.left','asset.boxer.trunks.right','asset.fp.arm.left'])assert.equal(validateMesh(assets.get(key)).valid,true);
+  for(const key of ['asset.fp.arm.left','asset.fp.arm.right','asset.hero.hair'])assert.equal(validateMesh(assets.get(key)).valid,true);
   for(const m of MATERIAL_DEFINITIONS.filter(m=>m.id.startsWith('mat.concrete')))assert.equal(m.data.parameters.metalness,0);
 });
 
@@ -48,7 +48,7 @@ test('idle pelvis and guard motion leave both ankles planted on the canvas',()=>
 });
 
 test('travelling feet preserve support contact and do not lift together',()=>{
-  const feet=createBoxingFeet(),group=new Group();let previous=[];
+  const feet=createHeroFeet(),group=new Group();let previous=[];
   for(let i=0;i<240;i++){
     group.position.z+=.014;group.rotation.y=Math.sin(i/120)*.2;
     feet.update(group,1/60,.84,0,false);

@@ -9,8 +9,8 @@ import {createHash} from 'node:crypto';
 // checkout, another branch, or overwriting any worktree file.
 const checkpoint='30b1ecd99f69c5d862cbfe37ae5e3e694b9eee93';
 const paths=['src/game/assets/fighter-face.js','src/game/character/anatomy-fields.js',
-  'src/game/character/athletic-body.js','src/game/character/continuous-body.js',
-  'src/game/character/opponent-boxer.js','src/game/validation/models.js'];
+  'src/game/character/hero-guide-body.js','src/game/character/continuous-body.js',
+  'src/game/character/opponent-sumo.js','src/game/validation/models.js'];
 const sources=new Map(paths.map(path=>[resolve(path).replaceAll('\\','/'),
   execFileSync('git',['show',checkpoint+':'+path],{encoding:'utf8'})]));
 const server=await createServer({plugins:[{name:'checkpoint-face-baseline',enforce:'pre',

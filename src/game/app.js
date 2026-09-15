@@ -18,12 +18,12 @@
 import { WebGLRenderer, Scene, ACESFilmicToneMapping, SRGBColorSpace, PCFShadowMap, Vector3 } from 'three';
 import { createSimulationClock, ENGINE_NAME, ENGINE_VERSION } from '@sumosizedginger/my-game-engine-1.0/full';
 
-import { SIM, FEEDBACK, PUNCH } from './config.js';
+import { SIM, FEEDBACK, PUNCH, VOXEL } from './config.js';
 import { MATERIAL_DEFINITIONS } from './assets/materials.js';
-import { buildRingAssets, RING } from './assets/ring.js';
+import { buildArenaAssets, ARENA } from './assets/arena.js';
 import { buildWarehouseAssets } from './assets/warehouse.js';
 import { buildDressingAssets } from './assets/dressing.js';
-import { buildFighterKitAssets } from './assets/fighter-kit.js';
+import { buildHeroKitAssets } from './assets/hero-kit.js';
 import { composeArenaScene } from './scene/arena-scene.js';
 import { createAssetLibrary } from './presentation/asset-library.js';
 import { createArenaPresentation } from './presentation/presenter.js';
@@ -32,7 +32,7 @@ import { createProceduralMaterials } from './presentation/procedural-materials.j
 import { createLightRig } from './presentation/lighting.js';
 import { createCameraRig } from './presentation/camera-rig.js';
 import { createImpactSparks, createDustField } from './presentation/vfx.js';
-import { createOpponentBoxer } from './character/opponent-boxer.js';
+import { createOpponentSumo } from './character/opponent-sumo.js';
 import { createPlayerFists } from './character/player-fists.js';
 import { createInputRouter } from './input/input-router.js';
 import { createMatch } from './combat/match.js';
@@ -48,7 +48,7 @@ import { createHud } from './hud/hud.js';
  */
 export function buildAllAssets() {
   const assets = new Map();
-  for (const source of [buildRingAssets(), buildWarehouseAssets(), buildDressingAssets(), buildFighterKitAssets()]) {
+  for (const source of [buildArenaAssets(), buildWarehouseAssets(), buildDressingAssets(), buildHeroKitAssets()]) {
     for (const [key, mesh] of source) assets.set(key, mesh);
   }
   return assets;
@@ -63,7 +63,7 @@ export function buildAllAssets() {
 export function createGame(host, { appBootstrapStart = performance.now() } = {}) {
   const timing = createTiming(appBootstrapStart);
   const validationQuery = new URLSearchParams(location.search).get('validation');
-  const validationMode = validationQuery === 'models' || validationQuery === 'topology' || (import.meta.env.DEV && validationQuery === 'phase1');
+  const validationMode = validationQuery === 'models' || validationQuery === 'topology' || validationQuery === 'voxel' || (import.meta.env.DEV && validationQuery === 'phase1');
   let validation = null;
 
   // --- stage ---------------------------------------------------------------
@@ -96,19 +96,20 @@ export function createGame(host, { appBootstrapStart = performance.now() } = {})
     onGeneration: interval => timing.generation(interval),
     enabled: new URLSearchParams(window.location.search).get('surfaceDetail') !== '0'
   });
-  const library = createAssetLibrary({ assets, materials: MATERIAL_DEFINITIONS, surfaceDetail });
+  const library = createAssetLibrary({ assets, materials: MATERIAL_DEFINITIONS, surfaceDetail, voxelQuality: VOXEL.environmentQuality });
   const presentation = createArenaPresentation({ instance: sceneInstance, library });
   scene.add(presentation.root);
 
   const lights = createLightRig({ scene, presentation });
   const sparks = createImpactSparks({ scene });
-  const dust = createDustField({ scene, floorY: RING.floorY });
+  const dust = createDustField({ scene, floorY: ARENA.floorY });
 
   // --- fighters ------------------------------------------------------------
   const rig = createCameraRig({ aspect: window.innerWidth / Math.max(1, window.innerHeight) });
   scene.add(rig.camera);
 
-  const opponent = createOpponentBoxer({ library });
+  const voxelHeroQuality = (new URLSearchParams(location.search).get('voxel') || VOXEL.heroQuality).toUpperCase();
+  const opponent = createOpponentSumo({ library, voxelQuality: voxelHeroQuality in { COARSE:1, MEDIUM:1, HIGH:1, HERO:1 } ? voxelHeroQuality : VOXEL.heroQuality });
   scene.add(opponent.group);
   surfaceDetail.apply(opponent.character.material, 'opponent-skin', 'mat.skin.0');
   applyCharacterSurface(opponent.character.material, 'opponent-skin', 'mat.skin.0');
@@ -563,7 +564,8 @@ export function createGame(host, { appBootstrapStart = performance.now() } = {})
       sparks,
       lights,
       modelMode: validationQuery === 'models',
-      topologyMode: validationQuery === 'topology'
+      topologyMode: validationQuery === 'topology',
+      voxelMode: validationQuery === 'voxel'
     });
     game.validation = validation;
   }

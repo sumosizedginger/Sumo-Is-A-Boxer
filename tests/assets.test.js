@@ -14,10 +14,10 @@ import {
   PREVIEW_BUDGET_DEFAULTS
 } from '@sumosizedginger/my-game-engine-1.0/full';
 
-import { buildRingAssets } from '../src/game/assets/ring.js';
+import { buildArenaAssets } from '../src/game/assets/arena.js';
 import { buildWarehouseAssets } from '../src/game/assets/warehouse.js';
 import { buildDressingAssets } from '../src/game/assets/dressing.js';
-import { buildFighterKitAssets } from '../src/game/assets/fighter-kit.js';
+import { buildHeroKitAssets } from '../src/game/assets/hero-kit.js';
 import { MATERIAL_DEFINITIONS, MATERIAL_FAMILIES, mat } from '../src/game/assets/materials.js';
 
 /**
@@ -25,7 +25,7 @@ import { MATERIAL_DEFINITIONS, MATERIAL_FAMILIES, mat } from '../src/game/assets
  */
 function buildAll() {
   const assets = new Map();
-  for (const source of [buildRingAssets(), buildWarehouseAssets(), buildDressingAssets(), buildFighterKitAssets()]) {
+  for (const source of [buildArenaAssets(), buildWarehouseAssets(), buildDressingAssets(), buildHeroKitAssets()]) {
     for (const [key, mesh] of source) assets.set(key, mesh);
   }
   return assets;
@@ -35,7 +35,7 @@ const assets = buildAll();
 const materialIds = new Set(MATERIAL_DEFINITIONS.map((definition) => definition.id));
 
 test('the venue is authored from more than a handful of assets', () => {
-  assert.ok(assets.size >= 30, `expected a dense venue, got ${assets.size} assets`);
+  assert.ok(assets.size >= 20, `expected a dense venue, got ${assets.size} assets`);
 });
 
 test('every asset is a structurally valid MeshIR', () => {
@@ -111,9 +111,7 @@ test('the semantic vocabulary the brief asks for is actually present', () => {
   const names = new Set();
   for (const mesh of assets.values()) for (const part of mesh.parts) names.add(part.semanticName);
   const required = [
-    'ring-canvas', 'ring-apron-skirt', 'top-rope-north', 'mid-rope-east', 'low-rope-south',
-    'corner-padding-red', 'corner-padding-blue', 'corner-padding-neutral',
-    'ring-post-steel', 'rope-bindings',
+    'arena-deck-slab', 'arena-edge-curb', 'arena-support-legs',
     'warehouse-floor-slab', 'warehouse-wall-concrete', 'warehouse-column-concrete',
     'warehouse-truss-chords', 'lighting-gantry-frame', 'warehouse-pipe-runs',
     'heavy-bag-leather', 'crowd-silhouettes', 'ringside-barrier-bars', 'bleacher-planks'
@@ -123,15 +121,12 @@ test('the semantic vocabulary the brief asks for is actually present', () => {
   }
 });
 
-test('the fighters carry equipment as separate material identities', () => {
-  const glove = assets.get('asset.boxer.glove.right');
-  const materials = new Set(glove.parts.map((p) => p.materialId));
-  assert.ok(materials.size >= 3, 'the opponent glove is a single flat material');
-
+test('first-person limbs are voxel-authored fists, not boxing gloves', () => {
+  assert.equal(assets.has('asset.boxer.glove.right'), false);
+  assert.equal(assets.has('asset.boxer.trunks'), false);
   const arm = assets.get('asset.fp.arm.left');
   const armNames = arm.parts.map((p) => p.semanticName);
   assert.ok(armNames.some((n) => n.includes('forearm')), 'the first-person arm has no forearm');
-  assert.ok(armNames.some((n) => n.includes('wrap')), 'the first-person arm has no hand wraps');
-  assert.ok(armNames.some((n) => n.includes('glove')), 'the first-person arm has no glove');
-  assert.ok(arm.anchors.some((a) => a.name === 'glove.contact'), 'the arm has no contact anchor');
+  assert.ok(armNames.some((n) => n.includes('fist')), 'the first-person arm has no fist');
+  assert.ok(arm.anchors.some((a) => a.name === 'fist.contact'), 'the arm has no contact anchor');
 });

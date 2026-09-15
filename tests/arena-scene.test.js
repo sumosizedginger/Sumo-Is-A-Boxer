@@ -15,16 +15,16 @@ import {
 } from '@sumosizedginger/my-game-engine-1.0/full';
 
 import { createArenaSceneDefinition, composeArenaScene, SCENE_ID } from '../src/game/scene/arena-scene.js';
-import { buildRingAssets } from '../src/game/assets/ring.js';
+import { buildArenaAssets } from '../src/game/assets/arena.js';
 import { buildWarehouseAssets } from '../src/game/assets/warehouse.js';
 import { buildDressingAssets } from '../src/game/assets/dressing.js';
-import { buildFighterKitAssets } from '../src/game/assets/fighter-kit.js';
+import { buildHeroKitAssets } from '../src/game/assets/hero-kit.js';
 
 const definition = createArenaSceneDefinition();
 
 function allAssets() {
   const assets = new Map();
-  for (const source of [buildRingAssets(), buildWarehouseAssets(), buildDressingAssets(), buildFighterKitAssets()]) {
+  for (const source of [buildArenaAssets(), buildWarehouseAssets(), buildDressingAssets(), buildHeroKitAssets()]) {
     for (const [key, mesh] of source) assets.set(key, mesh);
   }
   return assets;
@@ -59,13 +59,13 @@ test('every node has a persistent id and a human-meaningful name', () => {
 test('the semantic ids gameplay and lighting address all exist', () => {
   const pids = new Set(definition.nodes.map((n) => n.pid));
   const required = [
-    'arena-root', 'venue', 'ring', 'ringside', 'lighting-rig', 'training-area',
-    'ring-platform', 'ring-posts', 'ring-ropes', 'ring-steps-red', 'ring-steps-blue',
+    'arena-root', 'venue', 'arena', 'ringside', 'lighting-rig', 'training-area',
+    'arena-platform',
     'red-corner-post', 'blue-corner-post', 'neutral-corner-north-east', 'neutral-corner-south-west',
     'player-spawn', 'opponent-spawn',
     'warehouse-floor', 'warehouse-walls', 'warehouse-roof-structure', 'warehouse-services', 'warehouse-doors',
     'warehouse-column-east-mid', 'warehouse-column-west-mid',
-    'lighting-gantry', 'ring-lamp-key-nw', 'ring-lamp-key-se', 'corner-lamp-red', 'corner-lamp-blue',
+    'lighting-gantry', 'ring-lamp-key-nw', 'ring-lamp-key-se', 'corner-lamp-nw', 'corner-lamp-se',
     'heavy-bag', 'bleacher-north', 'crowd-row-north-front', 'ringside-barrier-north-west', 'training-rig'
   ];
   for (const pid of required) assert.ok(pids.has(pid), `scene is missing semantic node "${pid}"`);

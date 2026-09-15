@@ -7,7 +7,7 @@ const copy = value => JSON.parse(JSON.stringify(value));
 const nextFrame = () => new Promise(resolve => requestAnimationFrame(resolve));
 const percentile = (sorted, p) => sorted[Math.min(sorted.length - 1, Math.floor(sorted.length * p))] ?? null;
 
-export function createValidation({ game, rig, sparks, lights, modelMode=false, topologyMode=false }) {
+export function createValidation({ game, rig, sparks, lights, modelMode=false, topologyMode=false, voxelMode=false }) {
   const { renderer, scene, camera, match, opponent, fists, surfaceDetail } = game;
   const shaderErrors = [];
   renderer.debug.checkShaderErrors = true;
@@ -137,12 +137,29 @@ export function createValidation({ game, rig, sparks, lights, modelMode=false, t
     return { dataUrl, mimeType, requestedDurationSeconds: durationSeconds, actualDurationMs: performance.now() - start, fps, frames,
       method: 'Canvas captureStream(0), requestFrame, MediaRecorder. Exact indexed camera path; encoder delivery/timestamps may differ. Pose held fixed, no punch/deformation claim.' };
   }
-  if (!topologyMode) applyPreset('gloves_gameplay', 1111, false);
+  if (!topologyMode) applyPreset(voxelMode ? 'voxel_hero' : 'gloves_gameplay', 1111, false);
   const models = modelMode ? createModelInspection(game) : null;
   const topology = topologyMode ? createTopologyInspection(game) : null;
-  return { models, topology, dispose(){models?.dispose(); topology?.dispose();}, presets: copy(PRESETS), frame: now=>{models?.frame(now); topology?.frame(now); render();}, render, applyPreset, state, coverage, resources, diagnostics, sample, settle, recordMotion,
+  const voxel = voxelMode ? {
+    metrics: () => opponent.diagnostics().voxel,
+    setPresentation(mode) {
+      const guide = opponent.character.material;
+      const voxels = opponent.voxel?.runtime.object3D;
+      const name = String(mode || 'VOXEL').toUpperCase();
+      if (guide) {
+        guide.visible = name === 'GUIDE' || name === 'WIREFRAME';
+        guide.wireframe = name === 'WIREFRAME';
+      }
+      if (voxels) voxels.visible = name === 'VOXEL' || name === 'SEMANTIC' || name === 'SILHOUETTE' || name === 'PERFORMANCE';
+      if (name === 'SILHOUETTE' && opponent.voxel?.runtime.material) {
+        opponent.voxel.runtime.material.color.setHex(0x111111);
+      }
+      render();
+    }
+  } : null;
+  return { models, topology, voxel, dispose(){models?.dispose(); topology?.dispose();}, presets: copy(PRESETS), frame: now=>{models?.frame(now); topology?.frame(now); render();}, render, applyPreset, state, coverage, resources, diagnostics, sample, settle, recordMotion,
     setDetail: enabled => { surfaceDetail.setEnabled(enabled); render(); },
     capture: () => { render(); return renderer.domElement.toDataURL('image/png'); },
     motionFrame: (name, progress) => { setCamera(motionCamera(name, progress)); render(); return state().camera; },
-    reset: seed => { applyPreset('gloves_gameplay', seed); opponent.group.visible = true; render(); return resources(); } };
+    reset: seed => { applyPreset(voxelMode ? 'voxel_hero' : 'gloves_gameplay', seed); opponent.group.visible = true; render(); return resources(); } };
 }

@@ -16,7 +16,7 @@
  *
  * Material Forge exposes colour, roughness, metalness, emissive and
  * emissiveIntensity. It has no texture, map, noise or vertex-colour pathway
- * (ENGINE_GAPS.md — GAP-06), so surface breakup in this build is produced by
+ * (docs/ENGINE_GAPS.md — GAP-06), so surface breakup in this build is produced by
  * variant families plus authored geometry, not by texturing.
  */
 

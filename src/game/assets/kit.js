@@ -18,7 +18,7 @@
  *     inputs into ONE named part using the public `createMesh` / `createPart`
  *     constructors, so a rope can be built from forty primitives and still cost
  *     one draw call while keeping a meaningful semantic name.
- *     See ENGINE_GAPS.md — GAP-03.
+ *     See docs/ENGINE_GAPS.md — GAP-03.
  *
  *   revolve(), sphereoid(), roundedBox(), tube(), chain()
  *     Geometry Forge's accepted verbs are box, cylinder and convex extrusion.
@@ -28,13 +28,13 @@
  *     disprove — these generators emit MeshIR through the SAME public
  *     constructors the engine verbs use. They are new shapes, not
  *     reimplementations of existing engine verbs.
- *     See ENGINE_GAPS.md — GAP-02.
+ *     See docs/ENGINE_GAPS.md — GAP-02.
  *
  *   quat helpers
  *     `transformMesh` requires a unit quaternion and refuses anything else.
  *     The engine's quaternion math (src/geometry/anchors.js multiplyQuaternions)
  *     is not part of the public surface, so the conversion lives here.
- *     See ENGINE_GAPS.md — GAP-04.
+ *     See docs/ENGINE_GAPS.md — GAP-04.
  */
 
 import {
@@ -60,7 +60,7 @@ export { createBoxMesh, createCylinderMesh, extrudeProfile, transformMesh, merge
  *
  * AGENTS.md forbids scattering `Math.random()` through deterministic systems
  * and requires an explicit named random service. The engine exposes no public
- * one (ENGINE_GAPS.md — GAP-05), so the game owns this. Every asset built with
+ * one (docs/ENGINE_GAPS.md — GAP-05), so the game owns this. Every asset built with
  * it is reproducible from its seed.
  *
  * @param {number} seed

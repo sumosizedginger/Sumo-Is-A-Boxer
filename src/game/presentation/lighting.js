@@ -123,12 +123,12 @@ export function createLightRig({ scene, presentation }) {
     return light;
   }
 
-  const redAt = presentation.positionOf('corner-lamp-red') ?? [-4.6, 3.9, -4.6];
-  const blueAt = presentation.positionOf('corner-lamp-blue') ?? [4.6, 3.9, 4.6];
+  const redAt = presentation.positionOf('corner-lamp-nw') ?? [-4.6, 3.9, -4.6];
+  const blueAt = presentation.positionOf('corner-lamp-se') ?? [4.6, 3.9, 4.6];
   const redSpot = spot({
     at: [redAt[0], redAt[1] - 0.2, redAt[2]],
     target: [-1.8, 0.4, -1.8],
-    color: 0xff3a1e,
+    color: 0xffc48a,
     intensity: 46,
     angle: 0.6,
     penumbra: 0.75,
@@ -138,7 +138,7 @@ export function createLightRig({ scene, presentation }) {
   const blueSpot = spot({
     at: [blueAt[0], blueAt[1] - 0.2, blueAt[2]],
     target: [1.8, 0.4, 1.8],
-    color: 0x2f68ff,
+    color: 0xdde6f2,
     intensity: 46,
     angle: 0.6,
     penumbra: 0.75,

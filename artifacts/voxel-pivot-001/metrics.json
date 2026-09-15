@@ -1,0 +1,16 @@
+{
+  "metrics": {
+    "occupied": 9648,
+    "surface": 2739,
+    "faces": 4742,
+    "voxelSize": 0.028,
+    "generationMs": 155.30000001192093,
+    "drawCalls": 1
+  },
+  "errors": [],
+  "captures": [
+    "artifacts\\voxel-pivot-001\\hero-front.png",
+    "artifacts\\voxel-pivot-001\\hero-face.png",
+    "artifacts\\voxel-pivot-001\\hero-belly.png"
+  ]
+}

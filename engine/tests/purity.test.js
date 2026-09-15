@@ -50,7 +50,7 @@ const UNEARNED_SYSTEMS = ['Kiln', 'kiln', 'SkeletonForge'];
  * two routes to one thing is two contracts, and they drift.
  */
 const FORBIDDEN_NAMESPACE_NAMES = [
-  'GeometryForge', 'CharacterForge', 'MotionForge', 'MaterialForge', 'WorldForge'
+  'GeometryForge', 'CharacterForge', 'MotionForge', 'MaterialForge', 'WorldForge', 'VoxelForge'
 ];
 
 /** Everything engine/runtime must never expose. */
@@ -70,7 +70,9 @@ const RUNTIME_FORBIDDEN = [
   'buildHumanoidCharacter', 'createCharacterDefinition', 'HUMANOID_PRESETS',
   'createLocomotionEvaluator', 'createMotionDefinition', 'MOTION_PRESETS',
   'generateWorld', 'createWorldRecipe', 'createWorldFieldQuery',
-  'createMaterialDefinition', 'MATERIAL_PRESETS'
+  'createMaterialDefinition', 'MATERIAL_PRESETS',
+  'voxelizeMesh', 'createVoxelDefinition', 'instantiateVoxelArtifact',
+  'createVoxelArtifact', 'VOXEL_QUALITY'
 ];
 
 /**
@@ -140,7 +142,12 @@ const ALLOWED_FULL_ADDITIONS = new Set([
   'createWorldFieldCache', 'createWorldFieldQuery', 'createWorldVolumeQuery',
   'generateWorld',
   // Material Forge: bounds discovery, matching every other Forge.
-  'MATERIAL_PARAMETER_BOUNDS'
+  'MATERIAL_PARAMETER_BOUNDS',
+  // Voxel Forge, earned by VOXEL-PIVOT-001.
+  'VOXEL_ARTIFACT_VERSION', 'VOXEL_QUALITY', 'VOXEL_PARAMETER_BOUNDS',
+  'resolveVoxelParameters', 'createVoxelDefinition', 'voxelizeMesh',
+  'extractVoxelSurface', 'createVoxelArtifact', 'voxelHash',
+  'instantiateVoxelArtifact'
 ]);
 
 /**
@@ -194,7 +201,13 @@ const RENDERER_INDEPENDENT_MODULES = [
   'src/scene/compiler.js',
   'src/scene/instance.js',
   'src/scene/affine.js',
-  'src/scene/index.js'
+  'src/scene/index.js',
+  // Voxel occupancy and artifacts are engine data. Runtime realization is
+  // the one voxel module allowed to import Three.js.
+  'src/voxel/definition.js',
+  'src/voxel/grid.js',
+  'src/voxel/surface.js',
+  'src/voxel/artifact.js'
 ];
 
 /** Node-only specifiers that must never be reachable from engine/full. */

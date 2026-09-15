@@ -6,12 +6,13 @@ export const BODY_REGIONS=Object.freeze(Object.fromEntries(['head','neck','chest
 const clamp=t=>Math.max(0,Math.min(1,t));
 const smooth=t=>{t=clamp(t);return t*t*(3-2*t);};
 function lerpRows(rows,y){for(let i=0;i<rows.length-1;i++)if(y<=rows[i+1][0]){const a=rows[i],b=rows[i+1],t=clamp((y-a[0])/(b[0]-a[0]));return a.slice(1).map((v,k)=>v+(b[k+1]-v)*t);}return rows.at(-1).slice(1);}
-const torsoRows=[[.95,.174,.112,-.009],[1.01,.184,.134,-.009],[1.10,.167,.123,0],[1.18,.15,.112,0],[1.27,.186,.138,0],[1.36,.192,.15,0],[1.43,.202,.152,0],[1.48,.19,.128,-.004],[1.52,.17,.098,-.008],[1.56,.094,.077,-.01],[1.60,.071,.069,-.011],[1.64,.065,.071,-.006],[1.67,.066,.075,.009]];
+const torsoRows=[[.95,.218,.176,-.018],[1.01,.236,.198,-.008],[1.10,.248,.218,.018],[1.18,.242,.210,.028],[1.27,.228,.186,.016],[1.36,.220,.168,.008],[1.43,.214,.156,0],[1.48,.196,.132,-.004],[1.52,.176,.104,-.008],[1.56,.108,.086,-.01],[1.60,.086,.076,-.011],[1.64,.072,.074,-.006],[1.67,.068,.078,.009]];
 function axial(y,t){const c=Math.cos(t),s=Math.sin(t);let p;
   if(y>=1.69){const h=skullAt(y);p=[h.cx+c*h.width,y,h.cz+s*h.depth];}
   else {const [w,d,z]=lerpRows(torsoRows,y);p=[c*w,y,z+s*d];if(y>1.67){const h=skullAt(1.69),a=(y-1.67)/.02;p=[p[0]*(1-a)+c*h.width*a,y,p[2]*(1-a)+(h.cz+s*h.depth)*a];}
     // Broad chest/back planes, with room for later anatomy shaping.
     if(y>1.17&&y<1.50)p[2]+=.008*Math.sin((y-1.17)/.33*Math.PI)*Math.sign(s)*Math.pow(Math.abs(s),.5);
+    if(y>1.02&&y<1.38)p[2]+=Math.max(0,s)*0.055*Math.sin((y-1.02)/.36*Math.PI);
   }return p;
 }
 function raw(position,indices){return createTopologySurface({attributes:{position},indices,forwardAxis:'+Z'});}
@@ -64,12 +65,12 @@ export function generateContinuousBody(landmarks,{widthScale=1,leftArmScale=1}={
     if(kind==='arm'){
       angles=base.map(p=>Math.atan2(p[2]/.087,(p[1]-1.46)/.06));
       const e=landmarks['elbow.'+key].y,w=landmarks['wrist.'+key].y;
-      shapeRows=[[w-.025,.033,.033],[w+.06,.045,.042],[e-.10,.067,.058],[e-.04,.055,.052],[e,.051,.054],[e+.04,.058,.057],[e+.12,.076,.073],[1.35,.082,.079],[1.385,.085,.08]];
+      shapeRows=[[w-.025,.038,.038],[w+.06,.052,.048],[e-.10,.078,.068],[e-.04,.064,.06],[e,.06,.062],[e+.04,.068,.066],[e+.12,.088,.084],[1.35,.094,.09],[1.385,.098,.092]];
       begin=1.385;end=w-.025;
     }else{
       angles=base.map(p=>Math.atan2((p[2]+.008)/.102,(p[0]-sign*.123)/.099));
       const k=landmarks['knee.'+key].y,a=landmarks['ankle.'+key].y;
-      shapeRows=[[a,.042,.044],[a+.12,.052,.063],[k-.14,.076,.082],[k-.06,.064,.064],[k,.06,.07],[k+.045,.068,.074],[k+.14,.091,.095],[.845,.105,.106]];
+      shapeRows=[[a,.054,.056],[a+.12,.068,.082],[k-.14,.098,.104],[k-.06,.086,.086],[k,.08,.09],[k+.045,.09,.096],[k+.14,.118,.122],[.845,.132,.134]];
       begin=.827;end=a;
     }
     const ringAt=(y)=>{const [w,d]=lerpRows(shapeRows,y);return angles.map(t=>{

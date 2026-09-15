@@ -8,8 +8,8 @@ const label=process.argv[2]??'final',full=label==='final'||label.includes('full'
 const directory='artifacts/char-face-003';mkdirSync(directory,{recursive:true});
 const sourcePaths=['engine/src/geometry/sculpt-fields.js','engine/src/geometry/topology-ops.js',
   'src/game/character/hero-face.js','src/game/character/head-profile.js','src/game/character/orbital-pockets.js',
-  'src/game/character/hero-eyes.js','src/game/character/athletic-body.js','src/game/character/continuous-body.js',
-  'src/game/character/opponent-boxer.js','src/game/assets/fighter-face.js','src/game/validation/models.js'];
+  'src/game/character/hero-eyes.js','src/game/character/hero-guide-body.js','src/game/character/continuous-body.js',
+  'src/game/character/opponent-sumo.js','src/game/assets/fighter-face.js','src/game/validation/models.js'];
 const hashes=()=>Object.fromEntries(sourcePaths.map(path=>[path,createHash('sha256').update(readFileSync(path)).digest('hex')]));
 const sourceHashes=hashes();
 const server=await createServer({server:{host:'127.0.0.1',port:5183,strictPort:true}});

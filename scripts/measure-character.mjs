@@ -4,14 +4,14 @@ import { Scene, PerspectiveCamera } from 'three';
 import { buildAllAssets } from '../src/game/app.js';
 import { MATERIAL_DEFINITIONS } from '../src/game/assets/materials.js';
 import { createAssetLibrary } from '../src/game/presentation/asset-library.js';
-import { createOpponentBoxer } from '../src/game/character/opponent-boxer.js';
+import { createOpponentSumo } from '../src/game/character/opponent-sumo.js';
 import { createPlayerFists } from '../src/game/character/player-fists.js';
 import { composeArenaScene } from '../src/game/scene/arena-scene.js';
 import { createArenaPresentation } from '../src/game/presentation/presenter.js';
 
 const start = performance.now(), assets = buildAllAssets(), assetGenerationMs = performance.now() - start;
 const library = createAssetLibrary({ assets, materials: MATERIAL_DEFINITIONS });
-const buildStart = performance.now(), opponent = createOpponentBoxer({ library });
+const buildStart = performance.now(), opponent = createOpponentSumo({ library, voxelQuality: 'HIGH' });
 const camera = new PerspectiveCamera(), fists = createPlayerFists({ library, camera });
 const characterBuildMs = performance.now() - buildStart;
 const { instance } = composeArenaScene(), presentation = createArenaPresentation({ instance, library });

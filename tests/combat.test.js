@@ -13,7 +13,7 @@ import { TRANSFORM_OWNERSHIP } from '@sumosizedginger/my-game-engine-1.0/full';
 import { resolveStrike, connects, conditionScaledDamage, knockoutPower } from '../src/game/combat/resolve.js';
 import { constrainVelocity, isFacing, createPlayerState, GUARD_HIGH } from '../src/game/combat/fighters.js';
 import { createMatch } from '../src/game/combat/match.js';
-import { RING_BOUNDS, MATCH, PLAYER, DEFENCE, KNOCKOUT, OPPONENT } from '../src/game/config.js';
+import { ARENA_BOUNDS, MATCH, PLAYER, DEFENCE, KNOCKOUT, OPPONENT } from '../src/game/config.js';
 
 const DT = 1 / 60;
 
@@ -113,13 +113,13 @@ test('reach and facing both gate a punch', () => {
 
 test('the ring holds the fighters in', () => {
   const constrained = constrainVelocity({
-    position: { x: RING_BOUNDS.half - 0.05, y: 0, z: 0 },
+    position: { x: ARENA_BOUNDS.half - 0.05, y: 0, z: 0 },
     velocity: { x: 10, z: 0 },
     otherPosition: null,
     dt: DT
   });
-  const landing = RING_BOUNDS.half - 0.05 + constrained.x * DT;
-  assert.ok(landing <= RING_BOUNDS.half + 1e-6, `escaped to ${landing}`);
+  const landing = ARENA_BOUNDS.half - 0.05 + constrained.x * DT;
+  assert.ok(landing <= ARENA_BOUNDS.half + 1e-6, `escaped to ${landing}`);
 });
 
 test('fighters cannot occupy the same space', () => {
@@ -131,7 +131,7 @@ test('fighters cannot occupy the same space', () => {
     dt: DT
   });
   const landing = 0.9 + constrained.x * DT;
-  assert.ok(Math.abs(landing) >= RING_BOUNDS.separation - 1e-6, `overlapped at ${landing}`);
+  assert.ok(Math.abs(landing) >= ARENA_BOUNDS.separation - 1e-6, `overlapped at ${landing}`);
 });
 
 test('facing uses the engine -Z forward convention', () => {

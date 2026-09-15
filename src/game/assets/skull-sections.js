@@ -4,15 +4,15 @@
  * WHY THIS IS ITS OWN MODULE. The hair, the shaved fade and the skull are three
  * surfaces that have to agree to within a couple of millimetres, and they are
  * built in two different places: the skull is skinned geometry authored in
- * `character/athletic-body.js`, the hair is an equipment asset authored in
- * `assets/fighter-kit.js`. When the hair was sized from Character Forge's
+ * `character/hero-guide-body.js`, the hair is a separate asset authored in
+ * `assets/hero-kit.js`. When the hair was sized from Character Forge's
  * published head parameters instead of from the skull that actually ships, the
  * two drifted: the hair ran 1.1 mm INSIDE the skull across the temples (visible
  * black/skin z-fighting) and stopped 38 mm below the crown, so the top of the
  * head pushed straight through the cap. Both surfaces now read these numbers.
  *
  * Stations are [y, halfWidth, halfDepth, centreX, centreZ] in the character's
- * BIND space, the same space `athletic-body.js` authors in.
+ * BIND space, the same space `hero-guide-body.js` authors in.
  */
 
 /**

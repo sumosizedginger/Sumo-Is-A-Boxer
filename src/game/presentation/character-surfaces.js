@@ -2,11 +2,11 @@
 // replacement. This composes with, and does not toggle, the Phase 1 detail hook.
 export function applyCharacterSurface(material, asset, id) {
   const skin=/^mat\.skin(?:Player)?\./.test(id);
-  const glove=/glove|fp\.arm/.test(asset)&&/^mat\.leather/.test(id);
-  const cloth=/trunks/.test(asset)&&/^mat\.cloth\./.test(id);
-  const boot=/boot/.test(asset)&&/^mat\.leather/.test(id);
+  const glove=/fp\.arm/.test(asset)&&/^mat\.skinPlayer/.test(id);
+  const cloth=false;
+  const boot=false;
   if(!skin&&!glove&&!cloth&&!boot)return;
-  const fp=asset.startsWith('asset.fp.'),face=asset==='asset.boxer.head.detail';
+  const fp=asset.startsWith('asset.fp.'),face=asset==='asset.hero.hair';
   const key=[skin,glove,cloth,boot,fp,face].map(Number).join('');
   const compile=material.onBeforeCompile,baseKey=material.customProgramCacheKey();
   material.onBeforeCompile=function(shader,renderer){

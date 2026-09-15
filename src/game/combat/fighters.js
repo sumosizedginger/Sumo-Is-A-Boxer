@@ -9,7 +9,7 @@
  * INTENT for it (GAMEPLAY_FOUNDATION.md §3 / CONSTITUTION.md §13).
  */
 
-import { PLAYER, OPPONENT, RING_BOUNDS } from '../config.js';
+import { PLAYER, OPPONENT, ARENA_BOUNDS } from '../config.js';
 
 export const GUARD_HIGH = 'high';
 export const GUARD_LOW = 'low';
@@ -132,7 +132,7 @@ export function constrainVelocity({ position, velocity, otherPosition, dt }) {
   let px = position.x + velocity.x * dt;
   let pz = position.z + velocity.z * dt;
 
-  const half = RING_BOUNDS.half;
+  const half = ARENA_BOUNDS.half;
   px = Math.max(-half, Math.min(half, px));
   pz = Math.max(-half, Math.min(half, pz));
 
@@ -140,7 +140,7 @@ export function constrainVelocity({ position, velocity, otherPosition, dt }) {
     const dx = px - otherPosition.x;
     const dz = pz - otherPosition.z;
     const distance = Math.hypot(dx, dz);
-    const minimum = RING_BOUNDS.separation;
+    const minimum = ARENA_BOUNDS.separation;
     if (distance < minimum) {
       // Push out along the separation axis. A zero distance is resolved on +X
       // so two coincident fighters still separate deterministically.
