@@ -84,6 +84,10 @@ function buildPoseTargets(landmarks) {
       left: [.33, shoulderY-.40, .12], right: [-.33, shoulderY-.40, .12],
       pelvisYaw: 0, chestYaw: 0, headPitch: .02, lean: .025
     },
+    sumo_neutral: {
+      left: [0.41, 0.69, 0.02], right: [-0.41, 0.69, 0.02],
+      pelvisYaw: 0, chestYaw: 0, headPitch: 0, lean: 0
+    },
     extended: {
       left: [.2365,shoulderY,.627],right: [-.23,shoulderY-.12,.24],
       pelvisYaw: 0,chestYaw: 0,headPitch: 0,lean: 0
@@ -161,7 +165,7 @@ const STATE_POSE = Object.freeze({
  * @param {object} options.library - Asset library for the equipment.
  * @returns {object} Opponent presentation handle.
  */
-export function createOpponentSumo({ library, voxelQuality = 'HIGH' } = {}) {
+export function createOpponentSumo({ library, voxelQuality = 'HERO' } = {}) {
   // --- CHARACTER FORGE ------------------------------------------------------
   const definition = createCharacterDefinition({
     id: 'char.sumo.opponent',
@@ -293,8 +297,10 @@ export function createOpponentSumo({ library, voxelQuality = 'HIGH' } = {}) {
       upperLength: upperArmLength,
       lowerLength: forearmLength,
       // The elbow rides low and slightly outboard, which is what makes a guard
-      // read as a guard rather than as chicken wings.
-      poleDirection: { x: side === 'l' ? 0.58 : -0.58, y: -1, z: -0.3 }
+      // read as a guard rather than as chicken wings. For relaxed poses, flare outward.
+      poleDirection: wristTarget.y < 0.95
+        ? { x: side === 'l' ? 0.70 : -0.70, y: -0.25, z: -0.12 }
+        : { x: side === 'l' ? 0.58 : -0.58, y: -1, z: -0.3 }
     });
 
     applyBoneDirection(upperName, upper, solved.upperDir);
@@ -492,7 +498,9 @@ export function createOpponentSumo({ library, voxelQuality = 'HIGH' } = {}) {
       _bodyInverseMatrix.copy(body.matrixWorld).invert();
       body.getWorldQuaternion(_bodyInverse).invert();
       if(!downState){
-        planted.update(group,dt,speed,drive,heavy,inspection?.stanceWidth);
+        const stance = inspection?.stanceWidth ?? (inspection?.pose === 'sumo_neutral' ? 0.32 : 0.225);
+        const staggerScale = (inspection?.pose === 'sumo_neutral' || inspection?.stagger === false) ? 0 : 1;
+        planted.update(group,dt,speed,drive,heavy,stance,staggerScale);
         solveLeg('l',planted.feet[0],drive,heavy);
         solveLeg('r',planted.feet[1],drive,heavy);
       } else {planted.reset();}

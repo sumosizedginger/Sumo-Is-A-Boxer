@@ -14,10 +14,25 @@ import {
 import { BODY_REGIONS } from '../character/continuous-body.js';
 import { FACE_REGIONS } from '../character/hero-face.js';
 
-const SKIN = [0.53, 0.40, 0.31];
-const SKIN_WARM = [0.56, 0.41, 0.30];
-const SKIN_DEEP = [0.48, 0.36, 0.28];
-const HAIR = [0.09, 0.07, 0.06];
+const VOXEL_FACE_DIRS = [
+  [1, 0, 0],
+  [-1, 0, 0],
+  [0, 1, 0],
+  [0, -1, 0],
+  [0, 0, 1],
+  [0, 0, -1]
+];
+
+function isOccupied(grid, x, y, z) {
+  const [nx, ny, nz] = grid.dimensions;
+  if (x < 0 || y < 0 || z < 0 || x >= nx || y >= ny || z >= nz) return false;
+  return grid.occupied[x + nx * (y + ny * z)] !== 0;
+}
+
+// Authoritative warm clay / skin palette matching Reference Sheet 07
+const SKIN = [0.76, 0.62, 0.50];
+const SKIN_WARM = [0.79, 0.65, 0.52];
+const SKIN_DEEP = [0.70, 0.56, 0.44];
 
 const REGION_COLOR = {
   [BODY_REGIONS.head]: SKIN,
@@ -45,16 +60,22 @@ const REGION_COLOR = {
 };
 
 for (const [name, id] of Object.entries(FACE_REGIONS)) {
-  REGION_COLOR[id] = name.includes('cranium') || name.includes('forehead') ? HAIR : SKIN;
+  if (name.includes('orbit') || name.includes('lid') || name.includes('nostril') || name.includes('neck_interface')) {
+    REGION_COLOR[id] = SKIN_DEEP;
+  } else if (name.includes('cheek') || name.includes('jaw') || name.includes('brow') || name.includes('wing') || name.includes('lip') || name.includes('mouth')) {
+    REGION_COLOR[id] = SKIN_WARM;
+  } else {
+    REGION_COLOR[id] = SKIN;
+  }
 }
 
-function jitter(color, x, y, z) {
+function jitter(color, x, y, z, cavityFactor = 1.0) {
   const h = (Math.imul(x + 3, 0x9e3779b9) ^ Math.imul(y + 1, 0x85ebca6b) ^ Math.imul(z + 7, 0xc2b2ae35)) >>> 0;
-  const j = ((h & 255) / 255 - 0.5) * 0.045;
+  const j = ((h & 255) / 255 - 0.5) * 0.022;
   return [
-    Math.max(0, Math.min(1, color[0] + j)),
-    Math.max(0, Math.min(1, color[1] + j * 0.85)),
-    Math.max(0, Math.min(1, color[2] + j * 0.7))
+    Math.max(0, Math.min(1, (color[0] + j) * cavityFactor)),
+    Math.max(0, Math.min(1, (color[1] + j * 0.85) * cavityFactor)),
+    Math.max(0, Math.min(1, (color[2] + j * 0.7) * cavityFactor))
   ];
 }
 
@@ -81,14 +102,22 @@ export function createHeroVoxel(character, { quality = 'HERO' } = {}) {
     quality,
     fillInterior: true,
     sourceGuideId: character.heroArtifact?.id ?? 'hero.guide',
-    provenance: { assembly: 'guide-to-voxel', milestone: 'VOXEL-PIVOT-001' }
+    provenance: { assembly: 'guide-to-voxel', milestone: 'VOXEL-HERO-002' }
   });
   const grid = voxelizeMesh(mesh, definition.data.parameters);
   const artifact = createVoxelArtifact({
     id: 'voxel.hero.sumo',
     definition,
     grid,
-    colorForCell: ({ x, y, z, regionId }) => jitter(REGION_COLOR[regionId] ?? SKIN, x, y, z)
+    colorForCell: ({ x, y, z, regionId }) => {
+      let neighbors = 0;
+      for (let d = 0; d < 6; d++) {
+        const dir = VOXEL_FACE_DIRS[d];
+        if (isOccupied(grid, x + dir[0], y + dir[1], z + dir[2])) neighbors++;
+      }
+      const cavity = 1.10 - neighbors * 0.055;
+      return jitter(REGION_COLOR[regionId] ?? SKIN, x, y, z, cavity);
+    }
   });
   const runtime = instantiateVoxelArtifact(artifact, {
     mode: 'instances',
@@ -96,7 +125,18 @@ export function createHeroVoxel(character, { quality = 'HERO' } = {}) {
     name: 'hero-voxel'
   });
   runtime.object3D.frustumCulled = false;
-  if (character.material) character.material.visible = false;
+  runtime.material.roughness = 0.68;
+  runtime.material.metalness = 0.02;
+  if (character.material) {
+    character.material.visible = false;
+  }
   character.mesh.visible = true;
+  character.mesh.castShadow = false;
+  character.mesh.receiveShadow = false;
+  for (const m of runtime.meshes) {
+    m.castShadow = true;
+    m.receiveShadow = true;
+    m.frustumCulled = false;
+  }
   return { artifact, runtime, grid, generationMs: grid.generationMs };
 }

@@ -4,7 +4,7 @@ High-density **voxel sumo**, generated entirely in code on **My Game Engine 1.0*
 
 The project name stays SUMO IS A BOXER. The visual identity is sculptural voxel mass, not boxing equipment.
 
-At gameplay distance the hero reads as a coherent 3D figure. At close range the cubic microstructure is unmistakable. The smooth body is **hidden guide geometry** (skeleton, regions, landmarks, skin weights). Visible art is Voxel Forge.
+At gameplay distance the hero reads as a monumental 3D sculptural figure. At close range the cubic microstructure is unmistakable. The smooth body is **hidden guide geometry** (skeleton, regions, landmarks, skin weights). Visible art is Voxel Forge at `VOXEL_QUALITY.HERO` (0.012 m base unit cubes).
 
 ## Run it
 
@@ -21,7 +21,12 @@ npm run build
 cd engine && npm test
 ```
 
-Voxel inspection: `http://127.0.0.1:5180/?validation=voxel`
+Voxel inspection: `http://127.0.0.1:5180/?validation=voxel` (boots in `VOXEL_CLAY` mode).
+
+Validation capture:
+```bash
+node scripts/capture-voxel-hero-002.mjs
+```
 
 ## Controls
 
@@ -48,6 +53,7 @@ src/game/          game: combat, voxel hero, voxel arena, HUD
 engine/            My Game Engine 1.0 (includes Voxel Forge)
 docs/              canonical project documentation
 references/visual/ approved external target sheets (user-supplied)
+artifacts/         milestone certifications and captures
 ```
 
 Public voxel APIs come from `@sumosizedginger/my-game-engine-1.0/full`.

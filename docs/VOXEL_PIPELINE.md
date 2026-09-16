@@ -1,20 +1,20 @@
 # Voxel pipeline
 
-**Status:** IMPLEMENTED APIs below are real. Items marked PLANNED / DEFERRED are not.
+**Status:** IMPLEMENTED and certified for VOXEL-HERO-002.
 
 ## Flow
 
 ```
-SMOOTH SEMANTIC GUIDE (hidden)
+SMOOTH SEMANTIC GUIDE (hidden deformation authority)
         ↓
-voxelizeMesh          occupancy sampling of MeshIR / topology surface
+voxelizeMesh          occupancy grid sampling of continuous guide surface (fillInterior: true)
         ↓
-extractVoxelSurface   6-neighbour hidden-face / interior rejection
+extractVoxelSurface   6-neighbour boundary extraction & enclosed interior rejection
         ↓
-createVoxelArtifact   serializable cells, region ids, bind pose, hash
+createVoxelArtifact   serializable surface cells, region IDs, bind pose, hash, cavity occlusion
         ↓
 instantiateVoxelArtifact
-        instances  — InstancedMesh of rigid cubes (hero)
+        instances  — InstancedMesh of rigid unit cubes (hero, single draw call)
         faces      — merged visible quads (static environment)
 ```
 
@@ -31,25 +31,32 @@ instantiateVoxelArtifact
 
 ## Game wiring
 
-- Guide: `src/game/character/continuous-body.js` + `hero-guide-body.js` + `hero-face.js`
-- Hero compile: `src/game/voxel/hero-voxel.js` → `createOpponentSumo`
+- Guide: `src/game/character/continuous-body.js` + `head-profile.js` + `hero-face.js` + `skull-sections.js`
+- Opponent & Hero compile: `src/game/character/opponent-sumo.js` + `src/game/voxel/hero-voxel.js`
+- Default quality: `VOXEL.heroQuality = 'HERO'` (0.012 m base unit cubes)
 - Environment: `createAssetLibrary({ voxelQuality })` voxelizes MeshIR placements
 - First person: `src/game/assets/hero-kit.js` blocky fists, voxelized at HIGH
 
+## Shading & Materials
+
+- Base material: `MeshStandardMaterial` with `roughness = 0.68`, `metalness = 0.02`.
+- Palettes: Sculptural terracotta and warm clay tones (`SKIN = [0.76, 0.62, 0.50]`, `SKIN_WARM = [0.79, 0.65, 0.52]`, `SKIN_DEEP = [0.70, 0.56, 0.44]`).
+- Cavity Occlusion: Computed via 6-neighbor occupancy count (`1.10 - neighbors * 0.055`), darkening recessed corners and crevices for self-shadowing and form definition.
+
+## Presentation Modes
+
+- `VOXEL_CLAY`: Matte terracotta clay shading, 3-point neutral studio lighting (bright key, soft fill, warm rim, ambient bounce, neutral gray background `0x3a3f47`, `fog = null`).
+- `VOXEL_COLOR`: Vertex-colored hero with cavity shading and studio illumination.
+- `SILHOUETTE`: Pure binary silhouette validation (unlit solid black hero `0x050505` on clean bright background `0xeef0f2`).
+- `GUIDE`: Certified continuous guide mesh visible.
+- `WIREFRAME`: Wireframe representation of smooth guide mesh.
+- `GRID`: Instance wireframe showcasing voxel grid alignment.
+- `SEMANTIC`: Semantic anatomical region color map.
+- `PERFORMANCE`: Production gameplay lighting and camera.
+
 ## Deformation
 
-**IMPLEMENTED (experimental in the sense of first production use):** bind-space voxel centres, four bone weights copied from the nearest guide vertex, LBS of the centre, blended bone rotation, **uniform** cube scale. Cubes do not stretch.
-
-Soft-mass (belly/flank/glute jiggle) is **PLANNED**. The representation stores per-voxel bind samples so it remains possible.
-
-## LOD
-
-**DEFERRED.** Quality names exist; no runtime LOD switch yet.
-
-## PNG projection
-
-`artifact.colorBinding.pngProjection` is reserved and **null**. Colour today is region palette + mild coordinate jitter, **not** baked lighting. Future: generated PNG → directional / semantic projection → per-voxel albedo → runtime lighting.
-
-## Metrics
-
-Hero diagnostics expose occupied / surface / visible faces / voxelSize / generationMs / drawCalls via `opponent.diagnostics().voxel`.
+- Bind-space voxel centres with four bone weights sampled from the nearest guide vertex.
+- Linear blend skinning of cube positions with blended bone rotation.
+- **Rigid Unit Cubes:** Cubes maintain uniform isotropic 0.012m unit scale across all poses. No stretching.
+- Soft-mass jiggle is **PLANNED** as secondary layer on top of rigid unit cells.

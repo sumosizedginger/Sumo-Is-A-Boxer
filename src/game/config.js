@@ -7,8 +7,8 @@
  */
 
 export const VOXEL = Object.freeze({
-  /** Default boot quality. HERO (0.012m) is implemented; HIGH is the shipped default. Override with ?voxel=HERO */
-  heroQuality: 'HIGH',
+  /** Canonical hero quality: HERO (0.012m unit cubes, highest visual resolution) */
+  heroQuality: 'HERO',
   environmentQuality: 'COARSE',
   firstPersonQuality: 'HIGH'
 });

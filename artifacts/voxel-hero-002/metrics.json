@@ -1,0 +1,28 @@
+{
+  "metrics": {
+    "occupied": 253497,
+    "surface": 24611,
+    "faces": 42288,
+    "voxelSize": 0.012,
+    "generationMs": 30395.80000001192,
+    "drawCalls": 1
+  },
+  "errors": [],
+  "captures": [
+    "artifacts\\voxel-hero-002\\clay-front.png",
+    "artifacts\\voxel-hero-002\\clay-rear.png",
+    "artifacts\\voxel-hero-002\\clay-profile-left.png",
+    "artifacts\\voxel-hero-002\\clay-profile-right.png",
+    "artifacts\\voxel-hero-002\\clay-three-quarter-front-left.png",
+    "artifacts\\voxel-hero-002\\clay-three-quarter-rear-left.png",
+    "artifacts\\voxel-hero-002\\silhouette-front.png",
+    "artifacts\\voxel-hero-002\\silhouette-profile.png",
+    "artifacts\\voxel-hero-002\\close-face.png",
+    "artifacts\\voxel-hero-002\\close-belly.png",
+    "artifacts\\voxel-hero-002\\close-arm.png",
+    "artifacts\\voxel-hero-002\\close-thigh.png",
+    "artifacts\\voxel-hero-002\\close-hand.png",
+    "artifacts\\voxel-hero-002\\close-grid.png",
+    "artifacts\\voxel-hero-002\\hero-production.png"
+  ]
+}

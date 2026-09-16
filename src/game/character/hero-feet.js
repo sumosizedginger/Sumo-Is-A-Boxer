@@ -9,7 +9,7 @@ export function createHeroFeet() {
   const rotation=new Quaternion(),axis=new Vector3(0,1,0);
   let ready=false,active=-1,next=0;
   function reset(){ready=false;active=-1;next=0;}
-  return {feet,reset,update(group,dt,speed,drive=0,heavy=false,stanceWidth=.225){
+  return {feet,reset,update(group,dt,speed,drive=0,heavy=false,stanceWidth=.225,staggerScale=1){
     rotation.setFromAxisAngle(axis,group.rotation.y);
     if(!ready){previous.copy(group.position);}
     velocity.copy(group.position).sub(previous).multiplyScalar(dt>0?1/dt:0);
@@ -18,9 +18,9 @@ export function createHeroFeet() {
     const stepDuration=Math.max(.10,Math.min(.22,.32/Math.max(.1,speed)));
     for(let i=0;i<2;i++){
       const f=feet[i];
-      const stagger=1-Math.min(1,speed/1.0);
+      const stagger=(1-Math.min(1,speed/1.0))*staggerScale;
       desired.set(f.sign*stanceWidth,.093,(f.sign>0?.235:-.245)*stagger).applyQuaternion(rotation).add(group.position);
-      if(!ready){f.position.copy(desired);f.yaw=group.rotation.y+(i===1?-.22:.04);f.t=1;}
+      if(!ready){f.position.copy(desired);f.yaw=group.rotation.y+(staggerScale===0?0:(i===1?-.22:.04));f.t=1;}
       if(active<0 && i===next && f.position.distanceTo(desired)>.20){
         active=i;f.t=0;f.from.copy(f.position);f.to.copy(desired).addScaledVector(velocity,stepDuration*1.5);
         f.fromYaw=f.yaw;f.toYaw=group.rotation.y+(i===1?-.22:.04);

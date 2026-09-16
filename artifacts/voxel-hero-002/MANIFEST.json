@@ -1,0 +1,30 @@
+{
+  "milestone": "VOXEL-HERO-002",
+  "branch": "game-build",
+  "quality": "HERO",
+  "hero": {
+    "occupied": 253497,
+    "surface": 24611,
+    "faces": 42288,
+    "voxelSize": 0.012,
+    "generationMs": 30395.80000001192,
+    "drawCalls": 1
+  },
+  "captures": [
+    "clay-front.png",
+    "clay-rear.png",
+    "clay-profile-left.png",
+    "clay-profile-right.png",
+    "clay-three-quarter-front-left.png",
+    "clay-three-quarter-rear-left.png",
+    "silhouette-front.png",
+    "silhouette-profile.png",
+    "close-face.png",
+    "close-belly.png",
+    "close-arm.png",
+    "close-thigh.png",
+    "close-hand.png",
+    "close-grid.png",
+    "hero-production.png"
+  ]
+}

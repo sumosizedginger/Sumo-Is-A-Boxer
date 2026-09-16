@@ -6,13 +6,41 @@ export const BODY_REGIONS=Object.freeze(Object.fromEntries(['head','neck','chest
 const clamp=t=>Math.max(0,Math.min(1,t));
 const smooth=t=>{t=clamp(t);return t*t*(3-2*t);};
 function lerpRows(rows,y){for(let i=0;i<rows.length-1;i++)if(y<=rows[i+1][0]){const a=rows[i],b=rows[i+1],t=clamp((y-a[0])/(b[0]-a[0]));return a.slice(1).map((v,k)=>v+(b[k+1]-v)*t);}return rows.at(-1).slice(1);}
-const torsoRows=[[.95,.218,.176,-.018],[1.01,.236,.198,-.008],[1.10,.248,.218,.018],[1.18,.242,.210,.028],[1.27,.228,.186,.016],[1.36,.220,.168,.008],[1.43,.214,.156,0],[1.48,.196,.132,-.004],[1.52,.176,.104,-.008],[1.56,.108,.086,-.01],[1.60,.086,.076,-.011],[1.64,.072,.074,-.006],[1.67,.068,.078,.009]];
+const torsoRows=[
+  [.95, .335, .285, .005],
+  [1.02, .365, .315, .035],
+  [1.10, .380, .338, .055],
+  [1.18, .382, .342, .060],
+  [1.27, .372, .325, .046],
+  [1.36, .358, .298, .032],
+  [1.43, .340, .272, .020],
+  [1.48, .308, .245, .012],
+  [1.52, .268, .218, .008],
+  [1.56, .226, .190, .005],
+  [1.60, .185, .162, .003],
+  [1.64, .150, .138, .005],
+  [1.67, .128, .122, .008]
+];
 function axial(y,t){const c=Math.cos(t),s=Math.sin(t);let p;
   if(y>=1.69){const h=skullAt(y);p=[h.cx+c*h.width,y,h.cz+s*h.depth];}
   else {const [w,d,z]=lerpRows(torsoRows,y);p=[c*w,y,z+s*d];if(y>1.67){const h=skullAt(1.69),a=(y-1.67)/.02;p=[p[0]*(1-a)+c*h.width*a,y,p[2]*(1-a)+(h.cz+s*h.depth)*a];}
-    // Broad chest/back planes, with room for later anatomy shaping.
-    if(y>1.17&&y<1.50)p[2]+=.008*Math.sin((y-1.17)/.33*Math.PI)*Math.sign(s)*Math.pow(Math.abs(s),.5);
-    if(y>1.02&&y<1.38)p[2]+=Math.max(0,s)*0.055*Math.sin((y-1.02)/.36*Math.PI);
+    // Broad chest/back planes
+    if(y>1.17&&y<1.50)p[2]+=.015*Math.sin((y-1.17)/.33*Math.PI)*Math.sign(s)*Math.pow(Math.abs(s),.5);
+    // Smooth, rounded abdominal volume with organic forward sweep and lower hang
+    if(y>0.95&&y<1.36&&s>0){
+      const v=Math.sin((y-0.95)/0.41*Math.PI);
+      p[2]+=s*s*0.065*v;
+    }
+    // Lower abdominal sag over pelvis
+    if(y>0.95&&y<1.18&&s>0)p[1]-=s*0.030*Math.sin((y-0.95)/0.23*Math.PI);
+    // Lateral abdominal flank / barrel core curvature
+    if(y>0.98&&y<1.36&&s>0)p[0]*=(1+s*0.06*Math.sin((y-0.98)/0.38*Math.PI));
+    // Upper pectoral mass
+    if(y>1.30&&y<1.48&&s>0)p[2]+=s*s*0.025*Math.sin((y-1.30)/0.18*Math.PI);
+    // Powerful glute mass in the rear
+    if(y>0.95&&y<1.18&&s<0)p[2]-=Math.abs(s)*0.035*Math.sin((y-0.95)/0.23*Math.PI);
+    // Upper back / rhomboid & lat mass
+    if(y>1.22&&y<1.50&&s<0)p[2]-=Math.abs(s)*0.020*Math.sin((y-1.22)/0.28*Math.PI);
   }return p;
 }
 function raw(position,indices){return createTopologySurface({attributes:{position},indices,forwardAxis:'+Z'});}
@@ -38,13 +66,14 @@ export function generateContinuousBody(landmarks,{widthScale=1,leftArmScale=1}={
   cap(indices,top,crown);
   // Pelvic saddle: front and rear midline are joined by a shared crotch chain.
   // Each side owns half the torso rim and the opposite side of that chain.
-  const bottom=rings[0],crotch=[];
-  for(let i=1;i<8;i++){const t=i/8;crotch.push(vertex([0,.95-.065*Math.sin(Math.PI*t),.112*(1-2*t)-.009]));}
+  const bottom=rings[0],pF=axial(.95,Math.PI/2),pR=axial(.95,3*Math.PI/2),crotch=[];
+  for(let i=1;i<8;i++){const t=i/8;crotch.push(vertex([0,.95-.085*Math.sin(Math.PI*t),pF[2]*(1-t)+pR[2]*t]));}
   const legLoops=[];
   const left=[bottom[48],...Array.from({length:32},(_,i)=>bottom[(49+i)%64]),...crotch];
   const right=[bottom[16],...Array.from({length:32},(_,i)=>bottom[17+i]),...[...crotch].reverse()];
+  const legCenterX=.168,legCenterZ=-.015,legRadiusX=.165,legRadiusZ=.178;
   for(const [side,sign,loop] of [['l',1,left.reverse()],['r',-1,right.reverse()]]){
-    const next=loop.map((id,i)=>{const p=position.slice(id*3,id*3+3),angle=Math.atan2((p[2]+.009)/.112,(p[0]-sign*.09)/.09);return vertex([sign*.123+Math.cos(angle)*.099,.845,Math.sin(angle)*.102-.008]);});
+    const next=loop.map((id,i)=>{const p=position.slice(id*3,id*3+3),angle=Math.atan2(p[2]-legCenterZ,p[0]-sign*legCenterX);return vertex([sign*legCenterX+Math.cos(angle)*legRadiusX,.845,Math.sin(angle)*legRadiusZ+legCenterZ]);});
     joinFaces(indices,loop,next);legLoops.push({side,sign,vertices:next});
   }
   // Compact only unused vertices inside the removed shoulder windows.
@@ -63,19 +92,24 @@ export function generateContinuousBody(landmarks,{widthScale=1,leftArmScale=1}={
     const push=p=>{const id=out.length/3;out.push(...p);return id;};
     let angles,shapeRows,begin,end;
     if(kind==='arm'){
-      angles=base.map(p=>Math.atan2(p[2]/.087,(p[1]-1.46)/.06));
+      angles=base.map(p=>Math.atan2(p[2]/.115,(p[1]-1.46)/.078));
       const e=landmarks['elbow.'+key].y,w=landmarks['wrist.'+key].y;
-      shapeRows=[[w-.025,.038,.038],[w+.06,.052,.048],[e-.10,.078,.068],[e-.04,.064,.06],[e,.06,.062],[e+.04,.068,.066],[e+.12,.088,.084],[1.35,.094,.09],[1.385,.098,.092]];
-      begin=1.385;end=w-.025;
+      shapeRows=[[w-.065,.064,.060],[w-.025,.068,.064],[w+.06,.086,.080],[e-.10,.106,.098],[e-.04,.095,.088],[e,.090,.085],[e+.04,.102,.096],[e+.12,.130,.124],[1.35,.138,.130],[1.385,.142,.134]];
+      begin=1.385;end=w-.065;
     }else{
-      angles=base.map(p=>Math.atan2((p[2]+.008)/.102,(p[0]-sign*.123)/.099));
+      angles=base.map(p=>Math.atan2(p[2]-legCenterZ,p[0]-sign*legCenterX));
       const k=landmarks['knee.'+key].y,a=landmarks['ankle.'+key].y;
-      shapeRows=[[a,.054,.056],[a+.12,.068,.082],[k-.14,.098,.104],[k-.06,.086,.086],[k,.08,.09],[k+.045,.09,.096],[k+.14,.118,.122],[.845,.132,.134]];
+      shapeRows=[[a,.090,.094],[a+.12,.122,.128],[k-.14,.152,.158],[k-.06,.134,.138],[k,.128,.132],[k+.045,.146,.152],[k+.14,.172,.178],[.845,.176,.182]];
       begin=.827;end=a;
     }
     const ringAt=(y)=>{const [w,d]=lerpRows(shapeRows,y);return angles.map(t=>{
-      let x;if(kind==='arm'){const e=landmarks['elbow.'+key],wr=landmarks['wrist.'+key];x=y>=e.y?e.x+(sign*.30-e.x)*clamp((y-e.y)/(1.385-e.y)):e.x+(wr.x-e.x)*clamp((e.y-y)/(e.y-wr.y));return [x+sign*Math.cos(t)*w,y,Math.sin(t)*d-.008];}
-      return [sign*.1274+Math.cos(t)*w,y,Math.sin(t)*d-.005];
+      let x;if(kind==='arm'){
+        const e=landmarks['elbow.'+key].y,wr=landmarks['wrist.'+key].y;
+        const elbowX=sign*.465,wristX=sign*.450,shoulderX=sign*.350;
+        x=y>=e?elbowX+(shoulderX-elbowX)*clamp((y-e)/(1.385-e)):elbowX+(wristX-elbowX)*clamp((e-y)/(e-wr));
+        return [x+sign*Math.cos(t)*w,y,Math.sin(t)*d-.008];
+      }
+      return [sign*legCenterX+Math.cos(t)*w,y,Math.sin(t)*d+legCenterZ];
     });};
     const target=ringAt(begin);
     const transition=kind==='arm'?8:1;

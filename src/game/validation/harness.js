@@ -1,6 +1,6 @@
 import { createModelInspection } from './models.js';
 import { createTopologyInspection } from './topology.js';
-import { Raycaster, Vector2 } from 'three';
+import { Raycaster, Vector2, DirectionalLight, HemisphereLight, Object3D, Color, Mesh, PlaneGeometry, MeshStandardMaterial } from 'three';
 import { PRESETS, motionCamera } from './presets.js';
 
 const copy = value => JSON.parse(JSON.stringify(value));
@@ -8,7 +8,7 @@ const nextFrame = () => new Promise(resolve => requestAnimationFrame(resolve));
 const percentile = (sorted, p) => sorted[Math.min(sorted.length - 1, Math.floor(sorted.length * p))] ?? null;
 
 export function createValidation({ game, rig, sparks, lights, modelMode=false, topologyMode=false, voxelMode=false }) {
-  const { renderer, scene, camera, match, opponent, fists, surfaceDetail } = game;
+  const { renderer, scene, camera, match, opponent, fists, surfaceDetail, presentation } = game;
   const shaderErrors = [];
   renderer.debug.checkShaderErrors = true;
   renderer.debug.onShaderError = (gl, program, vertex, fragment) => shaderErrors.push({
@@ -18,6 +18,150 @@ export function createValidation({ game, rig, sparks, lights, modelMode=false, t
     fragment: { compiled: gl.getShaderParameter(fragment, gl.COMPILE_STATUS), log: gl.getShaderInfoLog(fragment) }
   });
   let activePreset = null;
+
+  // Dedicated neutral clay presentation lighting
+  const clayLightGroup = new Object3D();
+  clayLightGroup.name = 'clay-light-rig';
+  const clayKey = new DirectionalLight(0xffffff, 2.4);
+  clayKey.position.set(2.5, 3.8, 3.2);
+  clayKey.castShadow = true;
+  clayKey.shadow.mapSize.set(1024, 1024);
+  clayKey.shadow.bias = -0.0003;
+  clayLightGroup.add(clayKey);
+
+  const clayFill = new DirectionalLight(0xd5e3f5, 1.4);
+  clayFill.position.set(-2.8, 2.2, 2.4);
+  clayLightGroup.add(clayFill);
+
+  const clayRim = new DirectionalLight(0xffecd6, 1.8);
+  clayRim.position.set(0.2, 3.5, -2.8);
+  clayLightGroup.add(clayRim);
+
+  const clayAmbient = new HemisphereLight(0xf4f7fa, 0x545860, 1.0);
+  clayLightGroup.add(clayAmbient);
+
+  const clayFloor = new Mesh(new PlaneGeometry(12, 12), new MeshStandardMaterial({ color: 0x30343a, roughness: 0.95 }));
+  clayFloor.name = 'clay-contact-plane';
+  clayFloor.rotation.x = -Math.PI / 2;
+  clayFloor.position.y = 0.001;
+  clayFloor.receiveShadow = true;
+  clayLightGroup.add(clayFloor);
+
+  scene.add(clayLightGroup);
+  clayLightGroup.visible = false;
+
+  let originalSceneEnv = null;
+
+  function setPresentation(mode) {
+    if (!originalSceneEnv) {
+      originalSceneEnv = {
+        fog: scene.fog,
+        background: scene.background ? scene.background.clone() : null
+      };
+    }
+    const guide = opponent?.character?.material;
+    const voxels = opponent?.voxel?.runtime?.object3D;
+    const voxelMat = opponent?.voxel?.runtime?.material;
+    const name = String(mode || 'VOXEL_CLAY').toUpperCase();
+
+    if (guide) {
+      guide.visible = (name === 'GUIDE' || name === 'WIREFRAME');
+      guide.wireframe = (name === 'WIREFRAME');
+    }
+
+    if (voxels) {
+      voxels.visible = (name !== 'GUIDE' && name !== 'WIREFRAME');
+    }
+
+    if (presentation?.root) {
+      presentation.root.visible = (name === 'PERFORMANCE' || name === 'PRODUCTION');
+    }
+    opponent?.group?.traverse(o => {
+      if (o.isMesh && (o.name.includes('hair') || o.name.includes('asset.hero.hair') || o.name.includes('boxer-hair'))) {
+        o.visible = false;
+      }
+    });
+
+    if (name === 'SILHOUETTE') {
+      if (lights?.group) lights.group.visible = false;
+      clayLightGroup.visible = false;
+      scene.fog = null;
+      scene.background = new Color(0xeef0f2);
+      if (voxelMat) {
+        voxelMat.color.setHex(0x000000);
+        voxelMat.emissive.setHex(0x000000);
+        voxelMat.vertexColors = false;
+        voxelMat.roughness = 1.0;
+        voxelMat.metalness = 0.0;
+        voxelMat.wireframe = false;
+        voxelMat.needsUpdate = true;
+      }
+    } else if (name === 'VOXEL_CLAY') {
+      if (lights?.group) lights.group.visible = false;
+      clayLightGroup.visible = true;
+      scene.fog = null;
+      scene.background = new Color(0x3a3f47);
+      if (voxelMat) {
+        voxelMat.color.setHex(0xd0b8a4);
+        voxelMat.emissive.setHex(0x000000);
+        voxelMat.vertexColors = false;
+        voxelMat.roughness = 0.70;
+        voxelMat.metalness = 0.02;
+        voxelMat.wireframe = false;
+        voxelMat.needsUpdate = true;
+      }
+    } else if (name === 'VOXEL_COLOR' || name === 'VOXEL') {
+      if (lights?.group) lights.group.visible = false;
+      clayLightGroup.visible = true;
+      scene.fog = null;
+      scene.background = new Color(0x282c34);
+      if (voxelMat) {
+        voxelMat.color.setHex(0xffffff);
+        voxelMat.emissive.setHex(0x000000);
+        voxelMat.vertexColors = false;
+        voxelMat.roughness = 0.68;
+        voxelMat.metalness = 0.02;
+        voxelMat.wireframe = false;
+        voxelMat.needsUpdate = true;
+      }
+    } else if (name === 'GRID' || name === 'SEMANTIC') {
+      if (lights?.group) lights.group.visible = false;
+      clayLightGroup.visible = true;
+      scene.fog = null;
+      scene.background = new Color(0x32363e);
+      if (voxelMat) {
+        voxelMat.color.setHex(0xffffff);
+        voxelMat.emissive.setHex(0x000000);
+        voxelMat.vertexColors = false;
+        voxelMat.roughness = 0.60;
+        voxelMat.metalness = 0.05;
+        voxelMat.wireframe = (name === 'GRID');
+        voxelMat.needsUpdate = true;
+      }
+    } else if (name === 'GUIDE' || name === 'WIREFRAME') {
+      if (lights?.group) lights.group.visible = false;
+      clayLightGroup.visible = true;
+      scene.fog = null;
+      scene.background = new Color(0x3a3f47);
+    } else if (name === 'PERFORMANCE') {
+      if (lights?.group) lights.group.visible = true;
+      clayLightGroup.visible = false;
+      scene.fog = originalSceneEnv.fog;
+      scene.background = originalSceneEnv.background;
+      if (voxelMat) {
+        voxelMat.color.setHex(0xffffff);
+        voxelMat.vertexColors = true;
+        voxelMat.wireframe = false;
+        voxelMat.needsUpdate = true;
+      }
+    } else {
+      if (lights?.group) lights.group.visible = true;
+      clayLightGroup.visible = false;
+      scene.fog = originalSceneEnv.fog;
+      scene.background = originalSceneEnv.background;
+    }
+  }
+
   function setCamera(transform) {
     camera.position.fromArray(transform.position);
     camera.quaternion.fromArray(transform.quaternion);
@@ -35,14 +179,30 @@ export function createValidation({ game, rig, sparks, lights, modelMode=false, t
     rig.reset(); sparks.clear(); opponent.reset(); opponent.setFlash(0); fists.reset();
     Object.assign(match.player, { yaw: p.player.yaw });
     Object.assign(match.opponent, { yaw: p.opponent.yaw, state: 'idle', speed: 0 });
+    const isSumoNeutral = p.opponent.pose === 'sumo_neutral';
     for (let i = 0; i < p.posePreparation.steps; i++) {
-      opponent.update({ state: match.opponent, position: { x: 0, y: 0, z: 0 }, dt: p.posePreparation.dt, speed: 0 });
+      opponent.update({
+        state: match.opponent,
+        position: { x: 0, y: 0, z: 0 },
+        dt: p.posePreparation.dt,
+        speed: 0,
+        inspection: {
+          pose: p.opponent.pose ?? 'sumo_neutral',
+          stanceWidth: isSumoNeutral ? 0.32 : 0.225,
+          stagger: !isSumoNeutral
+        }
+      });
       fists.update({ player: match.player, dt: p.posePreparation.dt });
     }
     opponent.group.position.fromArray(p.opponent.position);
     opponent.group.visible = p.opponent.visible;
     fists.root.visible = p.player.viewmodelVisible;
     setCamera(p.camera);
+    if (p.presentationMode) {
+      setPresentation(p.presentationMode);
+    } else if (voxelMode) {
+      setPresentation('VOXEL_CLAY');
+    }
     if (shouldRender) render();
     return state();
   }
@@ -143,23 +303,22 @@ export function createValidation({ game, rig, sparks, lights, modelMode=false, t
   const voxel = voxelMode ? {
     metrics: () => opponent.diagnostics().voxel,
     setPresentation(mode) {
-      const guide = opponent.character.material;
-      const voxels = opponent.voxel?.runtime.object3D;
-      const name = String(mode || 'VOXEL').toUpperCase();
-      if (guide) {
-        guide.visible = name === 'GUIDE' || name === 'WIREFRAME';
-        guide.wireframe = name === 'WIREFRAME';
-      }
-      if (voxels) voxels.visible = name === 'VOXEL' || name === 'SEMANTIC' || name === 'SILHOUETTE' || name === 'PERFORMANCE';
-      if (name === 'SILHOUETTE' && opponent.voxel?.runtime.material) {
-        opponent.voxel.runtime.material.color.setHex(0x111111);
-      }
+      setPresentation(mode);
       render();
     }
   } : null;
-  return { models, topology, voxel, dispose(){models?.dispose(); topology?.dispose();}, presets: copy(PRESETS), frame: now=>{models?.frame(now); topology?.frame(now); render();}, render, applyPreset, state, coverage, resources, diagnostics, sample, settle, recordMotion,
+  return {
+    models, topology, voxel,
+    dispose() {
+      models?.dispose();
+      topology?.dispose();
+      clayLightGroup.traverse(o => { if (o.dispose) o.dispose(); });
+      clayLightGroup.removeFromParent();
+    },
+    presets: copy(PRESETS), frame: now=>{models?.frame(now); topology?.frame(now); render();}, render, applyPreset, state, coverage, resources, diagnostics, sample, settle, recordMotion,
     setDetail: enabled => { surfaceDetail.setEnabled(enabled); render(); },
     capture: () => { render(); return renderer.domElement.toDataURL('image/png'); },
     motionFrame: (name, progress) => { setCamera(motionCamera(name, progress)); render(); return state().camera; },
-    reset: seed => { applyPreset(voxelMode ? 'voxel_hero' : 'gloves_gameplay', seed); opponent.group.visible = true; render(); return resources(); } };
+    reset: seed => { applyPreset(voxelMode ? 'voxel_hero' : 'gloves_gameplay', seed); opponent.group.visible = true; render(); return resources(); }
+  };
 }

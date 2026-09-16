@@ -1,16 +1,19 @@
 import { PerspectiveCamera, Vector3 } from 'three';
 
-function preset(position, target, fov, subject, viewmodel = false) {
+function preset(position, target, fov, subject, viewmodel = false, options = {}) {
   const camera = new PerspectiveCamera(fov);
   camera.position.fromArray(position);
   camera.lookAt(new Vector3(...target));
+  const pose = options.pose ?? 'stance';
+  const yaw = options.yaw ?? Math.PI;
   return {
     camera: { position, quaternion: camera.quaternion.toArray(), fov, target }, subject,
     player: { pose: 'guardHigh', position: [0, 0, 2], yaw: 0, viewmodelVisible: viewmodel },
-    opponent: { pose: 'stance', position: [0, 0, 0], yaw: Math.PI, visible: subject === 'skin' },
+    opponent: { pose, position: [0, 0, 0], yaw, visible: subject === 'skin' },
+    presentationMode: options.presentationMode ?? null,
     simulation: { frozen: true, seed: 1111, advancementSeconds: 0 },
     posePreparation: { steps: 60, dt: 1 / 60, description: 'Presentation-only settling after reset, before capture; no match.step.' },
-    lighting: { existingOnly: true, updateTime: 0, frozen: true },
+    lighting: { existingOnly: true, updateTime: 0, frozen: true, ...options.lighting },
     overlays: { hudHidden: true, damageSuppressed: true },
     particles: { dustHidden: true, sparksCleared: true, updatesDisabled: true }
   };
@@ -23,9 +26,29 @@ export const PRESETS = {
   gloves_gameplay: preset([0, 1.65, 2], [0, 1.65, 0], 68, 'skin', true),
   fists_close: preset([0, 1.65, 2], [0, 1.65, 0], 45, 'skin', true),
   fists_gameplay: preset([0, 1.65, 2], [0, 1.65, 0], 68, 'skin', true),
-  voxel_hero: preset([0, 1.15, 3.2], [0, 1.05, 0], 48, 'skin'),
-  voxel_face: preset([0.12, 1.74, 0.55], [0, 1.72, 0.05], 32, 'skin'),
-  voxel_belly: preset([0.2, 1.22, 1.1], [0, 1.18, 0.05], 40, 'skin'),
+
+  // Hero sculpt & visual ceiling presets
+  voxel_hero: preset([0, 1.05, 3.1], [0, 1.02, 0], 48, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'VOXEL_CLAY' }),
+  voxel_face: preset([0.08, 1.73, 0.70], [0, 1.72, 0.05], 32, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'VOXEL_CLAY' }),
+  voxel_belly: preset([0.38, 1.15, 1.30], [0, 1.12, 0.15], 40, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'VOXEL_CLAY' }),
+
+  // 15 canonical views required by VOXEL-HERO-002
+  clay_front: preset([0, 1.05, 3.1], [0, 1.02, 0], 46, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'VOXEL_CLAY' }),
+  clay_rear: preset([0, 1.05, -3.1], [0, 1.02, 0], 46, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'VOXEL_CLAY' }),
+  clay_profile_left: preset([3.1, 1.05, 0], [0, 1.02, 0], 46, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'VOXEL_CLAY' }),
+  clay_profile_right: preset([-3.1, 1.05, 0], [0, 1.02, 0], 46, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'VOXEL_CLAY' }),
+  clay_three_quarter_front_left: preset([2.2, 1.05, 2.2], [0, 1.02, 0], 46, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'VOXEL_CLAY' }),
+  clay_three_quarter_rear_left: preset([2.2, 1.05, -2.2], [0, 1.02, 0], 46, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'VOXEL_CLAY' }),
+  silhouette_front: preset([0, 1.05, 3.1], [0, 1.02, 0], 46, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'SILHOUETTE' }),
+  silhouette_profile: preset([3.1, 1.05, 0], [0, 1.02, 0], 46, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'SILHOUETTE' }),
+  close_face: preset([0.04, 1.66, 0.75], [0, 1.65, 0.08], 30, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'VOXEL_CLAY' }),
+  close_belly: preset([0.45, 1.05, 1.60], [0, 1.02, 0.38], 36, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'VOXEL_CLAY' }),
+  close_arm: preset([0.70, 0.95, 0.65], [0.41, 0.90, 0.02], 34, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'VOXEL_CLAY' }),
+  close_thigh: preset([0.45, 0.55, 1.15], [0.20, 0.52, 0], 36, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'VOXEL_CLAY' }),
+  close_hand: preset([0.58, 0.68, 0.40], [0.41, 0.64, 0.02], 28, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'VOXEL_CLAY' }),
+  close_grid: preset([0.20, 1.08, 0.75], [0.05, 1.05, 0.38], 24, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'VOXEL_CLAY' }),
+  hero_production: preset([0.4, 1.15, 2.8], [0, 1.05, 0], 46, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'VOXEL_COLOR' }),
+
   skin_close: preset([.5, 1.6, 1.05], [0, 1.48, 0], 42, 'skin'),
   skin_gameplay: preset([0, 1.65, 2.3], [0, 1.1, 0], 62, 'skin'),
   concrete_close: preset([3.4, -.55, -10.2], [3.4, -1.05, -11.5], 55, 'concrete'),
