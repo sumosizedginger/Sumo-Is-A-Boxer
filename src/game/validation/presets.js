@@ -32,20 +32,36 @@ export const PRESETS = {
   voxel_face: preset([0.08, 1.73, 0.70], [0, 1.72, 0.05], 32, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'VOXEL_CLAY' }),
   voxel_belly: preset([0.38, 1.15, 1.30], [0, 1.12, 0.15], 40, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'VOXEL_CLAY' }),
 
-  // 15 canonical views required by VOXEL-HERO-002
+  // Canonical views for VOXEL-HERO-003
+  guide_front: preset([0, 1.05, 3.1], [0, 1.02, 0], 46, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'GUIDE' }),
+  guide_rear: preset([0, 1.05, -3.1], [0, 1.02, 0], 46, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'GUIDE' }),
+  guide_profile: preset([3.1, 1.05, 0], [0, 1.02, 0], 46, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'GUIDE' }),
+  guide_three_quarter_front: preset([2.2, 1.05, 2.2], [0, 1.02, 0], 46, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'GUIDE' }),
+  guide_three_quarter_rear: preset([2.2, 1.05, -2.2], [0, 1.02, 0], 46, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'GUIDE' }),
+
   clay_front: preset([0, 1.05, 3.1], [0, 1.02, 0], 46, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'VOXEL_CLAY' }),
   clay_rear: preset([0, 1.05, -3.1], [0, 1.02, 0], 46, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'VOXEL_CLAY' }),
+  clay_profile: preset([3.1, 1.05, 0], [0, 1.02, 0], 46, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'VOXEL_CLAY' }),
   clay_profile_left: preset([3.1, 1.05, 0], [0, 1.02, 0], 46, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'VOXEL_CLAY' }),
   clay_profile_right: preset([-3.1, 1.05, 0], [0, 1.02, 0], 46, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'VOXEL_CLAY' }),
+  clay_three_quarter_front: preset([2.2, 1.05, 2.2], [0, 1.02, 0], 46, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'VOXEL_CLAY' }),
   clay_three_quarter_front_left: preset([2.2, 1.05, 2.2], [0, 1.02, 0], 46, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'VOXEL_CLAY' }),
+  clay_three_quarter_rear: preset([2.2, 1.05, -2.2], [0, 1.02, 0], 46, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'VOXEL_CLAY' }),
   clay_three_quarter_rear_left: preset([2.2, 1.05, -2.2], [0, 1.02, 0], 46, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'VOXEL_CLAY' }),
+
   silhouette_front: preset([0, 1.05, 3.1], [0, 1.02, 0], 46, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'SILHOUETTE' }),
   silhouette_profile: preset([3.1, 1.05, 0], [0, 1.02, 0], 46, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'SILHOUETTE' }),
-  close_face: preset([0.04, 1.66, 0.75], [0, 1.65, 0.08], 30, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'VOXEL_CLAY' }),
-  close_belly: preset([0.45, 1.05, 1.60], [0, 1.02, 0.38], 36, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'VOXEL_CLAY' }),
+
+  close_head: preset([0.05, 1.74, 0.85], [0, 1.73, 0.05], 28, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'VOXEL_CLAY' }),
+  close_face: preset([0.04, 1.70, 0.85], [0, 1.69, 0.08], 28, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'VOXEL_CLAY' }),
+  close_shoulder: preset([0.48, 1.48, 1.05], [0.30, 1.44, 0.02], 34, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'VOXEL_CLAY' }),
+  close_belly: preset([0.42, 1.10, 1.55], [0, 1.12, 0.38], 36, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'VOXEL_CLAY' }),
+  close_pelvis: preset([0.0, 0.95, -1.60], [0, 0.98, -0.05], 36, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'VOXEL_CLAY' }),
   close_arm: preset([0.70, 0.95, 0.65], [0.41, 0.90, 0.02], 34, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'VOXEL_CLAY' }),
-  close_thigh: preset([0.45, 0.55, 1.15], [0.20, 0.52, 0], 36, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'VOXEL_CLAY' }),
-  close_hand: preset([0.58, 0.68, 0.40], [0.41, 0.64, 0.02], 28, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'VOXEL_CLAY' }),
+  close_thigh: preset([-0.25, 0.65, 0.70], [-0.25, 0.65, 0.0], 34, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'VOXEL_CLAY' }),
+  close_thigh_knee: preset([-0.30, 0.45, 0.65], [-0.30, 0.45, -0.10], 32, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'VOXEL_CLAY' }),
+  close_hand: preset([-0.78, 0.61, 1.15], [-0.68, 0.59, 0.00], 22, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'VOXEL_CLAY' }),
+  close_foot: preset([-0.38, 0.16, 0.70], [-0.38, 0.08, 0.00], 28, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'VOXEL_CLAY' }),
   close_grid: preset([0.20, 1.08, 0.75], [0.05, 1.05, 0.38], 24, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'VOXEL_CLAY' }),
   hero_production: preset([0.4, 1.15, 2.8], [0, 1.05, 0], 46, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'VOXEL_COLOR' }),
 

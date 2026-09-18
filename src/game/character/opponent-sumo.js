@@ -85,7 +85,7 @@ function buildPoseTargets(landmarks) {
       pelvisYaw: 0, chestYaw: 0, headPitch: .02, lean: .025
     },
     sumo_neutral: {
-      left: [0.41, 0.69, 0.02], right: [-0.41, 0.69, 0.02],
+      left: [0.46, 0.70, 0.04], right: [-0.46, 0.70, 0.04],
       pelvisYaw: 0, chestYaw: 0, headPitch: 0, lean: 0
     },
     extended: {
@@ -498,7 +498,7 @@ export function createOpponentSumo({ library, voxelQuality = 'HERO' } = {}) {
       _bodyInverseMatrix.copy(body.matrixWorld).invert();
       body.getWorldQuaternion(_bodyInverse).invert();
       if(!downState){
-        const stance = inspection?.stanceWidth ?? (inspection?.pose === 'sumo_neutral' ? 0.32 : 0.225);
+        const stance = inspection?.stanceWidth ?? (inspection?.pose === 'sumo_neutral' ? 0.38 : 0.225);
         const staggerScale = (inspection?.pose === 'sumo_neutral' || inspection?.stagger === false) ? 0 : 1;
         planted.update(group,dt,speed,drive,heavy,stance,staggerScale);
         solveLeg('l',planted.feet[0],drive,heavy);

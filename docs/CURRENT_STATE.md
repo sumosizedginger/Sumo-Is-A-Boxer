@@ -1,20 +1,24 @@
 # Current state
 
 **Branch:** `game-build`  
-**Milestone:** VOXEL-HERO-002  
-**Status:** Hero visual ceiling achieved; sculpturally fitted to visual reference sheets.
+**Milestone:** VOXEL-HERO-003: REFERENCE-FITTED HERO SCULPTURE  
+**Status:** COMPLETE — Reference-fitted hero sculpture matching reference visual sheets 01, 02, 06, 07, 10, 12.
 
 ## Hero architecture
 
 - Character Forge humanoid + certified continuous guide body remain the **hidden** deformation authority (topology, skeleton, skin weights, landmarks, pose drivers).
 - Visible hero is a **Voxel Forge** sculptural surface-cube InstancedMesh (`quality: HERO` at 0.012 m base unit cubes).
-- Fully sculpted sumo anatomy:
-  - Giant hemispherical abdomen projecting +0.44m forward with lower sag.
-  - Huge ribcage (+0.37m lateral, +0.33m depth) and thick lateral flank pads.
-  - Colossal thighs (0.36m radius) and heavy calves (0.26m) grounded into wide stance.
-  - Massive muscular neck (0.24m width) and broad trapezius slope.
+- Fully sculpted sumo anatomy matching reference turnaround and proportion sheets:
+  - Total height: 1.86m, Head height: 0.245m (~1/7.6 proportion ratio).
+  - Massive continuous abdominal mass projecting forward with low apron sag and navel pit cavity at y=1.12m.
+  - Sternal notch depression flanked by twin sculpted pectoral plates.
+  - Wide trapezius slope connecting seamlessly into thick muscular neck column (no skinny neck constriction).
+  - Heavy muscular glute cheeks with deep midline cleft in posterior view.
+  - Distinct patellar knee plates and rear popliteal fossa creases.
+  - Muscular calf flare (gastrocnemius) with grounded calcaneus heel and planted metatarsal sole.
+  - Sculpted hand: natural flared arm hanging angle (~18°), distinct wrist joint, thenar eminence, and readable cubic knuckle fist block.
   - 3D sculpted facial volume: heavy brow overhang, deep orbital pockets, 4-step nose (root, bridge, tip, wings), heavy cheek pads, wide jaw angles, large chin projection, double-chin neck fold.
-- Dedicated `sumo_neutral` presentation pose: feet wide and planted, knees flexed, arms relaxed down/outward, elbows naturally flared, chest facing camera.
+- Dedicated `sumo_neutral` presentation pose: feet wide and planted (0.76m stance), knees flexed, arms relaxed down/outward, elbows naturally flared, chest facing camera.
 - Warm terracotta/sandstone clay skin palette matching Reference Sheet 07 with 6-neighbor directional cavity occlusion.
 - Individual cubes stay rigid under skeleton-driven centre motion with uniform isotropic scale.
 
@@ -32,16 +36,17 @@ Implemented in the engine (`engine/src/voxel/`, public through `engine/full`):
 
 - Dedicated neutral 3-point clay light rig (bright key, soft fill, warm rim, ambient bounce, neutral gray background `0x3a3f47`, no atmospheric fog).
 - Pure silhouette validation mode (solid black hero `0x050505`, clean bright background `0xeef0f2`).
-- 15 canonical validation view presets in `PRESETS` and automated capture pipeline in `scripts/capture-voxel-hero-002.mjs`.
+- 26 canonical validation deliverables and side-by-side reference comparison boards generated in `artifacts/voxel-hero-003/`.
 
 ## Hero voxel metrics (HERO, canonical)
 
-- occupied: 253,497 cells
-- surface: 24,611 cells
-- visible faces: 42,288 faces
+- occupied: 285,544 cells
+- surface: 27,398 cells
+- visible faces: 47,190 faces
 - voxelSize: 0.012 m
 - draw calls: 1 (single batched InstancedMesh)
 
 ## Next milestone
 
-VOXEL-COMBAT-001 — Dynamic hit reaction deformations, impact sparks, and voxel damage shedding.
+VOXEL-COMBAT-001 / VOXEL-ANIMATION-001 (pending milestone direction)
+

@@ -1,0 +1,40 @@
+{
+  "metrics": {
+    "occupied": 285544,
+    "surface": 27398,
+    "faces": 47190,
+    "voxelSize": 0.012,
+    "generationMs": 25387.600000023842,
+    "drawCalls": 1
+  },
+  "errors": [],
+  "capturesCount": 26,
+  "captures": [
+    "artifacts\\voxel-hero-003\\guide-front.png",
+    "artifacts\\voxel-hero-003\\guide-rear.png",
+    "artifacts\\voxel-hero-003\\guide-profile.png",
+    "artifacts\\voxel-hero-003\\guide-three-quarter-front.png",
+    "artifacts\\voxel-hero-003\\guide-three-quarter-rear.png",
+    "artifacts\\voxel-hero-003\\clay-front.png",
+    "artifacts\\voxel-hero-003\\clay-rear.png",
+    "artifacts\\voxel-hero-003\\clay-profile.png",
+    "artifacts\\voxel-hero-003\\clay-three-quarter-front.png",
+    "artifacts\\voxel-hero-003\\clay-three-quarter-rear.png",
+    "artifacts\\voxel-hero-003\\silhouette-front.png",
+    "artifacts\\voxel-hero-003\\silhouette-profile.png",
+    "artifacts\\voxel-hero-003\\close-head.png",
+    "artifacts\\voxel-hero-003\\close-face.png",
+    "artifacts\\voxel-hero-003\\close-shoulder.png",
+    "artifacts\\voxel-hero-003\\close-belly.png",
+    "artifacts\\voxel-hero-003\\close-pelvis.png",
+    "artifacts\\voxel-hero-003\\close-hand.png",
+    "artifacts\\voxel-hero-003\\close-thigh-knee.png",
+    "artifacts\\voxel-hero-003\\close-foot.png",
+    "artifacts\\voxel-hero-003\\hero-production.png",
+    "artifacts\\voxel-hero-003\\comparison-front-guide.png",
+    "artifacts\\voxel-hero-003\\comparison-front-voxel.png",
+    "artifacts\\voxel-hero-003\\comparison-profile-guide.png",
+    "artifacts\\voxel-hero-003\\comparison-profile-voxel.png",
+    "artifacts\\voxel-hero-003\\comparison-three-quarter-voxel.png"
+  ]
+}

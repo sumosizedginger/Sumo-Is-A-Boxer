@@ -79,6 +79,30 @@ function jitter(color, x, y, z, cavityFactor = 1.0) {
   ];
 }
 
+const _voxelArtifactCache = new Map();
+
+function computeGeometryHash(geometry, quality) {
+  const pos = geometry.attributes.position.array;
+  let h = 0x811c9dc5;
+  const step = Math.max(1, Math.floor(pos.length / 1500));
+  for (let i = 0; i < pos.length; i += step) {
+    const v = Math.round(pos[i] * 10000) | 0;
+    h ^= v;
+    h = Math.imul(h, 0x01000193);
+  }
+  const idx = geometry.index ? geometry.index.array : null;
+  if (idx) {
+    h ^= idx.length;
+    h = Math.imul(h, 0x01000193);
+    const idxStep = Math.max(1, Math.floor(idx.length / 800));
+    for (let i = 0; i < idx.length; i += idxStep) {
+      h ^= idx[i];
+      h = Math.imul(h, 0x01000193);
+    }
+  }
+  return `${quality}_${(h >>> 0).toString(16)}_v3`;
+}
+
 /**
  * Compiles the certified guide geometry into a visible voxel hero.
  *
@@ -88,37 +112,50 @@ function jitter(color, x, y, z, cavityFactor = 1.0) {
  */
 export function createHeroVoxel(character, { quality = 'HERO' } = {}) {
   const geometry = character.geometry;
-  const mesh = {
-    attributes: {
-      position: geometry.attributes.position.array,
-      regionId: geometry.attributes.regionId.array,
-      skinIndex: geometry.attributes.skinIndex.array,
-      skinWeight: geometry.attributes.skinWeight.array
-    },
-    indices: geometry.index.array
-  };
-  const definition = createVoxelDefinition({
-    id: 'voxel.hero.sumo',
-    quality,
-    fillInterior: true,
-    sourceGuideId: character.heroArtifact?.id ?? 'hero.guide',
-    provenance: { assembly: 'guide-to-voxel', milestone: 'VOXEL-HERO-002' }
-  });
-  const grid = voxelizeMesh(mesh, definition.data.parameters);
-  const artifact = createVoxelArtifact({
-    id: 'voxel.hero.sumo',
-    definition,
-    grid,
-    colorForCell: ({ x, y, z, regionId }) => {
-      let neighbors = 0;
-      for (let d = 0; d < 6; d++) {
-        const dir = VOXEL_FACE_DIRS[d];
-        if (isOccupied(grid, x + dir[0], y + dir[1], z + dir[2])) neighbors++;
+  const cacheKey = computeGeometryHash(geometry, quality);
+  let cached = _voxelArtifactCache.get(cacheKey);
+  let artifact, grid, generationMs;
+
+  if (cached) {
+    artifact = cached.artifact;
+    grid = cached.grid;
+    generationMs = 0;
+  } else {
+    const mesh = {
+      attributes: {
+        position: geometry.attributes.position.array,
+        regionId: geometry.attributes.regionId.array,
+        skinIndex: geometry.attributes.skinIndex.array,
+        skinWeight: geometry.attributes.skinWeight.array
+      },
+      indices: geometry.index.array
+    };
+    const definition = createVoxelDefinition({
+      id: 'voxel.hero.sumo',
+      quality,
+      fillInterior: true,
+      sourceGuideId: character.heroArtifact?.id ?? 'hero.guide',
+      provenance: { assembly: 'guide-to-voxel', milestone: 'VOXEL-HERO-003' }
+    });
+    grid = voxelizeMesh(mesh, definition.data.parameters);
+    artifact = createVoxelArtifact({
+      id: 'voxel.hero.sumo',
+      definition,
+      grid,
+      colorForCell: ({ x, y, z, regionId }) => {
+        let neighbors = 0;
+        for (let d = 0; d < 6; d++) {
+          const dir = VOXEL_FACE_DIRS[d];
+          if (isOccupied(grid, x + dir[0], y + dir[1], z + dir[2])) neighbors++;
+        }
+        const cavity = 1.10 - neighbors * 0.055;
+        return jitter(REGION_COLOR[regionId] ?? SKIN, x, y, z, cavity);
       }
-      const cavity = 1.10 - neighbors * 0.055;
-      return jitter(REGION_COLOR[regionId] ?? SKIN, x, y, z, cavity);
-    }
-  });
+    });
+    generationMs = grid.generationMs;
+    _voxelArtifactCache.set(cacheKey, { artifact, grid, generationMs });
+  }
+
   const runtime = instantiateVoxelArtifact(artifact, {
     mode: 'instances',
     bones: character.bones,
@@ -138,5 +175,6 @@ export function createHeroVoxel(character, { quality = 'HERO' } = {}) {
     m.receiveShadow = true;
     m.frustumCulled = false;
   }
-  return { artifact, runtime, grid, generationMs: grid.generationMs };
+  return { artifact, runtime, grid, generationMs };
 }
+

@@ -188,7 +188,7 @@ export function createValidation({ game, rig, sparks, lights, modelMode=false, t
         speed: 0,
         inspection: {
           pose: p.opponent.pose ?? 'sumo_neutral',
-          stanceWidth: isSumoNeutral ? 0.32 : 0.225,
+          stanceWidth: isSumoNeutral ? 0.38 : 0.225,
           stagger: !isSumoNeutral
         }
       });
