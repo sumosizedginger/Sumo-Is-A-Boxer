@@ -1,7 +1,18 @@
 import {planeSculptField,ellipsoidMask,createFeatureFrame} from '@sumosizedginger/my-game-engine-1.0/full';
 const clamp=t=>Math.max(0,Math.min(1,t));
-const rows=[[1.60,.115,.095,.100],[1.63,.108,.096,.098],[1.65,.106,.100,.098],[1.67,.105,.104,.096],[1.695,.104,.104,.098],[1.725,.102,.102,.100],[1.75,.100,.100,.098],[1.78,.096,.098,.098],[1.80,.090,.092,.096]];
-export function headSection(y){if(y>=1.80){const cap=Math.sqrt(Math.max(.000001,1-((y-1.755)/.105)**2));return [.096*cap,.098*cap,.100*cap];}for(let j=0;j<rows.length-1;j++)if(y<=rows[j+1][0]){const a=rows[j],b=rows[j+1],t=clamp((y-a[0])/(b[0]-a[0])),prev=rows[Math.max(0,j-1)],next=rows[Math.min(rows.length-1,j+2)];return a.slice(1).map((v,k)=>{const m0=(b[k+1]-prev[k+1])/(b[0]-prev[0]),m1=(next[k+1]-a[k+1])/(next[0]-a[0]),h=b[0]-a[0];return (2*t*t*t-3*t*t+1)*v+(t*t*t-2*t*t+t)*h*m0+(-2*t*t*t+3*t*t)*b[k+1]+(t*t*t-t*t)*h*m1;});}const h=Math.max(.002,Math.sqrt(Math.max(0,1-((y-1.80)/.060)**2)));return [.090*h,.092*h,.096*h];}
+const rows=[
+  [1.60,  .110, .098, .102],
+  [1.63,  .110, .104, .102],
+  [1.65,  .112, .108, .100],
+  [1.67,  .114, .110, .098],
+  [1.695, .114, .112, .100],
+  [1.725, .112, .110, .102],
+  [1.75,  .108, .106, .100],
+  [1.78,  .102, .102, .098],
+  [1.80,  .095, .096, .096]
+];
+export function headSection(y){if(y>=1.80){const cap=Math.sqrt(Math.max(.000001,1-((y-1.755)/.105)**2));return [.100*cap,.100*cap,.100*cap];}for(let j=0;j<rows.length-1;j++)if(y<=rows[j+1][0]){const a=rows[j],b=rows[j+1],t=clamp((y-a[0])/(b[0]-a[0])),prev=rows[Math.max(0,j-1)],next=rows[Math.min(rows.length-1,j+2)];return a.slice(1).map((v,k)=>{const m0=(b[k+1]-prev[k+1])/(b[0]-prev[0]),m1=(next[k+1]-a[k+1])/(next[0]-a[0]),h=b[0]-a[0];return (2*t*t*t-3*t*t+1)*v+(t*t*t-2*t*t+t)*h*m0+(-2*t*t*t+3*t*t)*b[k+1]+(t*t*t-t*t)*h*m1;});}const h=Math.max(.002,Math.sqrt(Math.max(0,1-((y-1.80)/.060)**2)));return [.095*h,.096*h,.096*h];}
+
 
 export function headTemplatePoint(y,angle){const c=Math.cos(angle),s=Math.sin(angle),[w,f,b]=headSection(y);return [w*Math.sign(c)*Math.pow(Math.abs(c),.92),y,(s>=0?f*Math.pow(s,.45):b*s)-.006];}
 export function headSideX(y,z){const [w,f,b]=headSection(y),s=z>=-.006?Math.pow(Math.max(0,(z+.006)/f),1/.45):(z+.006)/b;return w*Math.pow(Math.sqrt(Math.max(0,1-s*s)),.92);}

@@ -85,7 +85,7 @@ function buildPoseTargets(landmarks) {
       pelvisYaw: 0, chestYaw: 0, headPitch: .02, lean: .025
     },
     sumo_neutral: {
-      left: [0.46, 0.70, 0.04], right: [-0.46, 0.70, 0.04],
+      left: [0.33, 0.86, 0.03], right: [-0.33, 0.86, 0.03],
       pelvisYaw: 0, chestYaw: 0, headPitch: 0, lean: 0
     },
     extended: {
@@ -277,7 +277,7 @@ export function createOpponentSumo({ library, voxelQuality = 'HERO' } = {}) {
    * @param {string} side - 'l' or 'r'
    * @param {Vector3} wristTarget - Character-space wrist position.
    */
-  function solveArm(side, wristTarget) {
+  function solveArm(side, wristTarget, poleOverride = null) {
     const upperName = `upperarm_${side}`;
     const lowerName = `forearm_${side}`;
     const upper = character.bonesByName[upperName];
@@ -291,6 +291,10 @@ export function createOpponentSumo({ library, voxelQuality = 'HERO' } = {}) {
     upper.updateWorldMatrix(true, false);
     _shoulderWorld.setFromMatrixPosition(upper.matrixWorld).applyMatrix4(_bodyInverseMatrix);
 
+    const defaultPole = wristTarget.y < 0.95
+      ? { x: side === 'l' ? 0.20 : -0.20, y: -0.15, z: -0.70 }
+      : { x: side === 'l' ? 0.58 : -0.58, y: -1, z: -0.3 };
+
     const solved = solveTwoBoneIK({
       rootPos: { x: _shoulderWorld.x, y: _shoulderWorld.y, z: _shoulderWorld.z },
       targetPos: { x: wristTarget.x, y: wristTarget.y, z: wristTarget.z },
@@ -298,9 +302,7 @@ export function createOpponentSumo({ library, voxelQuality = 'HERO' } = {}) {
       lowerLength: forearmLength,
       // The elbow rides low and slightly outboard, which is what makes a guard
       // read as a guard rather than as chicken wings. For relaxed poses, flare outward.
-      poleDirection: wristTarget.y < 0.95
-        ? { x: side === 'l' ? 0.70 : -0.70, y: -0.25, z: -0.12 }
-        : { x: side === 'l' ? 0.58 : -0.58, y: -1, z: -0.3 }
+      poleDirection: poleOverride ?? defaultPole
     });
 
     applyBoneDirection(upperName, upper, solved.upperDir);
@@ -498,7 +500,7 @@ export function createOpponentSumo({ library, voxelQuality = 'HERO' } = {}) {
       _bodyInverseMatrix.copy(body.matrixWorld).invert();
       body.getWorldQuaternion(_bodyInverse).invert();
       if(!downState){
-        const stance = inspection?.stanceWidth ?? (inspection?.pose === 'sumo_neutral' ? 0.38 : 0.225);
+        const stance = inspection?.stanceWidth ?? (inspection?.pose === 'sumo_neutral' ? 0.24 : 0.225);
         const staggerScale = (inspection?.pose === 'sumo_neutral' || inspection?.stagger === false) ? 0 : 1;
         planted.update(group,dt,speed,drive,heavy,stance,staggerScale);
         solveLeg('l',planted.feet[0],drive,heavy);
@@ -508,15 +510,18 @@ export function createOpponentSumo({ library, voxelQuality = 'HERO' } = {}) {
       // folds, then are carried back up by the slower recovery - which is why
       // this rides `follow` and not `reaction`. Applied to scratch copies so the
       // blended pose targets are never mutated.
+      const isSumoNeutral = (inspection?.pose ?? poseName) === 'sumo_neutral';
+      const armPoleL = isSumoNeutral ? { x: 0.05, y: -0.30, z: -0.90 } : null;
+      const armPoleR = isSumoNeutral ? { x: -0.05, y: -0.30, z: -0.90 } : null;
       const guardSag = bodyHit ? follow : 0;
       if (guardSag > .0008) {
         _sagL.copy(current.left); _sagL.y -= guardSag * .055; _sagL.z -= guardSag * .018;
         _sagR.copy(current.right); _sagR.y -= guardSag * .05; _sagR.z -= guardSag * .018;
-        solveArm('l', _sagL);
-        solveArm('r', _sagR);
+        solveArm('l', _sagL, armPoleL);
+        solveArm('r', _sagR, armPoleR);
       } else {
-        solveArm('l', current.left);
-        solveArm('r', current.right);
+        solveArm('l', current.left, armPoleL);
+        solveArm('r', current.right, armPoleR);
       }
       for(const side of ['l','r']){
         const extension=side===attackSide?drive:0;

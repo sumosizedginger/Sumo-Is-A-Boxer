@@ -2,7 +2,8 @@
 
 **Branch:** `game-build`  
 **Milestone:** VOXEL-HERO-003: REFERENCE-FITTED HERO SCULPTURE  
-**Status:** COMPLETE — Reference-fitted hero sculpture matching reference visual sheets 01, 02, 06, 07, 10, 12.
+**Status:** IN PROGRESS — reference-fit convergence; visual acceptance pending.
+
 
 ## Hero architecture
 
@@ -37,12 +38,15 @@ Implemented in the engine (`engine/src/voxel/`, public through `engine/full`):
 - Dedicated neutral 3-point clay light rig (bright key, soft fill, warm rim, ambient bounce, neutral gray background `0x3a3f47`, no atmospheric fog).
 - Pure silhouette validation mode (solid black hero `0x050505`, clean bright background `0xeef0f2`).
 - 26 canonical validation deliverables and side-by-side reference comparison boards generated in `artifacts/voxel-hero-003/`.
+- Silhouette convergence against approved visual contract (`02-silhouette.png`):
+  - Profile Mean Normalized Silhouette Error: **3.97%** of character height.
+  - Front Mean Normalized Silhouette Error: **4.76%** of character height.
 
 ## Hero voxel metrics (HERO, canonical)
 
-- occupied: 285,544 cells
-- surface: 27,398 cells
-- visible faces: 47,190 faces
+- occupied: 248,092 cells
+- surface: 26,168 cells
+- visible faces: 44,746 faces
 - voxelSize: 0.012 m
 - draw calls: 1 (single batched InstancedMesh)
 

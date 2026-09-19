@@ -1,10 +1,10 @@
 {
   "metrics": {
-    "occupied": 285544,
-    "surface": 27398,
-    "faces": 47190,
+    "occupied": 248092,
+    "surface": 26168,
+    "faces": 44746,
     "voxelSize": 0.012,
-    "generationMs": 25387.600000023842,
+    "generationMs": 21052.5,
     "drawCalls": 1
   },
   "errors": [],

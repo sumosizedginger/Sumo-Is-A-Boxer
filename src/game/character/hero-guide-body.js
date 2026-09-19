@@ -1,4 +1,5 @@
 import {sculptBoxerHead,FACE_REGIONS,facialRegionAt} from './hero-face.js';
+import {sculptSumoBody} from './sumo-body-sculpt.js';
 // Runtime assembly of the certified canonical skin. Equipment stays separate.
 import {createHeroCharacterArtifact,certifyHeroBody,createHeroRuntimeGeometry,createTopologySurface} from '@sumosizedginger/my-game-engine-1.0/full';
 import {generateContinuousBody,skinContinuousBody,BODY_REGIONS} from './continuous-body.js';
@@ -6,7 +7,8 @@ import {createAnatomicalCorrections} from './corrective-deformation.js';
 
 export function rebuildSumoGuideBody(character,skinDefinition){
   const generated=generateContinuousBody(character.landmarks);
-  const face=sculptBoxerHead(generated.surface);
+  const sculptedBody=sculptSumoBody(generated.surface,character.landmarks);
+  const face=sculptBoxerHead(sculptedBody);
   const surface=skinContinuousBody(face.surface,character),geometry=createHeroRuntimeGeometry(surface);
   const neck=character.bones.findIndex(b=>b.name==='neck'),head=character.bones.findIndex(b=>b.name==='head');
   for(let i=0;i<geometry.attributes.position.count;i++){const y=geometry.attributes.position.getY(i);if(y<=1.60)continue;const t=Math.max(0,Math.min(1,(y-1.60)/.05)),blend=t*t*(3-2*t);for(let j=0;j<4;j++){geometry.attributes.skinIndex.array[i*4+j]=j===0?head:neck;geometry.attributes.skinWeight.array[i*4+j]=j===0?blend:j===1?1-blend:0;}}
