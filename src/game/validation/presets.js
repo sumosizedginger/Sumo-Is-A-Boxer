@@ -52,14 +52,14 @@ export const PRESETS = {
   silhouette_front: preset([0, 1.05, 3.1], [0, 1.02, 0], 46, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'SILHOUETTE' }),
   silhouette_profile: preset([3.1, 1.05, 0], [0, 1.02, 0], 46, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'SILHOUETTE' }),
 
-  close_head: preset([0.00, 1.64, 0.90], [0, 1.64, 0.04], 28, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'VOXEL_CLAY' }),
-  close_face: preset([0.00, 1.63, 0.58], [0, 1.63, 0.08], 26, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'VOXEL_CLAY' }),
+  close_head: preset([0.00, 1.69, 0.95], [0, 1.69, 0.04], 30, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'VOXEL_CLAY' }),
+  close_face: preset([0.00, 1.68, 0.68], [0, 1.68, 0.08], 32, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'VOXEL_CLAY' }),
   close_shoulder: preset([0.48, 1.48, 1.05], [0.30, 1.44, 0.02], 34, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'VOXEL_CLAY' }),
   close_belly: preset([0.42, 1.10, 1.55], [0, 1.12, 0.38], 36, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'VOXEL_CLAY' }),
   close_pelvis: preset([0.0, 0.95, -1.60], [0, 0.98, -0.05], 36, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'VOXEL_CLAY' }),
   close_arm: preset([0.70, 0.95, 0.65], [0.41, 0.90, 0.02], 34, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'VOXEL_CLAY' }),
   close_thigh_knee: preset([-0.24, 0.45, 0.65], [-0.24, 0.45, -0.05], 32, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'VOXEL_CLAY' }),
-  close_hand: preset([-0.82, 0.78, 0.50], [-0.46, 0.76, 0.02], 26, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'VOXEL_CLAY' }),
+  close_hand: preset([-0.80, 0.78, 0.85], [-0.44, 0.73, 0.00], 34, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'VOXEL_CLAY' }),
   close_foot: preset([-0.24, 0.16, 0.70], [-0.24, 0.08, 0.00], 28, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'VOXEL_CLAY' }),
   hero_production: preset([0.4, 1.15, 2.8], [0, 1.05, 0], 46, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'VOXEL_COLOR' }),
 

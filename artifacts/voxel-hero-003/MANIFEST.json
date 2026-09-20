@@ -3,11 +3,11 @@
   "branch": "game-build",
   "quality": "HERO",
   "hero": {
-    "occupied": 248092,
-    "surface": 26168,
-    "faces": 44746,
+    "occupied": 253260,
+    "surface": 26517,
+    "faces": 45700,
     "voxelSize": 0.012,
-    "generationMs": 21052.5,
+    "generationMs": 28471.299999952316,
     "drawCalls": 1
   },
   "capturesCount": 26,

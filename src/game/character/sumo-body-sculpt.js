@@ -40,17 +40,17 @@ export function buildSumoBodySculptFields(landmarks) {
 
   for (const sign of [1, -1]) {
     // Large paired pectoral plates
-    fields.push(volume([sign * 0.14, 1.37, 0.17], [0.15, 0.11, 0.14], 0.042, [sign * 0.1, 0.15, 0.98]));
+    fields.push(volume([sign * 0.14, 1.37, 0.18], [0.15, 0.11, 0.14], 0.046, [sign * 0.1, 0.12, 0.98]));
     // Subpectoral inferolateral margin (defines lower curve of pec)
     fields.push(creaseSculptField({
       points: [
-        [sign * 0.04, 1.31, 0.20],
-        [sign * 0.14, 1.31, 0.18],
-        [sign * 0.25, 1.34, 0.13]
+        [sign * 0.04, 1.30, 0.20],
+        [sign * 0.14, 1.30, 0.19],
+        [sign * 0.25, 1.33, 0.14]
       ],
-      radius: 0.026,
-      strength: 0.016,
-      depthRadius: 0.06,
+      radius: 0.028,
+      strength: 0.022,
+      depthRadius: 0.07,
       mask: p => p[2] > 0.08 ? 1 : 0
     }));
   }
@@ -60,11 +60,11 @@ export function buildSumoBodySculptFields(landmarks) {
     points: [
       [0, 1.48, 0.16],
       [0, 1.40, 0.19],
-      [0, 1.32, 0.20]
+      [0, 1.31, 0.21]
     ],
     radius: 0.028,
-    strength: 0.020,
-    depthRadius: 0.06,
+    strength: 0.024,
+    depthRadius: 0.07,
     mask: p => p[2] > 0.10 ? 1 : 0
   }));
 
@@ -75,10 +75,10 @@ export function buildSumoBodySculptFields(landmarks) {
   fields.push(volume([0, 1.25, 0.22], [0.25, 0.09, 0.16], 0.036, [0, 0.1, 0.99]));
 
   // Central belly: forward projecting dome
-  fields.push(volume([0, 1.13, 0.27], [0.27, 0.15, 0.20], 0.062, [0, -0.05, 0.99]));
+  fields.push(volume([0, 1.13, 0.27], [0.27, 0.15, 0.20], 0.066, [0, -0.05, 0.99]));
 
   // Lower abdomen / apron: heavy hanging fold that droops over pelvic rim
-  fields.push(volume([0, 1.01, 0.25], [0.26, 0.12, 0.18], 0.052, [0, -0.35, 0.93]));
+  fields.push(volume([0, 1.01, 0.25], [0.26, 0.12, 0.18], 0.056, [0, -0.35, 0.93]));
 
   // Inguinal / suprapubic crease under the hanging apron
   fields.push(creaseSculptField({
@@ -90,13 +90,13 @@ export function buildSumoBodySculptFields(landmarks) {
       [0.24, 0.95, 0.14]
     ],
     radius: 0.035,
-    strength: 0.024,
+    strength: 0.028,
     depthRadius: 0.07,
     mask: p => p[2] > 0.08 ? 1 : 0
   }));
 
   // Deep umbilical depression / navel cavity
-  fields.push(volume([0, 1.13, 0.33], [0.025, 0.024, 0.035], -0.034, [0, 0, -1]));
+  fields.push(volume([0, 1.13, 0.33], [0.022, 0.022, 0.035], -0.046, [0, 0, -1]));
 
   // Lateral flanks / obliques (love handles) — produces wide barrel sumo core
   for (const sign of [1, -1]) {
@@ -107,8 +107,8 @@ export function buildSumoBodySculptFields(landmarks) {
   // 3. BACK, TRAPS & SHOULDERS (Distinct deltoids, lats, traps, sacral valley)
   // =========================================================================
   for (const sign of [1, -1]) {
-    // Deltoids: rounded muscular shoulder caps (NOT a flat continuous shelf)
-    fields.push(volume([sign * 0.37, 1.41, 0.00], [0.12, 0.14, 0.12], 0.038, [sign * 0.85, 0.35, 0]));
+    // Deltoids: rounded muscular shoulder caps (massive power caps)
+    fields.push(volume([sign * 0.38, 1.41, 0.00], [0.13, 0.15, 0.13], 0.050, [sign * 0.85, 0.35, 0]));
 
     // Trapezius: posterior neck-shoulder slope (connecting occiput to clavicle)
     fields.push(volume([sign * 0.16, 1.52, -0.06], [0.13, 0.11, 0.12], 0.032, [sign * 0.2, 0.7, -0.68]));
@@ -128,18 +128,18 @@ export function buildSumoBodySculptFields(landmarks) {
   // =========================================================================
   for (const sign of [1, -1]) {
     // Major hemispherical glute cheek (strong posterior protrusion matching profile turnaround)
-    fields.push(volume([sign * 0.16, 0.98, -0.23], [0.16, 0.16, 0.17], 0.092, [sign * 0.15, -0.08, -0.98]));
+    fields.push(volume([sign * 0.16, 0.98, -0.22], [0.18, 0.18, 0.19], 0.115, [sign * 0.10, -0.06, -0.99]));
 
     // Inferior gluteal fold: sharp crease under each cheek
     fields.push(creaseSculptField({
       points: [
-        [sign * 0.03, 0.88, -0.20],
-        [sign * 0.14, 0.87, -0.21],
-        [sign * 0.26, 0.89, -0.15]
+        [sign * 0.03, 0.88, -0.21],
+        [sign * 0.14, 0.87, -0.22],
+        [sign * 0.27, 0.89, -0.16]
       ],
-      radius: 0.028,
-      strength: 0.038,
-      depthRadius: 0.07,
+      radius: 0.032,
+      strength: 0.046,
+      depthRadius: 0.08,
       mask: p => p[2] < -0.06 ? 1 : 0
     }));
 
@@ -155,7 +155,7 @@ export function buildSumoBodySculptFields(landmarks) {
       [0, 0.86, -0.21]
     ],
     radius: 0.026,
-    strength: 0.046,
+    strength: 0.052,
     depthRadius: 0.09,
     mask: p => p[2] < -0.08 ? 1 : 0
   }));
@@ -166,16 +166,22 @@ export function buildSumoBodySculptFields(landmarks) {
   for (const sign of [1, -1]) {
     const lx = sign * 0.18;
     // Quadriceps front sweep
-    fields.push(volume([lx, 0.67, 0.11], [0.12, 0.17, 0.11], 0.038, [sign * 0.1, 0, 0.99]));
+    fields.push(volume([lx, 0.67, 0.11], [0.13, 0.18, 0.12], 0.045, [sign * 0.1, 0, 0.99]));
 
     // Vastus lateralis: outer thigh power curve
-    fields.push(volume([sign * 0.29, 0.68, 0.02], [0.10, 0.17, 0.11], 0.040, [sign * 0.98, 0, 0.1]));
+    fields.push(volume([sign * 0.29, 0.68, 0.01], [0.12, 0.19, 0.13], 0.052, [sign * 0.98, 0, 0.1]));
 
-    // Adductor: inner thigh fullness without bridging crotch
-    fields.push(volume([sign * 0.11, 0.74, 0.00], [0.06, 0.11, 0.08], 0.016, [sign * -0.6, 0, 0.4]));
+    // Upper adductor: massive inner thigh mass filling upper groin
+    fields.push(volume([sign * 0.09, 0.78, 0.01], [0.08, 0.11, 0.09], 0.032, [sign * -0.9, 0, 0.2]));
+
+    // Mid adductor / gracilis: inner thigh power curve
+    fields.push(volume([sign * 0.11, 0.68, 0.01], [0.07, 0.12, 0.08], 0.026, [sign * -0.85, 0, 0.2]));
+
+    // Vastus medialis: anatomical teardrop above medial knee
+    fields.push(volume([sign * 0.13, 0.52, 0.07], [0.06, 0.08, 0.06], 0.030, [sign * -0.5, 0, 0.8]));
 
     // Hamstrings: posterior thigh curve
-    fields.push(volume([lx, 0.65, -0.12], [0.11, 0.16, 0.11], 0.036, [0, 0, -1]));
+    fields.push(volume([lx, 0.65, -0.12], [0.12, 0.16, 0.12], 0.040, [0, 0, -1]));
   }
 
   // =========================================================================
@@ -183,31 +189,53 @@ export function buildSumoBodySculptFields(landmarks) {
   // =========================================================================
   for (const sign of [1, -1]) {
     const lx = sign * 0.18;
-    // Patellar kneecap prominence
-    fields.push(volume([lx, 0.44, 0.11], [0.045, 0.055, 0.045], 0.022, [0, 0, 1]));
+    // Patellar kneecap anatomical plate (flatter facet, not conical spike)
+    fields.push(volume([lx, 0.44, 0.10], [0.055, 0.060, 0.035], 0.020, [0, 0, 1]));
+    fields.push(planeSculptField({
+      point: [lx, 0.44, 0.118],
+      normal: [0, 0, 1],
+      strength: 0.50,
+      maxDisplacement: 0.008,
+      mask: ellipsoidMask({
+        frame: createFeatureFrame({ center: [lx, 0.44, 0.11] }),
+        radii: [0.048, 0.056, 0.035]
+      })
+    }));
 
     // Popliteal fossa: posterior knee hollow
-    fields.push(volume([lx, 0.44, -0.07], [0.06, 0.07, 0.05], -0.024, [0, 0, -1]));
+    fields.push(volume([lx, 0.44, -0.07], [0.06, 0.07, 0.05], -0.026, [0, 0, -1]));
   }
 
   // =========================================================================
   // 7. CALVES & ANKLES (Gastrocnemius heads, lower taper, Achilles tendon)
   // =========================================================================
   for (const sign of [1, -1]) {
-    // Medial gastrocnemius head
-    fields.push(volume([sign * 0.14, 0.33, -0.09], [0.07, 0.09, 0.08], 0.042, [sign * -0.3, 0, -0.95]));
+    // Medial gastrocnemius head (lower, fuller muscular belly)
+    fields.push(volume([sign * 0.15, 0.33, -0.13], [0.08, 0.11, 0.09], 0.055, [sign * -0.2, -0.1, -0.98]));
 
-    // Lateral gastrocnemius head
-    fields.push(volume([sign * 0.21, 0.35, -0.08], [0.07, 0.09, 0.08], 0.036, [sign * 0.4, 0, -0.9]));
+    // Lateral gastrocnemius head (higher muscular belly)
+    fields.push(volume([sign * 0.21, 0.36, -0.12], [0.07, 0.10, 0.08], 0.045, [sign * 0.3, -0.1, -0.95]));
+
+    // Achilles tendon taper crease
+    fields.push(creaseSculptField({
+      points: [
+        [sign * 0.17, 0.22, -0.08],
+        [sign * 0.17, 0.15, -0.06]
+      ],
+      radius: 0.025,
+      strength: 0.018,
+      depthRadius: 0.05,
+      mask: p => p[2] < -0.02 ? 1 : 0
+    }));
 
     // Medial malleolus prominence
-    fields.push(volume([sign * 0.125, 0.11, -0.005], [0.022, 0.025, 0.025], 0.014, [sign * -1, 0, 0]));
+    fields.push(volume([sign * 0.125, 0.11, -0.005], [0.022, 0.025, 0.025], 0.015, [sign * -1, 0, 0]));
 
     // Lateral malleolus prominence (lower than medial)
-    fields.push(volume([sign * 0.215, 0.09, -0.015], [0.022, 0.025, 0.025], 0.016, [sign * 1, 0, 0]));
+    fields.push(volume([sign * 0.215, 0.09, -0.015], [0.022, 0.025, 0.025], 0.017, [sign * 1, 0, 0]));
 
     // Calcaneus heel projection
-    fields.push(volume([sign * 0.17, 0.048, -0.075], [0.055, 0.038, 0.055], 0.038, [0, 0, -1]));
+    fields.push(volume([sign * 0.17, 0.048, -0.085], [0.055, 0.040, 0.065], 0.045, [0, 0, -1]));
 
     // Forefoot arch
     fields.push(volume([sign * 0.17, 0.035, 0.09], [0.075, 0.028, 0.055], 0.024, [0, 0, 1]));
@@ -239,10 +267,10 @@ export function buildSumoBodySculptFields(landmarks) {
     fields.push(volume([sign * 0.43, 0.95, 0.02], [0.055, 0.09, 0.055], 0.020, [sign * 0.5, 0, 0.8]));
 
     // Thenar (thumb) pad mass (prominent medial fist ball)
-    fields.push(volume([sign * 0.41, 0.74, 0.03], [0.035, 0.045, 0.035], 0.026, [sign * -0.7, 0, 0.7]));
+    fields.push(volume([sign * 0.41, 0.74, 0.03], [0.036, 0.046, 0.036], 0.030, [sign * -0.7, 0, 0.7]));
 
     // Knuckle arch
-    fields.push(volume([sign * 0.43, 0.67, -0.01], [0.042, 0.028, 0.038], 0.020, [0, 0, -1]));
+    fields.push(volume([sign * 0.43, 0.67, -0.01], [0.042, 0.028, 0.038], 0.022, [0, 0, -1]));
     fields.push(ridgeSculptField({
       points: [
         [sign * 0.40, 0.67, 0.01],
@@ -250,7 +278,7 @@ export function buildSumoBodySculptFields(landmarks) {
         [sign * 0.45, 0.67, -0.02]
       ],
       radius: 0.018,
-      strength: 0.018,
+      strength: 0.022,
       depthRadius: 0.04,
       mask: p => 1
     }));
@@ -302,8 +330,14 @@ export function sculptSumoBody(surface, landmarks) {
       if (Math.abs(x) < 0.04 && Math.abs(y - 1.13) < 0.04 && z > 0.25) return 0.90;
       // Sternal notch protection
       if (Math.abs(x) < 0.025 && y > 1.30 && y < 1.50 && z > 0.12) return 0.80;
+      // Subpectoral crease protection
+      if (z > 0.10 && Math.abs(y - 1.30) < 0.035 && Math.abs(x) > 0.04 && Math.abs(x) < 0.26) return 0.75;
+      // Suprapubic apron fold protection
+      if (z > 0.12 && Math.abs(y - 0.94) < 0.03 && Math.abs(x) < 0.25) return 0.75;
       // Patella front edge
-      if (Math.abs(y - 0.44) < 0.04 && z > 0.09) return 0.70;
+      if (Math.abs(y - 0.44) < 0.04 && z > 0.09) return 0.75;
+      // Thenar thumb pad protection
+      if (Math.abs(x) > 0.36 && Math.abs(y - 0.74) < 0.05 && z > 0.01) return 0.70;
       return 0;
     },
     iterations: 6,

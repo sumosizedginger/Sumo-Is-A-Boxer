@@ -31,53 +31,53 @@ export function sculptBoxerHead(input,parameters={}){
     fields.push(volume([sign*.078,1.774,.005],[.030,.036,.072],-.005,[sign,0,0],()=>1));
   }
   // Large square chin projection
-  fields.push(volume([-.0007,1.662,.085],[.048,.034,.070],.045+chinProjection));
-  fields.push(planeSculptField({point:[0,1.662,.108],normal:[0,-.10,1],strength:.8,maxDisplacement:.016,mask:ellipsoidMask({frame:createFeatureFrame({center:[0,1.662,.100]}),radii:[.046,.024,.062]})}));
+  fields.push(volume([-.0007,1.662,.105],[.048,.034,.060],.042+chinProjection));
+  fields.push(planeSculptField({point:[0,1.662,.120],normal:[0,-.10,1],strength:.8,maxDisplacement:.016,mask:ellipsoidMask({frame:createFeatureFrame({center:[0,1.662,.110]}),radii:[.046,.024,.062]})}));
   // Submental double-chin fold
-  fields.push(volume([0,1.636,.068],[.054,.026,.065],.035));
+  fields.push(volume([0,1.636,.092],[.054,.026,.060],.034));
   fields.push(creaseSculptField({points:[[.044,1.781,.071],[.041,1.773,.074]],radius:.0018,strength:.0007,depthRadius:.035,mask:front}));
   fields.push(foreheadSculptField);
    if(FACE_STAGE>=2)for(const [side,sign]of [['L',1],['R',-1]]){
-    const center=landmarks['eyeCenter.'+side],frame=createFeatureFrame({center});
+    const center=landmarks['eyeCenter.'+side];
     // Prominent brow ridge shelf (2-3 voxel overhang)
-    fields.push(ridgeSculptField({points:[[sign*.014,center[1]+.020,.094],[sign*.034,center[1]+.023,.096],[sign*.058,center[1]+.016,.084]],radius:.024,strength:.042,depthRadius:.08,mask:front}));
-    fields.push(volume([sign*.034,center[1]+.020,.090],[.030,.022,.065],.032));
+    fields.push(ridgeSculptField({points:[[sign*.014,center[1]+.020,.106],[sign*.034,center[1]+.023,.108],[sign*.058,center[1]+.016,.098]],radius:.024,strength:.040,depthRadius:.07,mask:front}));
+    fields.push(volume([sign*.034,center[1]+.020,.104],[.030,.022,.055],.030));
     // Deep orbital socket depression (recessed eyes)
-    fields.push(volume([sign*.032,center[1],.055],[.024,.016,.050],-.026));
+    fields.push(volume([sign*.032,center[1],.090],[.024,.018,.045],-.028));
    }
 
    if(FACE_STAGE>=3){
-    const nasal=createFeatureFrame({center:[noseDeviation,1.737,.07]});
-    fields.push(ridgeSculptField({frame:nasal,points:[[-noseDeviation,.037,0],[-noseDeviation*.6,.012,.01],[0,-.012,.042]],radius:.025,strength:.065,depthRadius:.10,mask:p=>front(p)*smooth((1.787-p[1])/.045)}));
-    // High-relief nose tip and bridge
-    fields.push(volume([noseDeviation,1.722,.100],[.028,.025,.085],.056));
-    fields.push(volume([noseDeviation,1.708,.092],[.018,.018,.065],.036));
+    const nasal=createFeatureFrame({center:[noseDeviation,1.737,.105]});
+    fields.push(ridgeSculptField({frame:nasal,points:[[-noseDeviation*.4,.030,.002],[-noseDeviation*.2,.010,.008],[0,-.014,.016]],radius:.026,strength:.028,depthRadius:.07,mask:p=>front(p)*smooth((1.787-p[1])/.045)}));
+    // Broad pugilistic sumo nose tip and bridge
+    fields.push(volume([noseDeviation,1.722,.118],[.032,.022,.050],.028));
+    fields.push(volume([noseDeviation,1.742,.112],[.022,.022,.045],.020));
     for(const sign of [1,-1]){
-     fields.push(volume([noseDeviation+sign*.022,1.716,.092],[.020,.018,.075],.032));
-     fields.push(creaseSculptField({points:[[noseDeviation+sign*.012,1.712,.102],[noseDeviation+sign*.022,1.710,.102]],radius:.005,strength:.018,depthRadius:.06,mask:front}));
-     fields.push(planeSculptField({point:[noseDeviation+sign*.014,1.740,.092],normal:[sign*.85,0,.53],strength:.30,maxDisplacement:.007,mask:ellipsoidMask({frame:createFeatureFrame({center:[noseDeviation+sign*.016,1.740,.090]}),radii:[.015,.025,.078]})}));
+     fields.push(volume([noseDeviation+sign*.020,1.716,.112],[.018,.016,.045],.022));
+     fields.push(creaseSculptField({points:[[noseDeviation+sign*.012,1.712,.114],[noseDeviation+sign*.022,1.710,.112]],radius:.005,strength:.018,depthRadius:.06,mask:front}));
+     fields.push(planeSculptField({point:[noseDeviation+sign*.014,1.740,.106],normal:[sign*.85,0,.53],strength:.30,maxDisplacement:.007,mask:ellipsoidMask({frame:createFeatureFrame({center:[noseDeviation+sign*.016,1.740,.104]}),radii:[.015,.025,.078]})}));
      // Massive sumo cheek fat pads
-     fields.push(volume([sign*.066,1.730,.078],[.050,.040,.082],.046));
-     fields.push(planeSculptField({point:[sign*.074,1.718,.068],normal:[sign*.55,-.25,.80],strength:.55,maxDisplacement:.008,mask:ellipsoidMask({frame:createFeatureFrame({center:[sign*.072,1.716,.070]}),radii:[.035,.038,.056]})}));
+     fields.push(volume([sign*.066,1.728,.095],[.050,.040,.070],.044));
+     fields.push(planeSculptField({point:[sign*.074,1.718,.085],normal:[sign*.55,-.25,.80],strength:.55,maxDisplacement:.008,mask:ellipsoidMask({frame:createFeatureFrame({center:[sign*.072,1.716,.085]}),radii:[.035,.038,.056]})}));
     }
    }
 
    if(FACE_STAGE>=4){
-    const mouth=createFeatureFrame({center:[0,1.689,.080]});
-    fields.push(volume([0,1.690,.076],[.038,.028,.065],.022));
+    const mouth=createFeatureFrame({center:[0,1.689,.112]});
+    fields.push(volume([0,1.690,.110],[.038,.028,.055],.022));
     // Pronounced multi-voxel upper lip
-    fields.push(ridgeSculptField({frame:mouth,points:[[-.026,-.001,0],[-.014,.004,0],[-.007,.007,0],[0,.005,0],[.007,.007,0],[.014,.004,0],[.026,-.001,0]],radius:.0085,strength:.022,depthRadius:.05,mask:front}));
+    fields.push(ridgeSculptField({frame:mouth,points:[[-.026,-.001,0],[-.014,.004,0],[-.007,.007,0],[0,.005,0],[.007,.007,0],[.014,.004,0],[.026,-.001,0]],radius:.0085,strength:.024,depthRadius:.05,mask:front}));
     // Pronounced multi-voxel lower lip
-    fields.push(ridgeSculptField({frame:mouth,points:[[-.024,-.002,0],[-.012,-.006,0],[0,-.007,0],[.012,-.006,0],[.024,-.002,0]],radius:.0095,strength:.024,depthRadius:.05,mask:front}));
+    fields.push(ridgeSculptField({frame:mouth,points:[[-.024,-.002,0],[-.012,-.006,0],[0,-.007,0],[.012,-.006,0],[.024,-.002,0]],radius:.0095,strength:.025,depthRadius:.05,mask:front}));
     // Deep oral fissure crease
-    fields.push(creaseSculptField({frame:mouth,points:[[-.026,-.001,0],[-.013,0,0],[0,-.001,0],[.013,0,0],[.026,-.001,0]],radius:.0045,strength:.020,depthRadius:.06,mask:front}));
+    fields.push(creaseSculptField({frame:mouth,points:[[-.026,-.001,0],[-.013,0,0],[0,-.001,0],[.013,0,0],[.026,-.001,0]],radius:.0045,strength:.022,depthRadius:.06,mask:front}));
     // Mental-labial crease
-    fields.push(creaseSculptField({points:[[-.018,1.674,.080],[0,1.673,.084],[.018,1.674,.080]],radius:.007,strength:.016,depthRadius:.045,mask:front}));
-    for(const sign of [-1,1])fields.push(ridgeSculptField({points:[[sign*.0035,1.702,.084],[sign*.0045,1.694,.084]],radius:.004,strength:.006,depthRadius:.04,mask:front}));
+    fields.push(creaseSculptField({points:[[-.018,1.674,.108],[0,1.673,.110],[.018,1.674,.108]],radius:.007,strength:.018,depthRadius:.045,mask:front}));
+    for(const sign of [-1,1])fields.push(ridgeSculptField({points:[[sign*.0035,1.702,.112],[sign*.0045,1.694,.112]],radius:.004,strength:.007,depthRadius:.04,mask:front}));
    }
 
    surface=applySculptFields(surface,fields);
-   surface=relaxSculptSurface(surface,{mask:p=>p[1]>1.63?1:0,iterations:2,strength:.18,tangential:false,featureMask:p=>(p[1]<1.65||(p[2]>.055&&p[1]>1.66&&p[1]<1.785))?1:0});
+   surface=relaxSculptSurface(surface,{mask:p=>p[1]>1.63?1:0,iterations:2,strength:.18,tangential:false,featureMask:p=>(p[1]<1.65||(p[2]>.070&&p[1]>1.66&&p[1]<1.785))?1:0});
 
  surface=stitchOrbitalPockets(surface,orbitalCuts,landmarks);
  surface=stitchAuricularPatches(surface);

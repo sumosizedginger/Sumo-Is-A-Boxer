@@ -44,9 +44,9 @@ Implemented in the engine (`engine/src/voxel/`, public through `engine/full`):
 
 ## Hero voxel metrics (HERO, canonical)
 
-- occupied: 248,092 cells
-- surface: 26,168 cells
-- visible faces: 44,746 faces
+- occupied: 253,260 cells
+- surface: 26,517 cells
+- visible faces: 45,700 faces
 - voxelSize: 0.012 m
 - draw calls: 1 (single batched InstancedMesh)
 

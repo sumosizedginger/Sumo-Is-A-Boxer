@@ -14,35 +14,66 @@ const torsoRows=[
   [1.27, .355, .310, .036],
   [1.36, .342, .288, .024],
   [1.43, .330, .268, .015],
-  [1.48, .305, .242, .010],
-  [1.52, .270, .215, .008],
-  [1.56, .230, .192, .006],
-  [1.60, .162, .160, .005],
-  [1.64, .122, .138, .005],
-  [1.67, .110, .124, .006]
+  [1.48, .295, .238, .010],
+  [1.52, .230, .200, .008],
+  [1.56, .170, .168, .006],
+  [1.60, .140, .145, .005],
+  [1.64, .124, .134, .005],
+  [1.67, .114, .124, .006]
 ];
 function axial(y,t){const c=Math.cos(t),s=Math.sin(t);let p;
   if(y>=1.69){const h=skullAt(y);p=[h.cx+c*h.width,y,h.cz+s*h.depth];}
   else {const [w,d,z]=lerpRows(torsoRows,y);p=[c*w,y,z+s*d];if(y>1.67){const h=skullAt(1.69),a=(y-1.67)/.02;p=[p[0]*(1-a)+c*h.width*a,y,p[2]*(1-a)+(h.cz+s*h.depth)*a];}
-    // Smooth baseline chest/belly front fullness
-    if(y>0.95&&y<1.50&&s>0){
-      const vy=Math.sin((y-0.95)/0.55*Math.PI);
-      p[2]+=s*s*0.025*vy;
+    // Posterior trapezius slope (thick muscular posterior neck drape, clean column in front)
+    if(y>1.44&&y<1.63&&s<0){
+      const vy=Math.sin((1.63-y)/0.19*Math.PI*0.5);
+      p[0]*=(1+0.16*vy*Math.abs(s));
+      p[2]-=(0.020+0.035*vy)*Math.abs(s);
     }
-    // Smooth baseline rear glute/back curvature
-    if(y>0.95&&y<1.22&&s<0){
-      const vy=Math.sin((y-0.95)/0.27*Math.PI);
-      p[2]-=Math.abs(s)*(0.015+0.025*Math.abs(c))*vy;
+    // Anterior neck column (clean vertical cylinder in front, distinct from posterior trapezius)
+    if(y>1.49&&y<1.64&&s>0){
+      const neckMaxW = 0.126 + (1.64 - y) * 0.04;
+      if(Math.abs(p[0]) > neckMaxW){
+        const frontBlend = Math.sin(s * Math.PI * 0.5);
+        p[0] = Math.sign(p[0]) * (neckMaxW + (Math.abs(p[0]) - neckMaxW) * (1 - frontBlend * 0.85));
+      }
+    }
+    // Chest / pectoral plates and sternal furrow
+    if(y>1.28&&y<1.48&&s>0){
+      const vy=Math.sin((y-1.28)/0.20*Math.PI);
+      if(Math.abs(c)>0.15){
+        p[2]+=0.026*vy*s*Math.min(1,(Math.abs(c)-0.15)/0.25);
+      }else{
+        p[2]-=0.010*vy*s*(1-Math.abs(c)/0.15);
+      }
+    }
+    // Smooth baseline belly front fullness and lower apron
+    if(y>0.95&&y<1.28&&s>0){
+      const vy=Math.sin((y-0.95)/0.33*Math.PI);
+      p[2]+=s*s*0.035*vy;
+      if(y<1.06){
+        const droop=Math.sin((1.06-y)/0.11*Math.PI);
+        p[2]+=s*0.016*droop;
+      }
+    }
+    // Smooth baseline rear glute/back curvature with cleft
+    if(y>0.95&&y<1.24&&s<0){
+      const vy=Math.sin((y-0.95)/0.29*Math.PI);
+      if(Math.abs(c)>0.12){
+        p[2]-=Math.abs(s)*(0.025+0.030*Math.abs(c))*vy;
+      }else{
+        p[2]+=Math.abs(s)*0.015*vy*(1-Math.abs(c)/0.12);
+      }
     }
     // Submental chin fold baseline
     if(y>1.60&&y<1.67&&s>0.75){
       const vy=Math.sin((y-1.60)/0.07*Math.PI);
-      p[2]+=s*0.018*vy;
+      p[2]+=s*0.020*vy;
     }
     // Square mandibular jaw angle baseline
-    if(y>1.63&&y<1.68&&Math.abs(c)>0.60){
+    if(y>1.63&&y<1.68&&Math.abs(c)>0.55){
       const vy=Math.sin((y-1.63)/0.05*Math.PI);
-      p[0]*=(1+0.06*vy*Math.abs(c));
+      p[0]*=(1+0.08*vy*Math.abs(c));
     }
   }return p;
 }
@@ -150,14 +181,17 @@ export function generateContinuousBody(landmarks,{widthScale=1,leftArmScale=1}={
           let dx=sign*ct*w, dz=st*d-.008;
           if(y<wr){
             const handT=clamp((wr-y)/.165);
-            dx+=sign*0.014*handT*Math.abs(ct);
-            dz*=(1-0.20*handT);
-            if(ct*sign<0&&st>0){
-              dx-=sign*0.016*handT*st;
-              dz+=0.018*handT*st;
+            dx+=sign*0.016*handT*Math.abs(ct);
+            dz*=(1-0.18*handT);
+            // Thenar eminence (fleshy medial thumb ball)
+            if(ct*sign<0){
+              const thumbWeight = Math.max(0, -ct*sign) * Math.sin(clamp((wr-y)/0.11) * Math.PI);
+              dx-=sign*0.024*thumbWeight;
+              dz+=0.022*thumbWeight*Math.max(0, st);
             }
-            if(st<0&&y<wr-0.05&&y>wr-0.13){
-              dz-=0.010*Math.sin((wr-0.05-y)/0.08*Math.PI)*Math.abs(st);
+            // Knuckle ridge on dorsal side (st < 0)
+            if(st<0&&y<wr-0.04&&y>wr-0.12){
+              dz-=0.014*Math.sin((wr-0.04-y)/0.08*Math.PI)*Math.abs(st);
             }
           }
           return [x+dx,y,dz];
@@ -165,18 +199,38 @@ export function generateContinuousBody(landmarks,{widthScale=1,leftArmScale=1}={
           const k=landmarks['knee.'+key].y,a=landmarks['ankle.'+key].y;
           let lx=sign*legCenterX, lz=legCenterZ;
           let dx=ct*w, dz=st*d;
+          // Medial adductor fullness (massive inner thighs filling groin)
+          if(y>0.66&&y<0.84&&ct*sign<0){
+            const ay=Math.sin((y-0.66)/0.18*Math.PI);
+            dx-=sign*0.016*ay*Math.abs(ct);
+          }
+          // Knee patella and popliteal shaping
+          if(y>k-0.07&&y<k+0.07){
+            const ky=Math.sin((y-k+0.07)/0.14*Math.PI);
+            if(st>0) dz+=0.008*ky*st;
+            if(st<0) dz+=0.008*ky*Math.abs(st);
+          }
+          // Calf gastrocnemius medial fullness
+          if(y>a+0.06&&y<k-0.02){
+            const cy=Math.sin((y-a-0.06)/(k-a-0.08)*Math.PI);
+            if(st<0){
+              const medialBias = ct*sign < 0 ? 0.018 : 0.010;
+              dz-=medialBias*cy*Math.abs(st);
+            }
+          }
+          // Foot shaping below ankle
           if(y<a){
             const footT=clamp((a-y)/(a-0.015));
-            lz=legCenterZ+0.024*footT;
-            if(st<0) dz-=(0.062+0.022*Math.abs(st))*footT;
+            lz=legCenterZ+0.022*footT;
+            if(st<0) dz-=(0.060+0.020*Math.abs(st))*footT;
             if(st>0) {
-              dz+=(0.090+0.032*st)*footT;
-              if(ct*sign<0) dz+=0.030*footT*Math.max(0,-ct*sign);
+              dz+=(0.086+0.028*st)*footT;
+              if(ct*sign<0) dz+=0.026*footT*Math.max(0,-ct*sign);
             }
-            if(ct*sign>0&&y<0.05) dx+=sign*0.018*footT;
+            if(ct*sign>0&&y<0.05) dx+=sign*0.016*footT;
           }
           let finalX = lx + dx;
-          if (finalX * sign < 0.015) finalX = sign * 0.015;
+          if (finalX * sign < 0.008) finalX = sign * 0.008;
           return [finalX,y,lz+dz];
         }
       });
