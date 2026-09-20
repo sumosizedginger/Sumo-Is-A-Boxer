@@ -37,3 +37,5 @@ export {
 export {
   instantiateVoxelArtifact
 } from './runtime.js';
+
+export { compileSurfaceInstances } from './surface-instances.js';

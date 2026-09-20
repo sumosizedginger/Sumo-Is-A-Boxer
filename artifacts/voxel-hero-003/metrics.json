@@ -1,40 +1,23 @@
 {
   "metrics": {
-    "occupied": 253260,
-    "surface": 26517,
-    "faces": 45700,
+    "occupied": 244575,
+    "surface": 25820,
+    "faces": 43632,
     "voxelSize": 0.012,
-    "generationMs": 28471.299999952316,
-    "drawCalls": 1
+    "generationMs": 23002.700000047684,
+    "drawCalls": 1,
+    "realization": "surface",
+    "instances": 43733,
+    "realizationHash": "0932bf6e374ffb86",
+    "realizationMs": 1093.7000000476837
   },
   "errors": [],
-  "capturesCount": 26,
+  "capturesCount": 34,
   "captures": [
-    "artifacts\\voxel-hero-003\\guide-front.png",
-    "artifacts\\voxel-hero-003\\guide-rear.png",
-    "artifacts\\voxel-hero-003\\guide-profile.png",
-    "artifacts\\voxel-hero-003\\guide-three-quarter-front.png",
-    "artifacts\\voxel-hero-003\\guide-three-quarter-rear.png",
     "artifacts\\voxel-hero-003\\clay-front.png",
     "artifacts\\voxel-hero-003\\clay-rear.png",
     "artifacts\\voxel-hero-003\\clay-profile.png",
     "artifacts\\voxel-hero-003\\clay-three-quarter-front.png",
-    "artifacts\\voxel-hero-003\\clay-three-quarter-rear.png",
-    "artifacts\\voxel-hero-003\\silhouette-front.png",
-    "artifacts\\voxel-hero-003\\silhouette-profile.png",
-    "artifacts\\voxel-hero-003\\close-head.png",
-    "artifacts\\voxel-hero-003\\close-face.png",
-    "artifacts\\voxel-hero-003\\close-shoulder.png",
-    "artifacts\\voxel-hero-003\\close-belly.png",
-    "artifacts\\voxel-hero-003\\close-pelvis.png",
-    "artifacts\\voxel-hero-003\\close-hand.png",
-    "artifacts\\voxel-hero-003\\close-thigh-knee.png",
-    "artifacts\\voxel-hero-003\\close-foot.png",
-    "artifacts\\voxel-hero-003\\hero-production.png",
-    "artifacts\\voxel-hero-003\\comparison-front-guide.png",
-    "artifacts\\voxel-hero-003\\comparison-front-voxel.png",
-    "artifacts\\voxel-hero-003\\comparison-profile-guide.png",
-    "artifacts\\voxel-hero-003\\comparison-profile-voxel.png",
-    "artifacts\\voxel-hero-003\\comparison-three-quarter-voxel.png"
+    "artifacts\\voxel-hero-003\\clay-three-quarter-rear.png"
   ]
 }

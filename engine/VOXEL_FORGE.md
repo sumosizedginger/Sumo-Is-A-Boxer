@@ -26,7 +26,7 @@ DEFINITION (quality, voxelSize, fillInterior)
   → voxelizeMesh(MeshIR | topology buffers)
   → extractVoxelSurface
   → createVoxelArtifact
-  → instantiateVoxelArtifact({ mode: 'instances' | 'faces', bones? })
+  → instantiateVoxelArtifact({ mode: 'instances' | 'surfaceInstances' | 'faces', bones? })
 ```
 
 ## 3. Public API
@@ -48,8 +48,11 @@ Not exported: dense occupancy arrays, greedy meshing, renderer builders.
 
 ## 5. Runtime
 
-- `instances`: one InstancedMesh of unit cubes, instance colour, optional bone LBS. Draw calls: 1.
+- `instances`: one InstancedMesh of canonical grid cubes, optional bone LBS. Draw calls: 1.
+- `surfaceInstances`: one InstancedMesh of deterministic guide-surface samples. Samples carry a stable orthonormal frame and preserve rigid isotropic cubes under deformation. Draw calls: 1.
 - `faces`: merged visible quads from `faceMask`. Draw calls: 1.
+
+The occupancy grid remains canonical. Surface realization is an explicit HERO presentation mode, so environment and static voxel users keep the existing grid behavior.
 
 `ownsRendererResources: true`. Call `dispose()`.
 
@@ -58,7 +61,8 @@ Not exported: dense occupancy arrays, greedy meshing, renderer builders.
 | Capability | State |
 |---|---|
 | Occupancy + surface extraction + hash | IMPLEMENTED |
-| Instanced cubes / face-culled mesh | IMPLEMENTED |
+| Instanced cubes / face-culled mesh | IMPLEMENTED
+| Surface-conforming rigid HERO samples | IMPLEMENTED (opt-in realization) |
 | Rigid skeleton deformation | IMPLEMENTED (first production use) |
 | Greedy meshing | PLANNED (withheld for microstructure) |
 | Runtime LOD | DEFERRED |

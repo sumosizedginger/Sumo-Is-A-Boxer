@@ -165,7 +165,7 @@ const STATE_POSE = Object.freeze({
  * @param {object} options.library - Asset library for the equipment.
  * @returns {object} Opponent presentation handle.
  */
-export function createOpponentSumo({ library, voxelQuality = 'HERO' } = {}) {
+export function createOpponentSumo({ library, voxelQuality = 'HERO', voxelRealization = 'grid' } = {}) {
   // --- CHARACTER FORGE ------------------------------------------------------
   const definition = createCharacterDefinition({
     id: 'char.sumo.opponent',
@@ -213,7 +213,7 @@ export function createOpponentSumo({ library, voxelQuality = 'HERO' } = {}) {
     attachments.push(holder);
   }
 
-  const voxelHero = createHeroVoxel(character, { quality: voxelQuality });
+  const voxelHero = createHeroVoxel(character, { quality: voxelQuality, realization: voxelRealization });
   group.add(voxelHero.runtime.object3D);
 
   // --- MOTION FORGE ---------------------------------------------------------
@@ -375,7 +375,11 @@ export function createOpponentSumo({ library, voxelQuality = 'HERO' } = {}) {
           faces: voxelHero.artifact.visibleFaceCount,
           voxelSize: voxelHero.artifact.voxelSize,
           generationMs: voxelHero.generationMs,
-          drawCalls: voxelHero.runtime.stats.drawCalls
+          drawCalls: voxelHero.runtime.stats.drawCalls,
+          realization: voxelRealization,
+          instances: voxelHero.runtime.stats.instances,
+          realizationHash: voxelHero.artifact.surfaceInstances?.hash??null,
+          realizationMs: voxelHero.artifact.surfaceInstances?.generationMs??0
         }
       };
     },

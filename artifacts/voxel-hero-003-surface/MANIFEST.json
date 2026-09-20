@@ -7,12 +7,12 @@
     "surface": 25820,
     "faces": 43632,
     "voxelSize": 0.012,
-    "generationMs": 23002.700000047684,
+    "generationMs": 23020,
     "drawCalls": 1,
     "realization": "surface",
     "instances": 43733,
     "realizationHash": "0932bf6e374ffb86",
-    "realizationMs": 1093.7000000476837
+    "realizationMs": 1021.8000000715256
   },
   "capturesCount": 34,
   "captures": [

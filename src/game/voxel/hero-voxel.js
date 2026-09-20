@@ -110,9 +110,11 @@ function computeGeometryHash(geometry, quality) {
  * @param {object} [options]
  * @returns {object} { artifact, runtime, generationMs }
  */
-export function createHeroVoxel(character, { quality = 'HERO' } = {}) {
+export function createHeroVoxel(character, { quality = 'HERO', realization = 'grid' } = {}) {
   const geometry = character.geometry;
-  const cacheKey = computeGeometryHash(geometry, quality);
+  if(!['grid','grid-normal','surface'].includes(realization))throw new RangeError('Unknown hero realization');
+  const started=performance.now();
+  const cacheKey = computeGeometryHash(geometry, quality)+'_'+realization;
   let cached = _voxelArtifactCache.get(cacheKey);
   let artifact, grid, generationMs;
 
@@ -142,6 +144,8 @@ export function createHeroVoxel(character, { quality = 'HERO' } = {}) {
       id: 'voxel.hero.sumo',
       definition,
       grid,
+      surfaceMesh: realization==='grid'?null:mesh,
+      surfaceSampling: {placement:realization},
       colorForCell: ({ x, y, z, regionId }) => {
         let neighbors = 0;
         for (let d = 0; d < 6; d++) {
@@ -152,12 +156,12 @@ export function createHeroVoxel(character, { quality = 'HERO' } = {}) {
         return jitter(REGION_COLOR[regionId] ?? SKIN, x, y, z, cavity);
       }
     });
-    generationMs = grid.generationMs;
+    generationMs = performance.now()-started;
     _voxelArtifactCache.set(cacheKey, { artifact, grid, generationMs });
   }
 
   const runtime = instantiateVoxelArtifact(artifact, {
-    mode: 'instances',
+    mode: realization==='grid'?'instances':'surfaceInstances',
     bones: character.bones,
     name: 'hero-voxel'
   });

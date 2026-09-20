@@ -1,56 +1,27 @@
 # Current state
 
 **Branch:** `game-build`  
-**Milestone:** VOXEL-HERO-003: REFERENCE-FITTED HERO SCULPTURE  
+**Milestone:** VOXEL-HERO-003: REFERENCE-FIT CONVERGENCE  
 **Status:** IN PROGRESS — reference-fit convergence; visual acceptance pending.
-
 
 ## Hero architecture
 
-- Character Forge humanoid + certified continuous guide body remain the **hidden** deformation authority (topology, skeleton, skin weights, landmarks, pose drivers).
-- Visible hero is a **Voxel Forge** sculptural surface-cube InstancedMesh (`quality: HERO` at 0.012 m base unit cubes).
-- Fully sculpted sumo anatomy matching reference turnaround and proportion sheets:
-  - Total height: 1.86m, Head height: 0.245m (~1/7.6 proportion ratio).
-  - Massive continuous abdominal mass projecting forward with low apron sag and navel pit cavity at y=1.12m.
-  - Sternal notch depression flanked by twin sculpted pectoral plates.
-  - Wide trapezius slope connecting seamlessly into thick muscular neck column (no skinny neck constriction).
-  - Heavy muscular glute cheeks with deep midline cleft in posterior view.
-  - Distinct patellar knee plates and rear popliteal fossa creases.
-  - Muscular calf flare (gastrocnemius) with grounded calcaneus heel and planted metatarsal sole.
-  - Sculpted hand: natural flared arm hanging angle (~18°), distinct wrist joint, thenar eminence, and readable cubic knuckle fist block.
-  - 3D sculpted facial volume: heavy brow overhang, deep orbital pockets, 4-step nose (root, bridge, tip, wings), heavy cheek pads, wide jaw angles, large chin projection, double-chin neck fold.
-- Dedicated `sumo_neutral` presentation pose: feet wide and planted (0.76m stance), knees flexed, arms relaxed down/outward, elbows naturally flared, chest facing camera.
-- Warm terracotta/sandstone clay skin palette matching Reference Sheet 07 with 6-neighbor directional cavity occlusion.
-- Individual cubes stay rigid under skeleton-driven centre motion with uniform isotropic scale.
+Character Forge topology, skeleton, landmarks, skin weights, and the certified continuous guide remain the deformation authority. The guide now adds semantic anatomical masses for the ribcage, paired pectorals, traps, lats, abdomen, apron, pelvis, glutes, thighs, hamstrings, calves, hands, and feet while preserving the connected global topology.
 
-## Voxel architecture
+The HERO voxel path keeps a deterministic 0.012 m canonical occupancy grid for analysis, semantic binding, collision, hashing, and artifact generation. Runtime can realize that authority as the legacy grid cubes, orientation-only grid cubes, or deterministic surface-conforming rigid cubes. The current HERO presentation default adopts the surface-conforming realization because it removes the dominant Cartesian terrace bands while preserving the same canonical occupancy artifact. Surface samples keep bind position, stable surface frame, region, skin weights, and canonical cell association. All visible cubes remain isotropic BoxGeometry instances and can stay in one draw call.
 
-Implemented in the engine (`engine/src/voxel/`, public through `engine/full`):
+The guide is materially improved but is not accepted as a final reference match yet. The remaining risk areas are the shoulder/axilla transition, rear torso mass separation, foot macro shape, and face readability after voxel quantization.
 
-`createVoxelDefinition` → `voxelizeMesh` → `extractVoxelSurface` → `createVoxelArtifact` → `instantiateVoxelArtifact`
+## Validation and presentation
 
-- Canonical base unit size: `VOXEL_QUALITY.HERO` = 0.012m.
-- Full 6-neighbor surface extraction with enclosed interior rejection.
-- Single draw call (`InstancedMesh`) with cavity-occluded vertex colors and standard PBR response (roughness 0.68, metalness 0.02).
+Validation uses a neutral gray clay rig with bright neutral lighting, shadows, no fog, and no texture camouflage. Current canonical capture work is in `artifacts/voxel-hero-003/`; fresh complete boards are regenerated at the end of this pass.
 
-## Validation & Presentation
+Silhouette measurements are regenerated from the current captures. They are evidence for tuning, not an acceptance claim.
 
-- Dedicated neutral 3-point clay light rig (bright key, soft fill, warm rim, ambient bounce, neutral gray background `0x3a3f47`, no atmospheric fog).
-- Pure silhouette validation mode (solid black hero `0x050505`, clean bright background `0xeef0f2`).
-- 26 canonical validation deliverables and side-by-side reference comparison boards generated in `artifacts/voxel-hero-003/`.
-- Silhouette convergence against approved visual contract (`02-silhouette.png`):
-  - Profile Mean Normalized Silhouette Error: **3.97%** of character height.
-  - Front Mean Normalized Silhouette Error: **4.76%** of character height.
+## Current HERO metrics
 
-## Hero voxel metrics (HERO, canonical)
+The current surface realization records 244,575 occupied cells, 25,820 canonical surface cells, 43,632 canonical visible faces, 43,733 surface instances, 0.012 m cubes, one draw call, and 23.0 s generation in `artifacts/voxel-hero-003-surface/metrics.json`. These values are intentionally kept provisional while reference-fit convergence continues.
 
-- occupied: 253,260 cells
-- surface: 26,517 cells
-- visible faces: 45,700 faces
-- voxelSize: 0.012 m
-- draw calls: 1 (single batched InstancedMesh)
+## Milestone boundary
 
-## Next milestone
-
-VOXEL-COMBAT-001 / VOXEL-ANIMATION-001 (pending milestone direction)
-
+Combat, clothing, and production animation remain out of scope until this naked clay hero earns visual acceptance.

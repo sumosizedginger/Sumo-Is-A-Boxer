@@ -33,6 +33,9 @@ const _position = new Vector3();
 const _scale = new Vector3();
 const _quat = new Quaternion();
 const _quatBlend = new Quaternion();
+const _boneQuat = new Quaternion();
+const _bindQuat = new Quaternion();
+const _rootInverseQuat = new Quaternion();
 const _color = new Color();
 const _bind = new Vector3();
 const _world = new Vector3();
@@ -121,13 +124,14 @@ function skinRotation(cell, bones, invBind, out) {
     if (!bone) continue;
     _boneMat.fromArray(invBind, bi * 16);
     _tmp.multiplyMatrices(bone.matrixWorld, _boneMat);
-    _quat.setFromRotationMatrix(_tmp);
+    _matrix.extractRotation(_tmp);
+    _boneQuat.setFromRotationMatrix(_matrix).normalize();
     if (first) {
-      out.copy(_quat);
+      out.copy(_boneQuat);
       first = false;
     } else {
       _quatBlend.copy(out);
-      out.slerpQuaternions(_quatBlend, _quat, w / (wsum + w));
+      out.slerpQuaternions(_quatBlend, _boneQuat, w / (wsum + w));
     }
     wsum += w;
   }
@@ -205,10 +209,12 @@ export function instantiateVoxelArtifact(artifact, {
   if (!artifact || !artifact.cells) {
     throw new TypeError('instantiateVoxelArtifact requires a voxel artifact');
   }
+  if(!['instances','surfaceInstances','faces'].includes(mode))throw new RangeError('Unknown voxel realization mode');
+  if(mode==='surfaceInstances'&&!artifact.surfaceInstances)throw new TypeError('surfaceInstances mode requires compiled surface samples');
   const ownedMaterial = !material;
   const mat = material ?? defaultMaterial();
   mat.vertexColors = true;
-  const cells = artifact.cells;
+  const cells = mode==='surfaceInstances'?artifact.surfaceInstances.samples:artifact.cells;
   const size = artifact.voxelSize;
   const root = new Object3D();
   root.name = name ?? artifact.id;
@@ -253,6 +259,7 @@ export function instantiateVoxelArtifact(artifact, {
     for (let i = 0; i < cells.length; i++) {
       const cell = cells[i];
       _position.fromArray(cell.bindPosition);
+      if(cell.bindOrientation)_quat.fromArray(cell.bindOrientation);else _quat.identity();
       _matrix.compose(_position, _quat, _scale);
       mesh.setMatrixAt(i, _matrix);
       _color.fromArray(cell.color);
@@ -275,7 +282,7 @@ export function instantiateVoxelArtifact(artifact, {
   const stats = {
     mode,
     instances: instanceCount,
-    surfaceVoxels: cells.length,
+    surfaceVoxels: artifact.surfaceCount,
     occupiedVoxels: artifact.occupiedCount,
     enclosedVoxels: artifact.enclosedCount,
     visibleFaces: artifact.visibleFaceCount,
@@ -303,10 +310,12 @@ export function instantiateVoxelArtifact(artifact, {
      * @param {Array<object>} liveBones
      */
     updateDeformation(liveBones) {
-      if (disposed || !invBind || mode !== 'instances' || !liveBones) return;
+      if (disposed || !invBind || mode === 'faces' || !liveBones) return;
       const mesh = meshes[0];
       root.updateWorldMatrix(true, false);
       _inv.copy(root.matrixWorld).invert();
+      _matrix.extractRotation(_inv);
+      _rootInverseQuat.setFromRotationMatrix(_matrix).normalize();
       _scale.set(size, size, size);
       for (let i = 0; i < cells.length; i++) {
         const cell = cells[i];
@@ -317,7 +326,9 @@ export function instantiateVoxelArtifact(artifact, {
           skinPoint(cell, liveBones, invBind, _position);
           _position.applyMatrix4(_inv);
           skinRotation(cell, liveBones, invBind, _quat);
+          _quat.premultiply(_rootInverseQuat);
         }
+        if(cell.bindOrientation)_quat.multiply(_bindQuat.fromArray(cell.bindOrientation));
         _matrix.compose(_position, _quat, _scale);
         mesh.setMatrixAt(i, _matrix);
       }

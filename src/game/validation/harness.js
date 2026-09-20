@@ -29,11 +29,11 @@ export function createValidation({ game, rig, sparks, lights, modelMode=false, t
   clayKey.shadow.bias = -0.0003;
   clayLightGroup.add(clayKey);
 
-  const clayFill = new DirectionalLight(0xd5e3f5, 1.4);
+  const clayFill = new DirectionalLight(0xffffff, 1.4);
   clayFill.position.set(-2.8, 2.2, 2.4);
   clayLightGroup.add(clayFill);
 
-  const clayRim = new DirectionalLight(0xffecd6, 1.8);
+  const clayRim = new DirectionalLight(0xffffff, 1.8);
   clayRim.position.set(0.2, 3.5, -2.8);
   clayLightGroup.add(clayRim);
 
@@ -66,6 +66,8 @@ export function createValidation({ game, rig, sparks, lights, modelMode=false, t
 
     if (guide) {
       guide.visible = (name === 'GUIDE' || name === 'WIREFRAME');
+      guide.color.setHex(0xb8b8b8);
+      guide.roughness=0.85;guide.metalness=0;
       guide.wireframe = (name === 'WIREFRAME');
     }
 
@@ -102,7 +104,7 @@ export function createValidation({ game, rig, sparks, lights, modelMode=false, t
       scene.fog = null;
       scene.background = new Color(0x3a3f47);
       if (voxelMat) {
-        voxelMat.color.setHex(0xd0b8a4);
+        voxelMat.color.setHex(0xb8b8b8);
         voxelMat.emissive.setHex(0x000000);
         voxelMat.vertexColors = false;
         voxelMat.roughness = 0.70;

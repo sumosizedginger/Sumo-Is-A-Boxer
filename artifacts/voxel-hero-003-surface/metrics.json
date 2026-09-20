@@ -1,0 +1,19 @@
+{
+  "metrics": {
+    "occupied": 244575,
+    "surface": 25820,
+    "faces": 43632,
+    "voxelSize": 0.012,
+    "generationMs": 23020,
+    "drawCalls": 1,
+    "realization": "surface",
+    "instances": 43733,
+    "realizationHash": "0932bf6e374ffb86",
+    "realizationMs": 1021.8000000715256
+  },
+  "errors": [],
+  "capturesCount": 34,
+  "captures": [
+    "artifacts\\voxel-hero-003-surface\\clay-front.png"
+  ]
+}

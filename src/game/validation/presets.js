@@ -71,6 +71,10 @@ export const PRESETS = {
   steel_gameplay: preset([.5, 1.65, -3.8], [.5, 4.25, -4.2], 30, 'steel')
 };
 
+for(const [name,value] of Object.entries(PRESETS)){
+ if(name.startsWith('close_'))PRESETS['guide_'+name]={...value,presentationMode:'GUIDE'};
+}
+
 export function motionCamera(presetName, progress) {
   const base = PRESETS[presetName].camera;
   const camera = new PerspectiveCamera(base.fov);

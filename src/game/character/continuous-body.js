@@ -1,81 +1,17 @@
 // Canonical indexed skin. Branches share boundary edges; no internal caps.
 import {createTopologySurface,extractBoundaryLoops,weldTopologyVertices,stitchTopologySurfaces,validateTopology,HERO_BODY_TOPOLOGY_POLICY} from '@sumosizedginger/my-game-engine-1.0/full';
+import {anatomicalTorsoPoint} from './sumo-body-sculpt.js';
 import {skullAt} from '../assets/skull-sections.js';
 
 export const BODY_REGIONS=Object.freeze(Object.fromEntries(['head','neck','chest','back','abdomen','pelvis','shoulder_l','shoulder_r','upperarm_l','upperarm_r','elbow_l','elbow_r','forearm_l','forearm_r','hip_l','hip_r','thigh_l','thigh_r','knee_l','knee_r','calf_l','calf_r'].map((n,i)=>[n,i+1])));
 const clamp=t=>Math.max(0,Math.min(1,t));
 const smooth=t=>{t=clamp(t);return t*t*(3-2*t);};
-function lerpRows(rows,y){for(let i=0;i<rows.length-1;i++)if(y<=rows[i+1][0]){const a=rows[i],b=rows[i+1],t=clamp((y-a[0])/(b[0]-a[0]));return a.slice(1).map((v,k)=>v+(b[k+1]-v)*t);}return rows.at(-1).slice(1);}
-const torsoRows=[
-  [.95,  .325, .285, .008],
-  [1.02, .348, .305, .028],
-  [1.10, .362, .322, .044],
-  [1.18, .365, .325, .048],
-  [1.27, .355, .310, .036],
-  [1.36, .342, .288, .024],
-  [1.43, .330, .268, .015],
-  [1.48, .295, .238, .010],
-  [1.52, .230, .200, .008],
-  [1.56, .170, .168, .006],
-  [1.60, .140, .145, .005],
-  [1.64, .124, .134, .005],
-  [1.67, .114, .124, .006]
-];
-function axial(y,t){const c=Math.cos(t),s=Math.sin(t);let p;
-  if(y>=1.69){const h=skullAt(y);p=[h.cx+c*h.width,y,h.cz+s*h.depth];}
-  else {const [w,d,z]=lerpRows(torsoRows,y);p=[c*w,y,z+s*d];if(y>1.67){const h=skullAt(1.69),a=(y-1.67)/.02;p=[p[0]*(1-a)+c*h.width*a,y,p[2]*(1-a)+(h.cz+s*h.depth)*a];}
-    // Posterior trapezius slope (thick muscular posterior neck drape, clean column in front)
-    if(y>1.44&&y<1.63&&s<0){
-      const vy=Math.sin((1.63-y)/0.19*Math.PI*0.5);
-      p[0]*=(1+0.16*vy*Math.abs(s));
-      p[2]-=(0.020+0.035*vy)*Math.abs(s);
-    }
-    // Anterior neck column (clean vertical cylinder in front, distinct from posterior trapezius)
-    if(y>1.49&&y<1.64&&s>0){
-      const neckMaxW = 0.126 + (1.64 - y) * 0.04;
-      if(Math.abs(p[0]) > neckMaxW){
-        const frontBlend = Math.sin(s * Math.PI * 0.5);
-        p[0] = Math.sign(p[0]) * (neckMaxW + (Math.abs(p[0]) - neckMaxW) * (1 - frontBlend * 0.85));
-      }
-    }
-    // Chest / pectoral plates and sternal furrow
-    if(y>1.28&&y<1.48&&s>0){
-      const vy=Math.sin((y-1.28)/0.20*Math.PI);
-      if(Math.abs(c)>0.15){
-        p[2]+=0.026*vy*s*Math.min(1,(Math.abs(c)-0.15)/0.25);
-      }else{
-        p[2]-=0.010*vy*s*(1-Math.abs(c)/0.15);
-      }
-    }
-    // Smooth baseline belly front fullness and lower apron
-    if(y>0.95&&y<1.28&&s>0){
-      const vy=Math.sin((y-0.95)/0.33*Math.PI);
-      p[2]+=s*s*0.035*vy;
-      if(y<1.06){
-        const droop=Math.sin((1.06-y)/0.11*Math.PI);
-        p[2]+=s*0.016*droop;
-      }
-    }
-    // Smooth baseline rear glute/back curvature with cleft
-    if(y>0.95&&y<1.24&&s<0){
-      const vy=Math.sin((y-0.95)/0.29*Math.PI);
-      if(Math.abs(c)>0.12){
-        p[2]-=Math.abs(s)*(0.025+0.030*Math.abs(c))*vy;
-      }else{
-        p[2]+=Math.abs(s)*0.015*vy*(1-Math.abs(c)/0.12);
-      }
-    }
-    // Submental chin fold baseline
-    if(y>1.60&&y<1.67&&s>0.75){
-      const vy=Math.sin((y-1.60)/0.07*Math.PI);
-      p[2]+=s*0.020*vy;
-    }
-    // Square mandibular jaw angle baseline
-    if(y>1.63&&y<1.68&&Math.abs(c)>0.55){
-      const vy=Math.sin((y-1.63)/0.05*Math.PI);
-      p[0]*=(1+0.08*vy*Math.abs(c));
-    }
-  }return p;
+function lerpRows(rows,y){for(let i=0;i<rows.length-1;i++)if(y<=rows[i+1][0]){const a=rows[i],b=rows[i+1],t=clamp((y-a[0])/(b[0]-a[0]));const prev=rows[Math.max(0,i-1)],next=rows[Math.min(rows.length-1,i+2)],h=b[0]-a[0];return a.slice(1).map((v,k)=>{const m0=(b[k+1]-prev[k+1])/(b[0]-prev[0]),m1=(next[k+1]-a[k+1])/(next[0]-a[0]);return (2*t*t*t-3*t*t+1)*v+(t*t*t-2*t*t+t)*h*m0+(-2*t*t*t+3*t*t)*b[k+1]+(t*t*t-t*t)*h*m1;});}return rows.at(-1).slice(1);}
+function axial(y,t){
+ if(y>=1.69){const h=skullAt(y);return [Math.cos(t)*h.width,y,h.cz+Math.sin(t)*h.depth];}
+ const p=anatomicalTorsoPoint(y,t);
+ if(y>1.61){const h=skullAt(1.69),blend=smooth((y-1.61)/.08);p[0]+=(Math.cos(t)*h.width-p[0])*blend;p[2]+=(h.cz+Math.sin(t)*h.depth-p[2])*blend;}
+ return p;
 }
 
 function raw(position,indices){return createTopologySurface({attributes:{position},indices,forwardAxis:'+Z'});}
@@ -154,17 +90,17 @@ export function generateContinuousBody(landmarks,{widthScale=1,leftArmScale=1}={
         [0.060,  .076, .122],
         [a,      .082, .090],
         [a+.08,  .115, .120],
-        [a+.16,  .145, .152],
-        [a+.24,  .150, .155],
-        [k-.12,  .148, .150],
-        [k-.05,  .130, .132],
-        [k,      .120, .122],
-        [k+.06,  .145, .150],
+        [a+.16,  .125, .127],
+        [a+.24,  .132, .135],
+        [k-.12,  .130, .135],
+        [k-.05,  .113, .115],
+        [k,      .115, .120],
+        [k+.06,  .128, .140],
         [k+.16,  .172, .176],
         [.74,    .185, .188],
         [.845,   .192, .195]
       ];
-      begin=.827;end=0.015;
+      begin=.827;end=.105;
     }
     const ringAt=(y)=>{
       const [w,d]=lerpRows(shapeRows,y);
@@ -180,25 +116,19 @@ export function generateContinuousBody(landmarks,{widthScale=1,leftArmScale=1}={
           }
           let dx=sign*ct*w, dz=st*d-.008;
           if(y<wr){
-            const handT=clamp((wr-y)/.165);
-            dx+=sign*0.016*handT*Math.abs(ct);
-            dz*=(1-0.18*handT);
-            // Thenar eminence (fleshy medial thumb ball)
-            if(ct*sign<0){
-              const thumbWeight = Math.max(0, -ct*sign) * Math.sin(clamp((wr-y)/0.11) * Math.PI);
-              dx-=sign*0.024*thumbWeight;
-              dz+=0.022*thumbWeight*Math.max(0, st);
-            }
-            // Knuckle ridge on dorsal side (st < 0)
-            if(st<0&&y<wr-0.04&&y>wr-0.12){
-              dz-=0.014*Math.sin((wr-0.04-y)/0.08*Math.PI)*Math.abs(st);
-            }
+            const ht=clamp((wr-y)/.165),palm=Math.sin(Math.PI*Math.min(1,ht/.90));
+            dx=sign*Math.sign(ct)*Math.pow(Math.abs(ct),.62)*w;
+            dz=Math.sign(st)*Math.pow(Math.abs(st),.72)*d-.008;
+            const thumb=Math.exp(-(((ht-.40)/.18)**2))*Math.pow(Math.max(0,-ct),6);
+            dx-=sign*.012*thumb;dz+=.009*thumb;
+            dz-=.012*palm*Math.max(0,-st);
           }
           return [x+dx,y,dz];
         } else {
           const k=landmarks['knee.'+key].y,a=landmarks['ankle.'+key].y;
           let lx=sign*legCenterX, lz=legCenterZ;
           let dx=ct*w, dz=st*d;
+          if(y<k&&st>0)dz*=.78;
           // Medial adductor fullness (massive inner thighs filling groin)
           if(y>0.66&&y<0.84&&ct*sign<0){
             const ay=Math.sin((y-0.66)/0.18*Math.PI);
@@ -237,18 +167,52 @@ export function generateContinuousBody(landmarks,{widthScale=1,leftArmScale=1}={
     };
     const target=ringAt(begin);
     const transition=kind==='arm'?8:1;
-    for(let j=1;j<=transition;j++){const t=j/transition;rows.push(base.map((p,i)=>push(p.map((v,k)=>v+(target[i][k]-v)*t))));}
+    for(let j=1;j<=transition;j++){const t=j/transition;rows.push(base.map((p,i)=>push(p.map((v,k)=>v+(target[i][k]-v)*t+(kind==='arm'?Math.sin(Math.PI*t)*(k===0?sign*.035:k===1?.025*Math.max(0,Math.cos(angles[i])):0):0)))));}
     const steps=kind==='arm'?72:96;
     for(let j=1;j<=steps;j++)rows.push(ringAt(begin+(end-begin)*j/steps).map(push));
+    let footStart=Infinity;
+    if(kind==='leg'){
+      footStart=out.length/3;
+      // Heel to toe: a bent longitudinal sweep sharing the ankle boundary.
+      for(let j=1;j<=24;j++){
+        const t=j/24,turn=smooth(t/.40),cy=.032-.014*smooth(t/.52),cz=.018+.205*t;
+        const rw=.066+.010*Math.sin(Math.PI*t)-.018*smooth((t-.72)/.28),rd=.060*(1-turn)+.024*turn;
+        rows.push(angles.map(angle=>{
+          const c=Math.cos(angle),sn=Math.sin(angle),localX=c*rw;
+          const yy=cy-sn*rd*turn,zz=cz+sn*rd*(1-turn)+.012*Math.max(0,-c*sign)*turn;
+          return push([sign*legCenterX+localX,Math.max(.015,yy),zz]);
+        }));
+      }
+    }
     for(let j=0;j<rows.length-1;j++)joinFaces(faces,rows[j],rows[j+1]);
     const last=rows.at(-1),center=[0,0,0];for(const id of last)for(let k=0;k<3;k++)center[k]+=out[id*3+k]/count;
     if(kind==='arm') center[1]-=.008;
-    else center[1]=0.015;
+    else center[2]+=.008;
     cap(faces,last,push(center));
-    domains.push(...Array(out.length/3).fill(kind+'_'+side));
+    domains.push(...Array.from({length:out.length/3},(_,i)=>(i>=footStart?'foot':kind)+'_'+side));
     const section=raw(out,faces),opening=extractBoundaryLoops(section)[0];
     const offset=opening.vertices.indexOf(0);
     surface=stitchTopologySurfaces(surface,section,{loopA:loop,loopB:opening.vertices,mode:'bridge',offset,normalPolicy:'preserve',partId:'join-'+kind+'-'+side}).surface;
+  }
+  // Thumb topology: remove one medial palm patch per hand and grow a closed
+  // taper from its actual boundary, preserving a single external skin.
+  for(const sign of [1,-1]){
+    const side=sign>0?'l':'r',wr=landmarks['wrist.'+(sign>0?'L':'R')].y,p=surface.attributes.position;
+    const inside=id=>domains[id]==='arm_'+side&&p[id*3]*sign<.425&&Math.hypot((p[id*3+1]-(wr-.065))/.036,(p[id*3+2]-.005)/.030)<1;
+    const ix=[];for(let i=0;i<surface.indices.length;i+=3)if(![0,1,2].every(k=>inside(surface.indices[i+k])))ix.push(...surface.indices.slice(i,i+3));
+    const compact=weldTopologyVertices(raw(p,ix),{candidatePairs:[],normalPolicy:'recompute'});
+    const remapped=Array(compact.surface.attributes.position.length/3);compact.oldToNew.forEach((id,i)=>{if(id>=0)remapped[id]=domains[i];});domains.length=0;domains.push(...remapped);surface=compact.surface;
+    const loop=extractBoundaryLoops(surface)[0];if(!loop)throw new Error('Missing thumb opening '+side);
+    const base=loop.vertices.map(i=>Array.from(surface.attributes.position.slice(i*3,i*3+3))),center=loop.centroid,pos=[],ix2=[],rows=[];
+    for(let j=1;j<=10;j++){
+      const t=j/10,scale=1-.92*smooth(t),row=[];
+      for(const p of base){row.push(pos.length/3);pos.push(center[0]+(p[0]-center[0])*scale-sign*.060*t,center[1]+(p[1]-center[1])*scale-.030*t,center[2]+(p[2]-center[2])*scale+.022*t);}
+      rows.push(row);if(j>1)joinFaces(ix2,rows[j-2],row);
+    }
+    const pole=pos.length/3;pos.push(center[0]-sign*.063,center[1]-.033,center[2]+.023);cap(ix2,rows.at(-1),pole);
+    const patch=weldTopologyVertices(raw(pos,ix2),{candidatePairs:[],normalPolicy:'recompute'}).surface,opening=extractBoundaryLoops(patch)[0];
+    surface=stitchTopologySurfaces(surface,patch,{loopA:loop.vertices,loopB:opening.vertices,offset:opening.vertices.indexOf(0),mode:'bridge',partId:'thumb-'+side}).surface;
+    domains.push(...Array(pos.length/3).fill('arm_'+side));
   }
   const neighbors=Array.from({length:surface.attributes.position.length/3},()=>new Set());
   for(let i=0;i<surface.indices.length;i+=3){const t=surface.indices.slice(i,i+3);for(let j=0;j<3;j++){neighbors[t[j]].add(t[(j+1)%3]);neighbors[t[j]].add(t[(j+2)%3]);}}
@@ -283,7 +247,7 @@ export function skinContinuousBody(surface,character){
     const side=domain.endsWith('_l')?'l':domain.endsWith('_r')?'r':(x>=0?'l':'r');
     vertexSides[i]=side;
     const key=side==='l'?'L':'R',ax=Math.abs(x);let region,w;
-    const arm=domain.startsWith('arm_')||(domain==='axial'&&y>1.38&&y<1.54&&ax>.18),leg=domain.startsWith('leg_');
+    const arm=domain.startsWith('arm_')||(domain==='axial'&&y>1.38&&y<1.54&&ax>.18),leg=domain.startsWith('leg_')||domain.startsWith('foot_');
     if(arm){
       const e=L['elbow.'+key].y, wLandmark=L['wrist.'+key].y;
       const t=smooth((y-e+.09)/.18);
@@ -306,7 +270,7 @@ export function skinContinuousBody(surface,character){
       const k=L['knee.'+key].y, aLandmark=L['ankle.'+key].y;
       const t=smooth((y-k+.10)/.20),hip=smooth((y-.78)/.18);
       region=y>.80?'hip_'+side:Math.abs(y-k)<.065?'knee_'+side:y>k?'thigh_'+side:'calf_'+side;
-      const footT = y < aLandmark ? smooth((aLandmark - y) / 0.06) : 0;
+      const footT = domain.startsWith('foot_') ? 1 : y < aLandmark ? smooth((aLandmark - y) / 0.025) : 0;
       const footBone = 'foot_' + side, shinBone = 'shin_' + side;
       w=[
         [footBone, footT * (1 - hip)],

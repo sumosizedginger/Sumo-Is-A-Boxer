@@ -6,6 +6,7 @@
  * Earned by VOXEL-PIVOT-001.
  */
 
+import {compileSurfaceInstances} from './surface-instances.js';
 import { hashBytes } from '../geometry/mesh-codec.js';
 import { VOXEL_ARTIFACT_VERSION } from './definition.js';
 import { extractVoxelSurface } from './surface.js';
@@ -104,7 +105,9 @@ export function createVoxelArtifact({
   grid,
   surface = null,
   colorForCell = null,
-  provenance = null
+  provenance = null,
+  surfaceMesh = null,
+  surfaceSampling = {}
 } = {}) {
   if (!id || typeof id !== 'string') {
     throw new TypeError('createVoxelArtifact requires a non-empty string id');
@@ -184,5 +187,6 @@ export function createVoxelArtifact({
     hash: ''
   };
   artifact.hash = voxelHash(artifact);
+  if(surfaceMesh)artifact.surfaceInstances=compileSurfaceInstances(surfaceMesh,artifact,surfaceSampling);
   return Object.freeze(artifact);
 }

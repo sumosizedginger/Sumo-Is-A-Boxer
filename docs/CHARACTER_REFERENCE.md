@@ -29,3 +29,8 @@ Expected names:
 
 The supplied references in `references/visual/` form the authoritative visual contracts for VOXEL-HERO-003 convergence.
 
+
+
+## Reference file identity
+
+The supplied directory contains five unique image binaries. These filenames are duplicate aliases and are not independent reference views: `01-body-proportions.png` = `02-silhouette.png`; `06-mass-map.png` = `07-soft-tissue.png`; `12-voxel-conversion.png` = `20-north-star.png`. Visual coverage claims count each binary once.

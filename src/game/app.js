@@ -109,7 +109,7 @@ export function createGame(host, { appBootstrapStart = performance.now() } = {})
   scene.add(rig.camera);
 
   const voxelHeroQuality = (new URLSearchParams(location.search).get('voxel') || VOXEL.heroQuality).toUpperCase();
-  const opponent = createOpponentSumo({ library, voxelQuality: voxelHeroQuality in { COARSE:1, MEDIUM:1, HIGH:1, HERO:1 } ? voxelHeroQuality : VOXEL.heroQuality });
+  const opponent = createOpponentSumo({ library, voxelRealization: new URLSearchParams(location.search).get('realization') ?? 'surface', voxelQuality: voxelHeroQuality in { COARSE:1, MEDIUM:1, HIGH:1, HERO:1 } ? voxelHeroQuality : VOXEL.heroQuality });
   scene.add(opponent.group);
   surfaceDetail.apply(opponent.character.material, 'opponent-skin', 'mat.skin.0');
   applyCharacterSurface(opponent.character.material, 'opponent-skin', 'mat.skin.0');
