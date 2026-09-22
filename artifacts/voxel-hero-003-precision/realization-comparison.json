@@ -1,0 +1,128 @@
+{
+  "modes": [
+    "surface",
+    "coherent-projected",
+    "coherent-smooth",
+    "coherent-5",
+    "coherent-7.5",
+    "coherent-10",
+    "coherent-15",
+    "coherentSurface"
+  ],
+  "labels": [
+    "A: independent surface samples",
+    "B: bounded projection only",
+    "C: smoothed surface orientation",
+    "D: 5 degree orientation",
+    "D: 7.5 degree orientation",
+    "D: 10 degree orientation",
+    "D: 15 degree orientation",
+    "E: 10 degrees + 4% isotropic overlap"
+  ],
+  "metrics": [
+    {
+      "mode": "surface",
+      "occupied": 261823,
+      "surface": 27558,
+      "faces": 47068,
+      "voxelSize": 0.012,
+      "generationMs": 34112.5,
+      "drawCalls": 1,
+      "realization": "surface",
+      "instances": 45421,
+      "realizationHash": "0c4bf434c9b79074",
+      "realizationMs": 1570.4000000953674
+    },
+    {
+      "mode": "coherent-projected",
+      "occupied": 261823,
+      "surface": 27558,
+      "faces": 47068,
+      "voxelSize": 0.012,
+      "generationMs": 29947.399999976158,
+      "drawCalls": 1,
+      "realization": "coherent-projected",
+      "instances": 27558,
+      "realizationHash": "c3e5fccbfcdd7f1f",
+      "realizationMs": 1269.2000000476837
+    },
+    {
+      "mode": "coherent-smooth",
+      "occupied": 261823,
+      "surface": 27558,
+      "faces": 47068,
+      "voxelSize": 0.012,
+      "generationMs": 27719.399999976158,
+      "drawCalls": 1,
+      "realization": "coherent-smooth",
+      "instances": 27558,
+      "realizationHash": "c08c7c2b7e03b9a5",
+      "realizationMs": 1183.5999999046326
+    },
+    {
+      "mode": "coherent-5",
+      "occupied": 261823,
+      "surface": 27558,
+      "faces": 47068,
+      "voxelSize": 0.012,
+      "generationMs": 27644.600000023842,
+      "drawCalls": 1,
+      "realization": "coherent-5",
+      "instances": 27558,
+      "realizationHash": "174f5af12b8c73fe",
+      "realizationMs": 1202
+    },
+    {
+      "mode": "coherent-7.5",
+      "occupied": 261823,
+      "surface": 27558,
+      "faces": 47068,
+      "voxelSize": 0.012,
+      "generationMs": 27404.899999976158,
+      "drawCalls": 1,
+      "realization": "coherent-7.5",
+      "instances": 27558,
+      "realizationHash": "e0c5d27ca2499437",
+      "realizationMs": 1242.1000000238419
+    },
+    {
+      "mode": "coherent-10",
+      "occupied": 261823,
+      "surface": 27558,
+      "faces": 47068,
+      "voxelSize": 0.012,
+      "generationMs": 27492.600000023842,
+      "drawCalls": 1,
+      "realization": "coherent-10",
+      "instances": 27558,
+      "realizationHash": "291faed833f295cc",
+      "realizationMs": 1189.6000000238419
+    },
+    {
+      "mode": "coherent-15",
+      "occupied": 261823,
+      "surface": 27558,
+      "faces": 47068,
+      "voxelSize": 0.012,
+      "generationMs": 27365.799999952316,
+      "drawCalls": 1,
+      "realization": "coherent-15",
+      "instances": 27558,
+      "realizationHash": "003976cfaef80133",
+      "realizationMs": 1185.2000000476837
+    },
+    {
+      "mode": "coherentSurface",
+      "occupied": 261823,
+      "surface": 27558,
+      "faces": 47068,
+      "voxelSize": 0.012,
+      "generationMs": 27365.100000023842,
+      "drawCalls": 1,
+      "realization": "coherentSurface",
+      "instances": 27558,
+      "realizationHash": "7ccfbf5d9716fa20",
+      "realizationMs": 1178.8999999761581
+    }
+  ]
+}

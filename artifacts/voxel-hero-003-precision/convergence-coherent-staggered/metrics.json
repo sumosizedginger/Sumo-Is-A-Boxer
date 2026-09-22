@@ -1,0 +1,26 @@
+{
+  "metrics": {
+    "occupied": 269139,
+    "surface": 28176,
+    "faces": 47624,
+    "voxelSize": 0.012,
+    "generationMs": 55612.39999997616,
+    "drawCalls": 1,
+    "realization": "coherent-staggered",
+    "instances": 28176,
+    "realizationHash": "b25e94e02ac36853",
+    "realizationMs": 2972.7000000476837,
+    "canonicalHash": "2642402834a640f8",
+    "canonicalGenerationMs": 52639.699999928474,
+    "instanceToCellRatio": 1,
+    "cubeScale": 1.04
+  },
+  "errors": [],
+  "capturesCount": 4,
+  "captures": [
+    "artifacts\\voxel-hero-003-precision\\convergence-coherent-staggered\\clay-front.png",
+    "artifacts\\voxel-hero-003-precision\\convergence-coherent-staggered\\close-face.png",
+    "artifacts\\voxel-hero-003-precision\\convergence-coherent-staggered\\close-belly.png",
+    "artifacts\\voxel-hero-003-precision\\convergence-coherent-staggered\\close-hand.png"
+  ]
+}

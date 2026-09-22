@@ -1,0 +1,21 @@
+{
+  "metrics": {
+    "occupied": 252968,
+    "surface": 26551,
+    "faces": 44996,
+    "voxelSize": 0.012,
+    "generationMs": 37778.5,
+    "drawCalls": 1,
+    "realization": "surface",
+    "instances": 45104,
+    "realizationHash": "0a8aa803f79b4ec9",
+    "realizationMs": 1462.1999999284744
+  },
+  "errors": [],
+  "capturesCount": 3,
+  "captures": [
+    "artifacts\\voxel-hero-003-precision\\bind-diagnostic\\bind-front.png",
+    "artifacts\\voxel-hero-003-precision\\bind-diagnostic\\bind-rear.png",
+    "artifacts\\voxel-hero-003-precision\\bind-diagnostic\\bind-profile.png"
+  ]
+}

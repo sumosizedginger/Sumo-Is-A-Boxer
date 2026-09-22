@@ -51,6 +51,7 @@ export function createValidation({ game, rig, sparks, lights, modelMode=false, t
   clayLightGroup.visible = false;
 
   let originalSceneEnv = null;
+  const authoredInstanceColors=new WeakMap();
 
   function setPresentation(mode) {
     if (!originalSceneEnv) {
@@ -63,6 +64,19 @@ export function createValidation({ game, rig, sparks, lights, modelMode=false, t
     const voxels = opponent?.voxel?.runtime?.object3D;
     const voxelMat = opponent?.voxel?.runtime?.material;
     const name = String(mode || 'VOXEL_CLAY').toUpperCase();
+    // Instancing colors are a separate shader path from material.vertexColors.
+    // Preserve authored albedo, but remove it from neutral clay evidence.
+    for(const mesh of opponent?.voxel?.runtime?.meshes??[]){
+      if(!mesh.instanceColor)continue;
+      if(!authoredInstanceColors.has(mesh))authoredInstanceColors.set(mesh,new Float32Array(mesh.instanceColor.array));
+      if(['VOXEL_CLAY','SILHOUETTE','GUIDE','WIREFRAME'].includes(name))mesh.instanceColor.array.fill(1);
+      else mesh.instanceColor.array.set(authoredInstanceColors.get(mesh));
+      mesh.instanceColor.needsUpdate=true;
+    }
+    if(opponent?.character?.mesh){
+      opponent.character.mesh.castShadow=name==='GUIDE'||name==='WIREFRAME';
+      opponent.character.mesh.receiveShadow=name==='GUIDE'||name==='WIREFRAME';
+    }
 
     if (guide) {
       guide.visible = (name === 'GUIDE' || name === 'WIREFRAME');
@@ -107,8 +121,8 @@ export function createValidation({ game, rig, sparks, lights, modelMode=false, t
         voxelMat.color.setHex(0xb8b8b8);
         voxelMat.emissive.setHex(0x000000);
         voxelMat.vertexColors = false;
-        voxelMat.roughness = 0.70;
-        voxelMat.metalness = 0.02;
+        voxelMat.roughness = 0.85;
+        voxelMat.metalness = 0.0;
         voxelMat.wireframe = false;
         voxelMat.needsUpdate = true;
       }
@@ -195,6 +209,12 @@ export function createValidation({ game, rig, sparks, lights, modelMode=false, t
         }
       });
       fists.update({ player: match.player, dt: p.posePreparation.dt });
+    }
+    if(p.bindPose){
+      opponent.character.mesh.skeleton.pose();
+      opponent.character.mesh.morphTargetInfluences?.fill(0);
+      opponent.character.rootBone.updateWorldMatrix(true,true);
+      opponent.voxel.runtime.updateDeformation(opponent.character.bones);
     }
     opponent.group.position.fromArray(p.opponent.position);
     opponent.group.visible = p.opponent.visible;

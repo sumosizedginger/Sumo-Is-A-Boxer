@@ -2,6 +2,7 @@ import { createServer } from "vite";
 import { mkdirSync, writeFileSync, readFileSync, unlinkSync, existsSync } from "node:fs";
 import { join } from "node:path";
 import zlib from "node:zlib";
+import {createHash} from "node:crypto";
 
 
 export function decodePNG(buf) {
@@ -515,7 +516,13 @@ async function main() {
     await runCaptures();
   }
   console.log("Running silhouette comparison against approved reference...");
-  await runComparisons();
+  const results=await runComparisons();
+  if(!results.frontRes||!results.profRes)throw new Error("Both fresh silhouette captures are required");
+  const inputPaths=["references/visual/02-silhouette.png","artifacts/voxel-hero-003/silhouette-front.png","artifacts/voxel-hero-003/silhouette-profile.png"];
+  writeFileSync("artifacts/voxel-hero-003/silhouette-metrics.json",JSON.stringify({
+    inputs:inputPaths.map(path=>({path,sha256:createHash("sha256").update(readFileSync(path)).digest("hex")})),
+    frontPercent:results.frontRes.meanError*100,profilePercent:results.profRes.meanError*100,...results
+  },null,2));
 }
 
 const isDirectRun = !process.env.TEST_IMPORT && (

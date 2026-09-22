@@ -1,0 +1,223 @@
+{
+  "certification": {
+    "vertexCount": 63594,
+    "triangleCount": 127184,
+    "edgeCount": 190776,
+    "boundaryEdgeCount": 0,
+    "boundaryLoopCount": 0,
+    "nonManifoldEdgeCount": 0,
+    "nonManifoldVertexCount": 0,
+    "inconsistentWindingEdgeCount": 0,
+    "degenerateTriangleCount": 0,
+    "duplicateTriangleCount": 0,
+    "isolatedVertexCount": 0,
+    "connectedComponentCount": 1,
+    "invalidNumericCount": 0,
+    "invalidIndexCount": 0,
+    "boundaryEdges": [],
+    "boundaryLoops": [],
+    "diagnostics": [],
+    "policy": [
+      "CLOSED_MANIFOLD",
+      "SINGLE_COMPONENT",
+      "DEFORMATION_SURFACE"
+    ],
+    "valid": true,
+    "skinWeightViolationCount": 0,
+    "source": "live opponent.character.geometry",
+    "template": "hero-skin-indexed-v1"
+  },
+  "metrics": {
+    "headGenerationMs": 10382.400000095367,
+    "eyeballDrawCalls": 2,
+    "state": "front_neutral",
+    "playing": false,
+    "animationUpdateMs": 0,
+    "opponentSkinTriangles": 127184,
+    "opponentEquipmentTriangles": 24296,
+    "firstPerson": {
+      "triangles": 1548,
+      "materials": 2,
+      "geometries": 2
+    },
+    "scene": {
+      "triangles": 1849760,
+      "materials": 27,
+      "geometries": 27
+    },
+    "report": {
+      "engine": "My Game Engine 1.0 0.1.0",
+      "assets": 23,
+      "materials": 120,
+      "sceneId": "sumo.is.a.boxer.voxel.arena.v1",
+      "sceneNodes": 60,
+      "sceneHash": "d7d1c412404eacd1",
+      "placements": 48,
+      "uploads": 0,
+      "triangles": 0,
+      "unresolvedAssets": [],
+      "assetBuildMs": 51,
+      "proceduralMaterials": {
+        "enabled": true,
+        "seed": 310903,
+        "generationMs": 5.5,
+        "textures": 1,
+        "bindings": 1,
+        "inventory": [
+          {
+            "kind": "skin",
+            "width": 256,
+            "height": 256,
+            "bytes": 262144,
+            "mipBytesEstimate": 349526
+          }
+        ],
+        "gpuBytesEstimate": 349526,
+        "disposed": false
+      },
+      "drawCalls": 8,
+      "renderedTriangles": 1111098,
+      "geometries": 7,
+      "textures": 5,
+      "compiledMaterials": 0,
+      "timing": {
+        "clock": "performance.now(), milliseconds relative to performance.timeOrigin",
+        "timeOrigin": 1790039180411,
+        "markers": {
+          "navigationOrigin": 0,
+          "appBootstrapStart": 308.2000000476837,
+          "gameCreateStart": 308.5,
+          "assetBuildStart": 319.60000002384186,
+          "assetBuildEnd": 371,
+          "presentationStart": 371.2000000476837,
+          "proceduralGenerationStart": 73983.70000004768,
+          "proceduralGenerationEnd": 73989.20000004768,
+          "presentationEnd": 73992.5,
+          "firstRAFStart": 96456,
+          "firstRenderedFrameEnd": 96491
+        },
+        "generationIntervals": [
+          {
+            "kind": "skin",
+            "start": 73983.70000004768,
+            "end": 73989.20000004768
+          }
+        ],
+        "durations": {
+          "assetBuildMs": 51.39999997615814,
+          "presentationTotalMs": 73621.29999995232,
+          "proceduralGenerationMs": 5.5,
+          "proceduralGenerationWorkMs": 5.5,
+          "firstFrameSinceGameCreateMs": 96182.5,
+          "firstFrameSinceNavigationMs": 96491
+        },
+        "checks": {
+          "presentationContainsGeneration": true,
+          "navigationContainsGameCreate": true
+        },
+        "semantics": {
+          "proceduralGenerationMs": "Envelope from first lazy texture generation start to last end; includes interleaved setup.",
+          "proceduralGenerationWorkMs": "Sum of disjoint per-texture CPU generation/allocation intervals; excludes GPU upload.",
+          "presentationTotalMs": "Scene composition, material preparation, lights, VFX and fighter presentation.",
+          "firstRenderedFrameEnd": "CPU return from first renderer.render; not GPU completion or screen presentation.",
+          "appBootstrapStart": "Entry-module body start after static imports have evaluated."
+        }
+      },
+      "firstFrameMs": 96182.5,
+      "firstFrameSinceNavigationMs": 96491,
+      "programs": 12,
+      "skinTriangles": 127184,
+      "presentationBuildMs": 73621,
+      "sceneMaterialCount": 29,
+      "frameMs": {
+        "p50": 16.799999237060547,
+        "p95": 14916.400390625,
+        "p99": 96181.796875
+      },
+      "fps": 0.1,
+      "phase": "validation",
+      "boxer": {
+        "bones": 22,
+        "landmarks": 27,
+        "gaitPhase": 0,
+        "gaitScale": 0,
+        "gaitDistance": 0,
+        "height": 1.78,
+        "skinTriangles": 127184,
+        "voxel": {
+          "occupied": 260815,
+          "surface": 27409,
+          "faces": 46888,
+          "voxelSize": 0.012,
+          "generationMs": 42741.10000002384,
+          "drawCalls": 1,
+          "realization": "surface",
+          "instances": 45280,
+          "realizationHash": "4210c63a102d9b5b",
+          "realizationMs": 1664.7999999523163,
+          "canonicalHash": "2faf96ef90a4c4f1",
+          "canonicalGenerationMs": 41076.300000071526,
+          "instanceToCellRatio": 1.652012112809661,
+          "cubeScale": 1
+        }
+      }
+    }
+  },
+  "sourceHashes": {
+    "engine/src/geometry/sculpt-fields.js": "5326ca200e3d41c0850ba6baaa0daa504f7ae17962013317b27571a011730301",
+    "engine/src/geometry/topology-ops.js": "9ad909038fb0d05cf4dc4908655fda0382b27fc9b1f35948359775912c44d682",
+    "src/game/character/hero-face.js": "d3304809833bb694964f368af7f1fbf2531a6ec16440793d1677d2b6eab8a452",
+    "src/game/character/head-profile.js": "89c3b2b2d5500ddb6e623066b87a959ba3ca5f89c8a52fbba4dc794cc439c3c4",
+    "src/game/character/orbital-pockets.js": "e35daea3a029441eae2a6d5ca6f0fa47027d0b386a4287b4a3790e9a655bac42",
+    "src/game/character/hero-eyes.js": "f3d24be7a2ff8389e11b90faaa3d2c3639b9fb99dda1f791b41ab36bbd1ab75e",
+    "src/game/character/hero-guide-body.js": "52cf3e250f73a6e4da6da362454a7b3d464103a68e517be357c21bf792c8321b",
+    "src/game/character/continuous-body.js": "8c21047eb01a0195ab7919d29b1f27607fcf7df713389786b9d95ef4a817cb82",
+    "src/game/character/opponent-sumo.js": "d496e6aaf3c91692e319c463fb96fb70925edc1c61df1513c62c4e18c492b114",
+    "src/game/assets/fighter-face.js": "61c715e94ad34a74120a868062af51661f88d07b9909d6ca9549255206216209",
+    "src/game/validation/models.js": "e9c082ab585810209ce463bc9eb44e7454160858a3c169d4e510f841e39d1fd7"
+  },
+  "views": [
+    "front",
+    "left_profile",
+    "right_profile",
+    "front_left_three_quarter",
+    "front_right_three_quarter",
+    "rear",
+    "rear_left_three_quarter",
+    "rear_right_three_quarter",
+    "high_angle",
+    "low_angle",
+    "eye_closeup",
+    "nose_closeup",
+    "mouth_closeup",
+    "left_ear",
+    "right_ear",
+    "jaw_neck"
+  ],
+  "captures": [
+    "precision-full-front.png",
+    "precision-full-left_profile.png",
+    "precision-full-right_profile.png",
+    "precision-full-front_left_three_quarter.png",
+    "precision-full-front_right_three_quarter.png",
+    "precision-full-rear.png",
+    "precision-full-rear_left_three_quarter.png",
+    "precision-full-rear_right_three_quarter.png",
+    "precision-full-high_angle.png",
+    "precision-full-low_angle.png",
+    "precision-full-eye_closeup.png",
+    "precision-full-nose_closeup.png",
+    "precision-full-mouth_closeup.png",
+    "precision-full-left_ear.png",
+    "precision-full-right_ear.png",
+    "precision-full-jaw_neck.png",
+    "precision-full-normals.png",
+    "precision-full-wireframe.png",
+    "precision-full-silhouette.png",
+    "precision-full-production.png",
+    "precision-full-hair.png"
+  ],
+  "motion": {},
+  "samples": {},
+  "errors": []
+}

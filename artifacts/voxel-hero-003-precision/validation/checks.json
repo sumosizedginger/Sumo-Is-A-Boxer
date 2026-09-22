@@ -1,0 +1,81 @@
+{
+  "status": "PARTIAL",
+  "visualAcceptance": false,
+  "baseCommit": "b424b6775746fd7681bb90b2977aa324b74c2876",
+  "branch": "game-build",
+  "rootTests": {
+    "command": "npm test",
+    "passed": 108,
+    "failed": 0
+  },
+  "engineTests": {
+    "command": "npm --prefix engine test",
+    "passed": 613,
+    "failed": 0
+  },
+  "build": {
+    "command": "npm run build",
+    "passed": true,
+    "warning": "Existing bundle size advisory"
+  },
+  "syntax": "All changed and new scripts checked",
+  "bodyValidation": {
+    "command": "node scripts/validate-continuous-body.mjs",
+    "passed": true,
+    "captures": 30
+  },
+  "faceValidation": {
+    "command": "node scripts/validate-hero-face.mjs precision-full",
+    "passed": true,
+    "captures": 21
+  },
+  "canonicalEvidence": {
+    "command": "node scripts/capture-voxel-hero-003.mjs",
+    "captures": 38,
+    "extraStructureBoards": 5,
+    "sourceHashChecks": 12,
+    "imageHashChecks": 38,
+    "mismatches": []
+  },
+  "silhouette": {
+    "command": "node scripts/measure-silhouette.mjs --measure-only",
+    "frontPercent": 5.757313164329242,
+    "profilePercent": 4.241039270722076
+  },
+  "timings": {
+    "surface": {
+      "occupied": 260815,
+      "surface": 27409,
+      "faces": 46888,
+      "voxelSize": 0.012,
+      "generationMs": 28302.623000000003,
+      "drawCalls": 1,
+      "realization": "surface",
+      "instances": 45280,
+      "realizationHash": "4210c63a102d9b5b",
+      "realizationMs": 1182.7983999999997,
+      "canonicalHash": "2faf96ef90a4c4f1",
+      "canonicalGenerationMs": 27119.824600000004,
+      "instanceToCellRatio": 1.652012112809661,
+      "cubeScale": 1,
+      "hash": "2faf96ef90a4c4f1"
+    },
+    "coherentSurface": {
+      "occupied": 260815,
+      "surface": 27409,
+      "faces": 46888,
+      "voxelSize": 0.012,
+      "generationMs": 28999.4713,
+      "drawCalls": 1,
+      "realization": "coherentSurface",
+      "instances": 27409,
+      "realizationHash": "2e87fe6eb079d803",
+      "realizationMs": 1381.4364999999962,
+      "canonicalHash": "2faf96ef90a4c4f1",
+      "canonicalGenerationMs": 27618.034800000005,
+      "instanceToCellRatio": 1,
+      "cubeScale": 1.04,
+      "hash": "2faf96ef90a4c4f1"
+    }
+  }
+}

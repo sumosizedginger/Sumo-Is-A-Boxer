@@ -1,0 +1,86 @@
+{
+  "milestone": "VOXEL-HERO-003",
+  "branch": "game-build",
+  "quality": "HERO",
+  "hero": {
+    "occupied": 261783,
+    "surface": 27556,
+    "faces": 47058,
+    "voxelSize": 0.012,
+    "generationMs": 27598.100000023842,
+    "drawCalls": 1,
+    "realization": "surface",
+    "instances": 45346,
+    "realizationHash": "ee52df585aefbc23",
+    "realizationMs": 1055
+  },
+  "sourceCommit": "b424b6775746fd7681bb90b2977aa324b74c2876",
+  "sourceDiffHash": "4ed600623c84aa6bcc918d7edb8e38b2711f6a4c87cd0a793231aedd44243a70",
+  "filter": "=guide-front,=guide-profile,=guide-close-face,=guide-close-head",
+  "complete": false,
+  "capturesCount": 4,
+  "expectedCaptures": [
+    "guide-front.png",
+    "guide-rear.png",
+    "guide-profile.png",
+    "guide-three-quarter-front.png",
+    "guide-three-quarter-rear.png",
+    "clay-front.png",
+    "clay-rear.png",
+    "clay-profile.png",
+    "clay-three-quarter-front.png",
+    "clay-three-quarter-rear.png",
+    "silhouette-front.png",
+    "silhouette-profile.png",
+    "close-head.png",
+    "close-face.png",
+    "close-shoulder.png",
+    "close-chest.png",
+    "close-calf.png",
+    "close-belly.png",
+    "close-pelvis.png",
+    "close-hand.png",
+    "close-thigh-knee.png",
+    "close-foot.png",
+    "hero-production.png",
+    "guide-close-head.png",
+    "guide-close-face.png",
+    "guide-close-shoulder.png",
+    "guide-close-chest.png",
+    "guide-close-calf.png",
+    "guide-close-belly.png",
+    "guide-close-pelvis.png",
+    "guide-close-hand.png",
+    "guide-close-thigh-knee.png",
+    "guide-close-foot.png",
+    "comparison-front-guide.png",
+    "comparison-front-voxel.png",
+    "comparison-profile-guide.png",
+    "comparison-profile-voxel.png",
+    "comparison-three-quarter-voxel.png"
+  ],
+  "captures": [
+    "guide-front.png",
+    "guide-profile.png",
+    "guide-close-head.png",
+    "guide-close-face.png"
+  ],
+  "evidence": [
+    {
+      "file": "guide-front.png",
+      "sha256": "6544cb9177563b4af2b81eb1b6132d1fb32cebd6e4102c1f8f7f0527a0b6aac3"
+    },
+    {
+      "file": "guide-profile.png",
+      "sha256": "577724918b01839d3de3cb3007349d8a5ab636e8888da9ea2253d68705de0c34"
+    },
+    {
+      "file": "guide-close-head.png",
+      "sha256": "6b856ef9a8172ec7b7a9fd5ceeefa7e9b44ed3cb53f13a6b2d4584155c4f767f"
+    },
+    {
+      "file": "guide-close-face.png",
+      "sha256": "fa1c1ad6d3e8e755b3f6bcb6584fb84cc77302768f91a566855d61156beac5ac"
+    }
+  ]
+}

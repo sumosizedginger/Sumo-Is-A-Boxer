@@ -1,0 +1,147 @@
+[
+  {
+    "file": "comparison-front-structure.png",
+    "reference": "12-voxel-conversion.png",
+    "referenceCropAt1024Width": [
+      194,
+      35,
+      320,
+      457
+    ],
+    "guide": "guide-front.png",
+    "hero": "clay-front.png",
+    "liveCrop": [
+      450,
+      145,
+      380,
+      520
+    ],
+    "sizes": [
+      [
+        1024,
+        682
+      ],
+      [
+        1280,
+        720
+      ],
+      [
+        1280,
+        720
+      ]
+    ]
+  },
+  {
+    "file": "comparison-face-structure.png",
+    "reference": "10-face.png",
+    "referenceCropAt1024Width": [
+      18,
+      43,
+      151,
+      182
+    ],
+    "guide": "guide-close-face.png",
+    "hero": "close-face.png",
+    "liveCrop": [
+      355,
+      45,
+      570,
+      660
+    ],
+    "sizes": [
+      [
+        1024,
+        682
+      ],
+      [
+        1280,
+        720
+      ],
+      [
+        1280,
+        720
+      ]
+    ]
+  },
+  {
+    "file": "comparison-shoulder-structure.png",
+    "reference": "08-wireframe.png",
+    "referenceCropAt1024Width": [
+      632,
+      346,
+      119,
+      82
+    ],
+    "guide": "guide-close-shoulder.png",
+    "hero": "close-shoulder.png",
+    "liveCrop": null,
+    "sizes": [
+      [
+        1024,
+        682
+      ],
+      [
+        1280,
+        720
+      ],
+      [
+        1280,
+        720
+      ]
+    ]
+  },
+  {
+    "file": "comparison-hand-structure.png",
+    "reference": "08-wireframe.png",
+    "referenceCropAt1024Width": [
+      904,
+      346,
+      108,
+      82
+    ],
+    "guide": "guide-close-hand.png",
+    "hero": "close-hand.png",
+    "liveCrop": null,
+    "sizes": [
+      [
+        1024,
+        682
+      ],
+      [
+        1280,
+        720
+      ],
+      [
+        1280,
+        720
+      ]
+    ]
+  },
+  {
+    "file": "comparison-foot-structure.png",
+    "reference": "08-wireframe.png",
+    "referenceCropAt1024Width": [
+      904,
+      437,
+      108,
+      81
+    ],
+    "guide": "guide-close-foot.png",
+    "hero": "close-foot.png",
+    "liveCrop": null,
+    "sizes": [
+      [
+        1024,
+        682
+      ],
+      [
+        1280,
+        720
+      ],
+      [
+        1280,
+        720
+      ]
+    ]
+  }
+]

@@ -1,0 +1,23 @@
+{
+  "metrics": {
+    "occupied": 261823,
+    "surface": 27558,
+    "faces": 47068,
+    "voxelSize": 0.012,
+    "generationMs": 32708.5,
+    "drawCalls": 1,
+    "realization": "coherentSurface",
+    "instances": 27558,
+    "realizationHash": "7ccfbf5d9716fa20",
+    "realizationMs": 1424.8999999761581
+  },
+  "errors": [],
+  "capturesCount": 5,
+  "captures": [
+    "artifacts\\voxel-hero-003-precision\\coherent-10-overlap\\clay-front.png",
+    "artifacts\\voxel-hero-003-precision\\coherent-10-overlap\\close-face.png",
+    "artifacts\\voxel-hero-003-precision\\coherent-10-overlap\\close-belly.png",
+    "artifacts\\voxel-hero-003-precision\\coherent-10-overlap\\guide-close-face.png",
+    "artifacts\\voxel-hero-003-precision\\coherent-10-overlap\\guide-close-belly.png"
+  ]
+}

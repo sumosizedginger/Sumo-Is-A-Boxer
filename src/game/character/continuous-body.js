@@ -29,7 +29,7 @@ export function generateContinuousBody(landmarks,{widthScale=1,leftArmScale=1}={
   for(const y of ys)rings.push(Array.from({length:N},(_,i)=>vertex(axial(y,i/N*Math.PI*2))));
   for(let j=0;j<rings.length-1;j++)for(let i=0;i<N;i++){
     // Two actual rectangular openings in the lateral upper thorax.
-    if(j>=45&&j<57&&((i>=58||i<6)||(i>=26&&i<38)))continue;
+    if(ys[j]>=1.31&&ys[j]<1.54&&((i>=56||i<8)||(i>=24&&i<40)))continue;
     const k=(i+1)%N,a=rings[j][i],b=rings[j][k],c=rings[j+1][i],d=rings[j+1][k];indices.push(a,c,d,a,d,b);
   }
   const top=rings.at(-1),crown=vertex([0,1.86,-.013]);
@@ -63,24 +63,24 @@ export function generateContinuousBody(landmarks,{widthScale=1,leftArmScale=1}={
     const push=p=>{const id=out.length/3;out.push(...p);return id;};
     let angles,shapeRows,begin,end;
     if(kind==='arm'){
-      angles=base.map(p=>Math.atan2(p[2]/.115,(p[1]-1.46)/.078));
+      angles=base.map(p=>Math.atan2(p[2]/.190,(p[1]-1.425)/.115));
       const e=landmarks['elbow.'+key].y,w=landmarks['wrist.'+key].y;
       shapeRows=[
-        [w-.165, .042, .036],
-        [w-.125, .056, .044],
+        [w-.165, .052, .040],
+        [w-.125, .066, .046],
         [w-.085, .064, .048],
-        [w-.045, .058, .046],
-        [w,      .048, .042],
+        [w-.045, .055, .044],
+        [w,      .044, .040],
         [w+.06,  .076, .070],
         [e-.10,  .095, .088],
         [e-.04,  .092, .086],
         [e,      .086, .080],
         [e+.04,  .096, .090],
         [e+.12,  .120, .114],
-        [1.35,   .130, .124],
-        [1.385,  .136, .130]
+        [1.35,   .117, .126],
+        [1.385,  .118, .137]
       ];
-      begin=1.385;end=w-.165;
+      begin=1.30;end=w-.165;
     }else{
       angles=base.map(p=>Math.atan2(p[2]-legCenterZ,p[0]-sign*legCenterX));
       const k=landmarks['knee.'+key].y,a=landmarks['ankle.'+key].y;
@@ -109,7 +109,7 @@ export function generateContinuousBody(landmarks,{widthScale=1,leftArmScale=1}={
         let x, z;
         if(kind==='arm'){
           const e=landmarks['elbow.'+key].y,wr=landmarks['wrist.'+key].y;
-          const elbowX=sign*.465,wristX=sign*.450,shoulderX=sign*.350;
+          const elbowX=sign*.465,wristX=sign*.450,shoulderX=sign*.445;
           x=y>=e?elbowX+(shoulderX-elbowX)*clamp((y-e)/(1.385-e)):elbowX+(wristX-elbowX)*clamp((e-y)/(e-wr));
           if(y<wr){
             x=wristX+(sign*.438-wristX)*clamp((wr-y)/.165);
@@ -128,7 +128,7 @@ export function generateContinuousBody(landmarks,{widthScale=1,leftArmScale=1}={
           const k=landmarks['knee.'+key].y,a=landmarks['ankle.'+key].y;
           let lx=sign*legCenterX, lz=legCenterZ;
           let dx=ct*w, dz=st*d;
-          if(y<k&&st>0)dz*=.78;
+          if(y<k&&st>0)dz*=1-.22*smooth((k-y)/.11);
           // Medial adductor fullness (massive inner thighs filling groin)
           if(y>0.66&&y<0.84&&ct*sign<0){
             const ay=Math.sin((y-0.66)/0.18*Math.PI);
@@ -167,7 +167,18 @@ export function generateContinuousBody(landmarks,{widthScale=1,leftArmScale=1}={
     };
     const target=ringAt(begin);
     const transition=kind==='arm'?8:1;
-    for(let j=1;j<=transition;j++){const t=j/transition;rows.push(base.map((p,i)=>push(p.map((v,k)=>v+(target[i][k]-v)*t+(kind==='arm'?Math.sin(Math.PI*t)*(k===0?sign*.035:k===1?.025*Math.max(0,Math.cos(angles[i])):0):0)))));}
+    for(let j=1;j<=transition;j++){
+      const t=j/transition,u=1-t;
+      rows.push(base.map((p,i)=>push(p.map((v,k)=>{
+        if(kind!=='arm')return v+(target[i][k]-v)*t;
+        // Match the thoracic opening with an outward tangent, then enter
+        // the upper arm along its longitudinal axis. Linear lofting leaves
+        // a hard turn at both boundaries even after positional relaxation.
+        const controlA=v+(k===0?sign*.060:k===1?(p[1]-1.425)*.45:p[2]*.16);
+        const controlB=target[i][k]+(k===1?.065:0);
+        return u*u*u*v+3*u*u*t*controlA+3*u*t*t*controlB+t*t*t*target[i][k];
+      }))));
+    }
     const steps=kind==='arm'?72:96;
     for(let j=1;j<=steps;j++)rows.push(ringAt(begin+(end-begin)*j/steps).map(push));
     let footStart=Infinity;
@@ -175,11 +186,11 @@ export function generateContinuousBody(landmarks,{widthScale=1,leftArmScale=1}={
       footStart=out.length/3;
       // Heel to toe: a bent longitudinal sweep sharing the ankle boundary.
       for(let j=1;j<=24;j++){
-        const t=j/24,turn=smooth(t/.40),cy=.032-.014*smooth(t/.52),cz=.018+.205*t;
-        const rw=.066+.010*Math.sin(Math.PI*t)-.018*smooth((t-.72)/.28),rd=.060*(1-turn)+.024*turn;
+        const t=j/24,turn=smooth(t/.50),cy=.105-.060*smooth(t/.45)-.012*smooth((t-.65)/.35),cz=-.015+.238*t;
+        const rw=.070+.015*Math.exp(-2*((t-.70)/.22)**2)-.015*Math.exp(-2*((t-.35)/.16)**2),rd=.090*(1-turn)+(.038-.013*smooth((t-.60)/.40))*turn;
         rows.push(angles.map(angle=>{
           const c=Math.cos(angle),sn=Math.sin(angle),localX=c*rw;
-          const yy=cy-sn*rd*turn,zz=cz+sn*rd*(1-turn)+.012*Math.max(0,-c*sign)*turn;
+          const bend=turn*Math.PI/2,yy=cy-sn*rd*Math.sin(bend),zz=cz+sn*rd*Math.cos(bend)+.016*Math.max(0,-c*sign)*turn;
           return push([sign*legCenterX+localX,Math.max(.015,yy),zz]);
         }));
       }
@@ -205,11 +216,12 @@ export function generateContinuousBody(landmarks,{widthScale=1,leftArmScale=1}={
     const loop=extractBoundaryLoops(surface)[0];if(!loop)throw new Error('Missing thumb opening '+side);
     const base=loop.vertices.map(i=>Array.from(surface.attributes.position.slice(i*3,i*3+3))),center=loop.centroid,pos=[],ix2=[],rows=[];
     for(let j=1;j<=10;j++){
-      const t=j/10,scale=1-.92*smooth(t),row=[];
-      for(const p of base){row.push(pos.length/3);pos.push(center[0]+(p[0]-center[0])*scale-sign*.060*t,center[1]+(p[1]-center[1])*scale-.030*t,center[2]+(p[2]-center[2])*scale+.022*t);}
+      const t=j/10,scale=t<.65?1-.18*smooth(t/.65):.82*Math.sqrt(Math.max(.03,1-((t-.65)/.38)**2)),row=[];
+      const tilt=.85*smooth(t/.45),cy=center[1]-.052*t,cx=center[0]-sign*.043*Math.sin(t*Math.PI/2);
+      for(const p of base){row.push(pos.length/3);const transverse=(p[1]-center[1])*scale;pos.push(cx+(p[0]-center[0])*scale*(1-smooth(t/.3))-sign*transverse*Math.sin(tilt),cy+transverse*Math.cos(tilt),center[2]+(p[2]-center[2])*scale+.025*t);}
       rows.push(row);if(j>1)joinFaces(ix2,rows[j-2],row);
     }
-    const pole=pos.length/3;pos.push(center[0]-sign*.063,center[1]-.033,center[2]+.023);cap(ix2,rows.at(-1),pole);
+    const pole=pos.length/3;pos.push(center[0]-sign*.044,center[1]-.058,center[2]+.026);cap(ix2,rows.at(-1),pole);
     const patch=weldTopologyVertices(raw(pos,ix2),{candidatePairs:[],normalPolicy:'recompute'}).surface,opening=extractBoundaryLoops(patch)[0];
     surface=stitchTopologySurfaces(surface,patch,{loopA:loop.vertices,loopB:opening.vertices,offset:opening.vertices.indexOf(0),mode:'bridge',partId:'thumb-'+side}).surface;
     domains.push(...Array(pos.length/3).fill('arm_'+side));
@@ -247,7 +259,7 @@ export function skinContinuousBody(surface,character){
     const side=domain.endsWith('_l')?'l':domain.endsWith('_r')?'r':(x>=0?'l':'r');
     vertexSides[i]=side;
     const key=side==='l'?'L':'R',ax=Math.abs(x);let region,w;
-    const arm=domain.startsWith('arm_')||(domain==='axial'&&y>1.38&&y<1.54&&ax>.18),leg=domain.startsWith('leg_')||domain.startsWith('foot_');
+    const arm=domain.startsWith('arm_'),leg=domain.startsWith('leg_')||domain.startsWith('foot_');
     if(arm){
       const e=L['elbow.'+key].y, wLandmark=L['wrist.'+key].y;
       const t=smooth((y-e+.09)/.18);
@@ -283,6 +295,18 @@ export function skinContinuousBody(surface,character){
       const stations=[['pelvis',1.01],['spine',1.19],['chest',1.45],['neck',1.61],['head',1.70]];w=[['head',1]];
       for(let j=0;j<stations.length-1;j++)if(y<=stations[j+1][1]){const t=smooth((y-stations[j][1])/(stations[j+1][1]-stations[j][1]));w=[[stations[j][0],1-t],[stations[j+1][0],t]];break;}
     }
+    // Torso vertices must not switch wholesale to arm skinning at a Y row.
+    // Only the lateral clavicle/axilla blends toward the humerus; anterior
+    // pectorals and posterior lats retain thoracic authority.
+    if(domain==='axial'){
+      const attachment=smooth((ax-.23)/.13)*(1-smooth(Math.abs(z)/.20))
+        *smooth((y-1.30)/.12)*(1-smooth((y-1.50)/.10));
+      if(attachment>0){
+        w=w.map(([bone,weight])=>[bone,weight*(1-attachment)]);
+        w.push(['upperarm_'+side,attachment*.70],['shoulder_'+side,attachment*.30]);
+        if(attachment>.3)region='shoulder_'+side;
+      }
+    }
     regionId[i]=BODY_REGIONS[region];
     const top4 = w.filter(v=>v && v[1]>0).sort((a,b)=>b[1]-a[1]).slice(0,4);
     const sum = top4.reduce((acc,v)=>acc+v[1],0) || 1;
@@ -297,7 +321,7 @@ export function skinContinuousBody(surface,character){
   for(let pass=0;pass<24;pass++){
     const next=new Float32Array(field);
     for(let i=0;i<n;i++){
-      const y=p[i*3+1];if(!((y>1.32&&y<1.62)||(y>.81&&y<1.07)))continue;
+      const y=p[i*3+1];if(!((y>1.24&&y<1.62)||(y>.81&&y<1.07)))continue;
       for(let b=0;b<B;b++){
         const name=character.bones[b].name,wrong=(vertexSides[i]==='l'&&name.endsWith('_r'))||(vertexSides[i]==='r'&&name.endsWith('_l'));
         if(wrong){next[i*B+b]=0;continue;}

@@ -7,9 +7,10 @@ import { MATERIAL_DEFINITIONS } from '../src/game/assets/materials.js';
 import { createOpponentSumo } from '../src/game/character/opponent-sumo.js';
 
 const library = createAssetLibrary({ assets: buildHeroKitAssets(), materials: MATERIAL_DEFINITIONS });
-const opponent = createOpponentSumo({ library, voxelQuality: 'HIGH' });
+const opponent = createOpponentSumo({ library, voxelQuality: process.env.VOXEL_QUALITY??'HIGH', voxelRealization: process.env.REALIZATION??'grid' });
 const voxel = opponent.diagnostics().voxel;
 console.log(JSON.stringify({
+  ...voxel,
   occupied: voxel.occupied,
   surface: voxel.surface,
   faces: voxel.faces,

@@ -1,0 +1,86 @@
+{
+  "milestone": "VOXEL-HERO-003",
+  "branch": "game-build",
+  "quality": "HERO",
+  "hero": {
+    "occupied": 261787,
+    "surface": 27552,
+    "faces": 47050,
+    "voxelSize": 0.012,
+    "generationMs": 27484.200000047684,
+    "drawCalls": 1,
+    "realization": "coherent-diagonal",
+    "instances": 27552,
+    "realizationHash": "f5e50efd75c2aa50",
+    "realizationMs": 1195.5
+  },
+  "sourceCommit": "b424b6775746fd7681bb90b2977aa324b74c2876",
+  "sourceDiffHash": "14b3f48a66d9b909aabb880b95b5f6edd5884ba3fadb389ec0ff2da69f316c6e",
+  "filter": "=clay-front,=close-belly,=close-face,=guide-close-face",
+  "complete": false,
+  "capturesCount": 4,
+  "expectedCaptures": [
+    "guide-front.png",
+    "guide-rear.png",
+    "guide-profile.png",
+    "guide-three-quarter-front.png",
+    "guide-three-quarter-rear.png",
+    "clay-front.png",
+    "clay-rear.png",
+    "clay-profile.png",
+    "clay-three-quarter-front.png",
+    "clay-three-quarter-rear.png",
+    "silhouette-front.png",
+    "silhouette-profile.png",
+    "close-head.png",
+    "close-face.png",
+    "close-shoulder.png",
+    "close-chest.png",
+    "close-calf.png",
+    "close-belly.png",
+    "close-pelvis.png",
+    "close-hand.png",
+    "close-thigh-knee.png",
+    "close-foot.png",
+    "hero-production.png",
+    "guide-close-head.png",
+    "guide-close-face.png",
+    "guide-close-shoulder.png",
+    "guide-close-chest.png",
+    "guide-close-calf.png",
+    "guide-close-belly.png",
+    "guide-close-pelvis.png",
+    "guide-close-hand.png",
+    "guide-close-thigh-knee.png",
+    "guide-close-foot.png",
+    "comparison-front-guide.png",
+    "comparison-front-voxel.png",
+    "comparison-profile-guide.png",
+    "comparison-profile-voxel.png",
+    "comparison-three-quarter-voxel.png"
+  ],
+  "captures": [
+    "clay-front.png",
+    "close-face.png",
+    "close-belly.png",
+    "guide-close-face.png"
+  ],
+  "evidence": [
+    {
+      "file": "clay-front.png",
+      "sha256": "09bbd8eab4b8661c4bb506ee787b7ee22d1d3f2fadee64f5df267ad30f8976c9"
+    },
+    {
+      "file": "close-face.png",
+      "sha256": "cd5c5c8f6696d311c6164557509907812a0e7d8cd233b2dcae9db62c47e4fef4"
+    },
+    {
+      "file": "close-belly.png",
+      "sha256": "4eb7fa346e23759a5d6fab76308d751ecb2a2a71199577cd0ca07a7efeb4b5e5"
+    },
+    {
+      "file": "guide-close-face.png",
+      "sha256": "bc6c102a87cdcbb8021fca9fe55d8109339e9ce7b2012fadbcb5206a9ac479cd"
+    }
+  ]
+}

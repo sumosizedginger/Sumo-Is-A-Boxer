@@ -20,7 +20,7 @@ try{
   page.on('pageerror',e=>errors.push(e.message));
   page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
   await page.setViewport({width:1000,height:1000});
-  await page.goto('http://127.0.0.1:5183/?validation=models');
+  await page.goto('http://127.0.0.1:5183/?validation=models',{waitUntil:'domcontentloaded',timeout:120000});
   await page.waitForFunction(()=>window.__SUMO_IS_A_BOXER__?.validation?.models,{timeout:120000});
   async function capture(name){
     const data=await page.evaluate(()=>window.__SUMO_IS_A_BOXER__.validation.models.capture());

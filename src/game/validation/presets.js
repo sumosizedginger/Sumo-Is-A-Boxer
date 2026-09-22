@@ -52,15 +52,17 @@ export const PRESETS = {
   silhouette_front: preset([0, 1.05, 3.1], [0, 1.02, 0], 46, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'SILHOUETTE' }),
   silhouette_profile: preset([3.1, 1.05, 0], [0, 1.02, 0], 46, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'SILHOUETTE' }),
 
-  close_head: preset([0.00, 1.69, 0.95], [0, 1.69, 0.04], 30, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'VOXEL_CLAY' }),
-  close_face: preset([0.00, 1.68, 0.68], [0, 1.68, 0.08], 32, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'VOXEL_CLAY' }),
+  close_head: preset([0.00, 1.60, 0.95], [0, 1.59, 0.04], 30, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'VOXEL_CLAY' }),
+  close_face: preset([0.00, 1.60, 0.76], [0, 1.60, 0.08], 32, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'VOXEL_CLAY' }),
   close_shoulder: preset([0.48, 1.48, 1.05], [0.30, 1.44, 0.02], 34, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'VOXEL_CLAY' }),
+  close_chest: preset([0.22, 1.43, 1.35], [0, 1.36, 0.08], 35, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'VOXEL_CLAY' }),
+  close_calf: preset([-0.65, 0.34, -0.90], [-0.25, 0.26, 0], 33, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'VOXEL_CLAY' }),
   close_belly: preset([0.42, 1.10, 1.55], [0, 1.12, 0.38], 36, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'VOXEL_CLAY' }),
   close_pelvis: preset([0.0, 0.95, -1.60], [0, 0.98, -0.05], 36, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'VOXEL_CLAY' }),
   close_arm: preset([0.70, 0.95, 0.65], [0.41, 0.90, 0.02], 34, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'VOXEL_CLAY' }),
   close_thigh_knee: preset([-0.24, 0.45, 0.65], [-0.24, 0.45, -0.05], 32, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'VOXEL_CLAY' }),
   close_hand: preset([-0.80, 0.78, 0.85], [-0.44, 0.73, 0.00], 34, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'VOXEL_CLAY' }),
-  close_foot: preset([-0.24, 0.16, 0.70], [-0.24, 0.08, 0.00], 28, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'VOXEL_CLAY' }),
+  close_foot: preset([-0.60, 0.28, 0.62], [-0.24, 0.07, 0.075], 28, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'VOXEL_CLAY' }),
   hero_production: preset([0.4, 1.15, 2.8], [0, 1.05, 0], 46, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'VOXEL_COLOR' }),
 
   skin_close: preset([.5, 1.6, 1.05], [0, 1.48, 0], 42, 'skin'),
@@ -70,6 +72,8 @@ export const PRESETS = {
   steel_close: preset([.5, 4.08, -3.6], [.5, 4.25, -4.2], 45, 'steel'),
   steel_gameplay: preset([.5, 1.65, -3.8], [.5, 4.25, -4.2], 30, 'steel')
 };
+
+for(const view of ['front','rear','profile']) PRESETS['bind_'+view]={...PRESETS['guide_'+view],bindPose:true};
 
 for(const [name,value] of Object.entries(PRESETS)){
  if(name.startsWith('close_'))PRESETS['guide_'+name]={...value,presentationMode:'GUIDE'};

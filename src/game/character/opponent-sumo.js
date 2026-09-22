@@ -379,7 +379,11 @@ export function createOpponentSumo({ library, voxelQuality = 'HERO', voxelRealiz
           realization: voxelRealization,
           instances: voxelHero.runtime.stats.instances,
           realizationHash: voxelHero.artifact.surfaceInstances?.hash??null,
-          realizationMs: voxelHero.artifact.surfaceInstances?.generationMs??0
+          realizationMs: voxelHero.artifact.surfaceInstances?.generationMs??0,
+          canonicalHash: voxelHero.artifact.hash,
+          canonicalGenerationMs: Math.max(0,voxelHero.generationMs-(voxelHero.artifact.surfaceInstances?.generationMs??0)),
+          instanceToCellRatio: voxelHero.runtime.stats.instances/voxelHero.artifact.surfaceCount,
+          cubeScale: voxelHero.runtime.stats.cubeScale
         }
       };
     },

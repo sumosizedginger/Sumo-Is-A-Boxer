@@ -216,6 +216,9 @@ export function instantiateVoxelArtifact(artifact, {
   mat.vertexColors = true;
   const cells = mode==='surfaceInstances'?artifact.surfaceInstances.samples:artifact.cells;
   const size = artifact.voxelSize;
+  const overlap=mode==='surfaceInstances'?(artifact.surfaceInstances.overlap??1):1;
+  if(!Number.isFinite(overlap)||overlap<1||overlap>1.06)throw new RangeError('Invalid isotropic surface overlap');
+  const cubeSize=size*overlap;
   const root = new Object3D();
   root.name = name ?? artifact.id;
   root.frustumCulled = false;
@@ -254,7 +257,7 @@ export function instantiateVoxelArtifact(artifact, {
     if (typeof mesh.instanceColor === 'undefined' || mesh.instanceColor === null) {
       mesh.instanceColor = new BufferAttribute(new Float32Array(Math.max(1, cells.length) * 3), 3);
     }
-    _scale.set(size, size, size);
+    _scale.set(cubeSize, cubeSize, cubeSize);
     _quat.identity();
     for (let i = 0; i < cells.length; i++) {
       const cell = cells[i];
@@ -291,7 +294,8 @@ export function instantiateVoxelArtifact(artifact, {
     triangles: triangleCount,
     drawCalls,
     materials: 1,
-    voxelSize: size
+    voxelSize: size,
+    cubeScale: overlap
   };
 
   return {
@@ -316,7 +320,7 @@ export function instantiateVoxelArtifact(artifact, {
       _inv.copy(root.matrixWorld).invert();
       _matrix.extractRotation(_inv);
       _rootInverseQuat.setFromRotationMatrix(_matrix).normalize();
-      _scale.set(size, size, size);
+      _scale.set(cubeSize, cubeSize, cubeSize);
       for (let i = 0; i < cells.length; i++) {
         const cell = cells[i];
         if (!cell.skinIndex) {

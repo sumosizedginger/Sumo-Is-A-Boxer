@@ -79,6 +79,14 @@ function jitter(color, x, y, z, cavityFactor = 1.0) {
   ];
 }
 
+// Explicit experiments share canonical occupancy and differ only in realization.
+export const HERO_SURFACE_PRESETS=Object.freeze({
+ 'coherent-projected':Object.freeze({placement:'coherentSurface',projection:.35,smoothing:0,quantization:0,orientation:'none',overlap:1}),
+ 'coherent-smooth':Object.freeze({placement:'coherentSurface',projection:.35,smoothing:2,quantization:0,overlap:1}),
+ ...Object.fromEntries([5,7.5,10,15].map(quantization=>['coherent-'+quantization,Object.freeze({placement:'coherentSurface',projection:.35,smoothing:2,quantization,overlap:1})])),
+ coherentSurface:Object.freeze({placement:'coherentSurface',projection:.35,smoothing:2,quantization:10,overlap:1.04})
+});
+
 const _voxelArtifactCache = new Map();
 
 function computeGeometryHash(geometry, quality) {
@@ -112,7 +120,7 @@ function computeGeometryHash(geometry, quality) {
  */
 export function createHeroVoxel(character, { quality = 'HERO', realization = 'grid' } = {}) {
   const geometry = character.geometry;
-  if(!['grid','grid-normal','surface'].includes(realization))throw new RangeError('Unknown hero realization');
+  if(!['grid','grid-normal','surface'].includes(realization)&&!Object.hasOwn(HERO_SURFACE_PRESETS,realization))throw new RangeError('Unknown hero realization');
   const started=performance.now();
   const cacheKey = computeGeometryHash(geometry, quality)+'_'+realization;
   let cached = _voxelArtifactCache.get(cacheKey);
@@ -145,7 +153,7 @@ export function createHeroVoxel(character, { quality = 'HERO', realization = 'gr
       definition,
       grid,
       surfaceMesh: realization==='grid'?null:mesh,
-      surfaceSampling: {placement:realization},
+      surfaceSampling: HERO_SURFACE_PRESETS[realization]??{placement:realization},
       colorForCell: ({ x, y, z, regionId }) => {
         let neighbors = 0;
         for (let d = 0; d < 6; d++) {

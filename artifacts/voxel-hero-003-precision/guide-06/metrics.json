@@ -1,0 +1,33 @@
+{
+  "metrics": {
+    "occupied": 261970,
+    "surface": 27588,
+    "faces": 47090,
+    "voxelSize": 0.012,
+    "generationMs": 32811.89999997616,
+    "drawCalls": 1,
+    "realization": "surface",
+    "instances": 45469,
+    "realizationHash": "5cc636f2ca82b5a7",
+    "realizationMs": 1402.2999999523163
+  },
+  "errors": [],
+  "capturesCount": 15,
+  "captures": [
+    "artifacts\\voxel-hero-003-precision\\guide-06\\guide-front.png",
+    "artifacts\\voxel-hero-003-precision\\guide-06\\guide-rear.png",
+    "artifacts\\voxel-hero-003-precision\\guide-06\\guide-profile.png",
+    "artifacts\\voxel-hero-003-precision\\guide-06\\guide-three-quarter-front.png",
+    "artifacts\\voxel-hero-003-precision\\guide-06\\guide-three-quarter-rear.png",
+    "artifacts\\voxel-hero-003-precision\\guide-06\\guide-close-head.png",
+    "artifacts\\voxel-hero-003-precision\\guide-06\\guide-close-face.png",
+    "artifacts\\voxel-hero-003-precision\\guide-06\\guide-close-shoulder.png",
+    "artifacts\\voxel-hero-003-precision\\guide-06\\guide-close-chest.png",
+    "artifacts\\voxel-hero-003-precision\\guide-06\\guide-close-calf.png",
+    "artifacts\\voxel-hero-003-precision\\guide-06\\guide-close-belly.png",
+    "artifacts\\voxel-hero-003-precision\\guide-06\\guide-close-pelvis.png",
+    "artifacts\\voxel-hero-003-precision\\guide-06\\guide-close-hand.png",
+    "artifacts\\voxel-hero-003-precision\\guide-06\\guide-close-thigh-knee.png",
+    "artifacts\\voxel-hero-003-precision\\guide-06\\guide-close-foot.png"
+  ]
+}

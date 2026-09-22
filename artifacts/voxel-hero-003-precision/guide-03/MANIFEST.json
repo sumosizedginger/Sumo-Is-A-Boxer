@@ -1,0 +1,140 @@
+{
+  "milestone": "VOXEL-HERO-003",
+  "branch": "game-build",
+  "quality": "HERO",
+  "hero": {
+    "occupied": 258813,
+    "surface": 27745,
+    "faces": 46842,
+    "voxelSize": 0.012,
+    "generationMs": 36762.59999990463,
+    "drawCalls": 1,
+    "realization": "surface",
+    "instances": 45168,
+    "realizationHash": "5921e623fdd4e8d3",
+    "realizationMs": 1105
+  },
+  "sourceCommit": "b424b6775746fd7681bb90b2977aa324b74c2876",
+  "filter": "guide",
+  "complete": false,
+  "capturesCount": 15,
+  "expectedCaptures": [
+    "guide-front.png",
+    "guide-rear.png",
+    "guide-profile.png",
+    "guide-three-quarter-front.png",
+    "guide-three-quarter-rear.png",
+    "clay-front.png",
+    "clay-rear.png",
+    "clay-profile.png",
+    "clay-three-quarter-front.png",
+    "clay-three-quarter-rear.png",
+    "silhouette-front.png",
+    "silhouette-profile.png",
+    "close-head.png",
+    "close-face.png",
+    "close-shoulder.png",
+    "close-chest.png",
+    "close-calf.png",
+    "close-belly.png",
+    "close-pelvis.png",
+    "close-hand.png",
+    "close-thigh-knee.png",
+    "close-foot.png",
+    "hero-production.png",
+    "guide-close-head.png",
+    "guide-close-face.png",
+    "guide-close-shoulder.png",
+    "guide-close-chest.png",
+    "guide-close-calf.png",
+    "guide-close-belly.png",
+    "guide-close-pelvis.png",
+    "guide-close-hand.png",
+    "guide-close-thigh-knee.png",
+    "guide-close-foot.png",
+    "comparison-front-guide.png",
+    "comparison-front-voxel.png",
+    "comparison-profile-guide.png",
+    "comparison-profile-voxel.png",
+    "comparison-three-quarter-voxel.png"
+  ],
+  "captures": [
+    "guide-front.png",
+    "guide-rear.png",
+    "guide-profile.png",
+    "guide-three-quarter-front.png",
+    "guide-three-quarter-rear.png",
+    "guide-close-head.png",
+    "guide-close-face.png",
+    "guide-close-shoulder.png",
+    "guide-close-chest.png",
+    "guide-close-calf.png",
+    "guide-close-belly.png",
+    "guide-close-pelvis.png",
+    "guide-close-hand.png",
+    "guide-close-thigh-knee.png",
+    "guide-close-foot.png"
+  ],
+  "evidence": [
+    {
+      "file": "guide-front.png",
+      "sha256": "312b5ecb38f36cf350846a6e0d8098b1cb0387891a9ea0e61de8ecc006f65ab1"
+    },
+    {
+      "file": "guide-rear.png",
+      "sha256": "bb45d1baca397d90792b5668c58a8dd55f07ed2851bcb8b54e1ca9e662faaf2a"
+    },
+    {
+      "file": "guide-profile.png",
+      "sha256": "04c30904e832497aadd4d3702ec0215252e6021223e29add7144eb45b5295620"
+    },
+    {
+      "file": "guide-three-quarter-front.png",
+      "sha256": "ec61bb98278d382fe296cb7709e32f1b0da4bde1d725b35fa3615dc76ce00831"
+    },
+    {
+      "file": "guide-three-quarter-rear.png",
+      "sha256": "c63ed2deb280f140f24b9a711eded8880f855af21ecbd767945a925334a22c70"
+    },
+    {
+      "file": "guide-close-head.png",
+      "sha256": "cf12db4b31e6a2944407bcda43a3566cf8d047990c2169f215ae2491348e3bbc"
+    },
+    {
+      "file": "guide-close-face.png",
+      "sha256": "5ffa3911c47fbdbf71ac0ab4317867b1ba52ab296617ba885fd114b64df18dce"
+    },
+    {
+      "file": "guide-close-shoulder.png",
+      "sha256": "f618205b59964b4b8d80c8db29f3cca6a4f28636ae24c71f9f41ab22ec553f14"
+    },
+    {
+      "file": "guide-close-chest.png",
+      "sha256": "20961e507da38b745844faf2d7f9b547a4d09c3a7d70163046d891a0cc3a99af"
+    },
+    {
+      "file": "guide-close-calf.png",
+      "sha256": "513816831d2195907f4d9c42a55e4a518902e46eb80499e40fd9e468002c5bd6"
+    },
+    {
+      "file": "guide-close-belly.png",
+      "sha256": "29900e2b0befd1bb26f16f44b771b690755a4f5ff57988354ee3b7f69f5f575f"
+    },
+    {
+      "file": "guide-close-pelvis.png",
+      "sha256": "a7cc423addcdb06c95ba78d9c1fcdbfe5e883628c4af8c070089bba6a00f9c5b"
+    },
+    {
+      "file": "guide-close-hand.png",
+      "sha256": "bad4886ae157ba5c092b335aaea6b411592a44291cc8f3c9091ac80e7b45b743"
+    },
+    {
+      "file": "guide-close-thigh-knee.png",
+      "sha256": "afd059fd5f2d448e56eb690911b9bbe7bb8c8196a9136e1b67663601eafd1f7d"
+    },
+    {
+      "file": "guide-close-foot.png",
+      "sha256": "0ebbc7518de30d3a97975eead63c07746d39cfd0f9b51fb8773866620d147362"
+    }
+  ]
+}

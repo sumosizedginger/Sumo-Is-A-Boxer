@@ -7,7 +7,7 @@ const server=await createServer({server:{host:'127.0.0.1',port:5182}});await ser
 const browser=await puppeteer.launch({executablePath,headless:true,args:['--no-sandbox']});
 try{
  const page=await browser.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});await page.setViewport({width:1100,height:1000});
- await page.goto('http://127.0.0.1:5182/?validation=models');await page.waitForFunction(()=>window.__SUMO_IS_A_BOXER__?.validation?.models,{timeout:90000});
+ await page.goto('http://127.0.0.1:5182/?validation=models',{waitUntil:'domcontentloaded',timeout:120000});await page.waitForFunction(()=>window.__SUMO_IS_A_BOXER__?.validation?.models,{timeout:90000});
  const inspect=fn=>page.evaluate(fn);
  const capture=async name=>{const data=await inspect(()=>window.__SUMO_IS_A_BOXER__.validation.models.capture());fs.writeFileSync(output+'/'+name+'.png',Buffer.from(data.split(',')[1],'base64'));};
  await inspect(()=>{const m=window.__SUMO_IS_A_BOXER__.validation.models;m.show('front_neutral');m.body.mode('shaded');});

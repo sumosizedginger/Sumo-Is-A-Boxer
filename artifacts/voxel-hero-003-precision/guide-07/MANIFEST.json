@@ -1,0 +1,91 @@
+{
+  "milestone": "VOXEL-HERO-003",
+  "branch": "game-build",
+  "quality": "HERO",
+  "hero": {
+    "occupied": 261970,
+    "surface": 27588,
+    "faces": 47090,
+    "voxelSize": 0.012,
+    "generationMs": 34707.10000002384,
+    "drawCalls": 1,
+    "realization": "surface",
+    "instances": 45469,
+    "realizationHash": "f4644481ba3e636d",
+    "realizationMs": 1366.7000000476837
+  },
+  "sourceCommit": "b424b6775746fd7681bb90b2977aa324b74c2876",
+  "sourceDiffHash": "2b4363e82ea9d09961acc06a51552bf7b45f073ef891b44fcf6e253c8fa40d65",
+  "filter": "guide-front,guide-rear,guide-profile,guide-close-face,guide-close-shoulder",
+  "complete": false,
+  "capturesCount": 5,
+  "expectedCaptures": [
+    "guide-front.png",
+    "guide-rear.png",
+    "guide-profile.png",
+    "guide-three-quarter-front.png",
+    "guide-three-quarter-rear.png",
+    "clay-front.png",
+    "clay-rear.png",
+    "clay-profile.png",
+    "clay-three-quarter-front.png",
+    "clay-three-quarter-rear.png",
+    "silhouette-front.png",
+    "silhouette-profile.png",
+    "close-head.png",
+    "close-face.png",
+    "close-shoulder.png",
+    "close-chest.png",
+    "close-calf.png",
+    "close-belly.png",
+    "close-pelvis.png",
+    "close-hand.png",
+    "close-thigh-knee.png",
+    "close-foot.png",
+    "hero-production.png",
+    "guide-close-head.png",
+    "guide-close-face.png",
+    "guide-close-shoulder.png",
+    "guide-close-chest.png",
+    "guide-close-calf.png",
+    "guide-close-belly.png",
+    "guide-close-pelvis.png",
+    "guide-close-hand.png",
+    "guide-close-thigh-knee.png",
+    "guide-close-foot.png",
+    "comparison-front-guide.png",
+    "comparison-front-voxel.png",
+    "comparison-profile-guide.png",
+    "comparison-profile-voxel.png",
+    "comparison-three-quarter-voxel.png"
+  ],
+  "captures": [
+    "guide-front.png",
+    "guide-rear.png",
+    "guide-profile.png",
+    "guide-close-face.png",
+    "guide-close-shoulder.png"
+  ],
+  "evidence": [
+    {
+      "file": "guide-front.png",
+      "sha256": "a8d849a1e07687af2bd2130a5b989dfb6fc3e1e33cccd970ba6b21336f64435a"
+    },
+    {
+      "file": "guide-rear.png",
+      "sha256": "feada999708e0d8425bcaa716a922b266d236a1d99349273773cf1f7881a949f"
+    },
+    {
+      "file": "guide-profile.png",
+      "sha256": "8990be3ace2b6cc573db8ae111e93f36fffdb9246cca75fdc4a9afade2591de0"
+    },
+    {
+      "file": "guide-close-face.png",
+      "sha256": "73f1b8d0fe35fea8ec577b54a43497df28198192970b8300a657d11481550caf"
+    },
+    {
+      "file": "guide-close-shoulder.png",
+      "sha256": "a1b01996c70d3e5f49faa623866bf75a5652c4d83e675f5158f8bb2d50cac8f7"
+    }
+  ]
+}

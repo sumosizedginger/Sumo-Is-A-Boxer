@@ -1,6 +1,8 @@
 import { createServer } from "vite";
 import { mkdirSync, writeFileSync, readFileSync } from "node:fs";
-import { join } from "node:path";
+import { join, basename } from "node:path";
+import { createHash } from "node:crypto";
+import { execFileSync } from "node:child_process";
 import zlib from "node:zlib";
 
 const directory = process.env.CAPTURE_DIR ?? "artifacts/voxel-hero-003";
@@ -169,7 +171,7 @@ const browser = await puppeteer.launch({
 const captures = [];
 try {
   const page = await browser.newPage();
-  page.setViewport({ width: 1280, height: 720 });
+  await page.setViewport({ width: 1280, height: 720 });
   const errors = [];
   page.on("pageerror", (e) => errors.push(String(e.message)));
   page.on("console", (msg) => console.log("browser", msg.type(), msg.text()));
@@ -204,6 +206,8 @@ try {
     ["close-head", "close_head"],
     ["close-face", "close_face"],
     ["close-shoulder", "close_shoulder"],
+    ["close-chest", "close_chest"],
+    ["close-calf", "close_calf"],
     ["close-belly", "close_belly"],
     ["close-pelvis", "close_pelvis"],
     ["close-hand", "close_hand"],
@@ -216,8 +220,10 @@ try {
 
   views.push(...views.filter(([n])=>n.startsWith('close-')).map(([n,p])=>['guide-'+n,'guide_'+p]));
   const filter = process.argv[2];
-  const activeViews = filter ? views.filter(([n, p]) => n.includes(filter) || p.includes(filter)) : views;
+  if(filter==='bind') views.push(...['front','rear','profile'].map(v=>['bind-'+v,'bind_'+v]));
+  const activeViews = filter ? views.filter(([n, p]) => filter.split(",").some(f=>f.startsWith("=")?n===f.slice(1):n.includes(f) || p.includes(f))) : views;
 
+  if (!activeViews.length) throw new Error("Capture filter matches no views: "+filter);
   const rawImages = new Map();
   for (const [name, preset] of activeViews) {
     await page.evaluate((p) => window.__SUMO_IS_A_BOXER__.validation.applyPreset(p), preset);
@@ -265,13 +271,26 @@ try {
     branch: "game-build",
     quality: "HERO",
     hero: metrics,
-    capturesCount: allCaptures.length,
-    captures: allCaptures
+    sourceCommit: execFileSync("git", ["rev-parse", "HEAD"], {encoding:"utf8"}).trim(),
+    sourceHashes: Object.fromEntries([
+      'src/game/character/continuous-body.js','src/game/character/sumo-body-sculpt.js',
+      'src/game/character/head-profile.js','src/game/character/hero-face.js','src/game/character/orbital-pockets.js',
+      'src/game/voxel/hero-voxel.js','engine/src/voxel/coherent-surface.js','engine/src/voxel/surface-frame.js',
+      'engine/src/voxel/surface-instances.js','engine/src/voxel/runtime.js',
+      'src/game/validation/presets.js','src/game/validation/harness.js'
+    ].map(path=>[path,createHash('sha256').update(readFileSync(path)).digest('hex')])),
+    sourceDiffHash: createHash("sha256").update(execFileSync("git", ["diff", "HEAD", "--", "src", "engine/src", "scripts"])).digest("hex"),
+    filter: filter ?? null,
+    complete: !filter,
+    capturesCount: captures.length,
+    expectedCaptures: allCaptures,
+    captures: captures.map(file=>basename(file)),
+    evidence: captures.map(file=>({file:basename(file),sha256:createHash("sha256").update(readFileSync(file)).digest("hex")}))
   };
 
-  writeFileSync(join(directory, "metrics.json"), JSON.stringify({ metrics, errors, capturesCount: allCaptures.length, captures }, null, 2));
+  writeFileSync(join(directory, "metrics.json"), JSON.stringify({ metrics, errors, capturesCount: captures.length, captures }, null, 2));
   writeFileSync(join(directory, "MANIFEST.json"), JSON.stringify(manifest, null, 2));
-  console.log("Successfully generated all", allCaptures.length, "captures for VOXEL-HERO-003!");
+  console.log("Generated", captures.length, "captures; complete set:", !filter);
   if (errors.length) process.exitCode = 1;
 } finally {
   await browser.close();

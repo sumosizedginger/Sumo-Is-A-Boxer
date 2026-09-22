@@ -106,7 +106,7 @@ export function stitchAuricularPatches(input){
     const transitions=5,totalRows=transitions+rows.length;
     function ringPoint(row,j){
       const [rx,ry,x]=rows[row],a=angles[0]+j/count*Math.PI*2+.005,u=rx*Math.cos(a),v=ry*Math.sin(a),z=-.013-sign*u-.10*v;
-      return [sign*(x-.13*(z+.013)-.001*(ry/.029)*(1-Math.sin(a))-.007*(rx/.019)**2*Math.max(0,-sign*Math.cos(a))**4),1.740+v,z];
+      return [sign*(headSideX(1.740+v,z)+.006-.13*(z+.013)-.001*(ry/.029)*(1-Math.sin(a))-.007*(rx/.019)**2*Math.max(0,-sign*Math.cos(a))**4),1.740+v,z];
     }
     for(let row=0;row<totalRows;row++){
       for(let j=0;j<count;j++){

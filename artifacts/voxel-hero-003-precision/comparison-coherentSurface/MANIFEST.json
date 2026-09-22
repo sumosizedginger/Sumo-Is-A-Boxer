@@ -1,0 +1,81 @@
+{
+  "milestone": "VOXEL-HERO-003",
+  "branch": "game-build",
+  "quality": "HERO",
+  "hero": {
+    "occupied": 261823,
+    "surface": 27558,
+    "faces": 47068,
+    "voxelSize": 0.012,
+    "generationMs": 27365.100000023842,
+    "drawCalls": 1,
+    "realization": "coherentSurface",
+    "instances": 27558,
+    "realizationHash": "7ccfbf5d9716fa20",
+    "realizationMs": 1178.8999999761581
+  },
+  "sourceCommit": "b424b6775746fd7681bb90b2977aa324b74c2876",
+  "sourceDiffHash": "42315e435824a15d851e18fb388ffeb2d55abc4913ab1fd01ceadebc58b11e7f",
+  "filter": "=clay-front,=close-belly,=close-face",
+  "complete": false,
+  "capturesCount": 3,
+  "expectedCaptures": [
+    "guide-front.png",
+    "guide-rear.png",
+    "guide-profile.png",
+    "guide-three-quarter-front.png",
+    "guide-three-quarter-rear.png",
+    "clay-front.png",
+    "clay-rear.png",
+    "clay-profile.png",
+    "clay-three-quarter-front.png",
+    "clay-three-quarter-rear.png",
+    "silhouette-front.png",
+    "silhouette-profile.png",
+    "close-head.png",
+    "close-face.png",
+    "close-shoulder.png",
+    "close-chest.png",
+    "close-calf.png",
+    "close-belly.png",
+    "close-pelvis.png",
+    "close-hand.png",
+    "close-thigh-knee.png",
+    "close-foot.png",
+    "hero-production.png",
+    "guide-close-head.png",
+    "guide-close-face.png",
+    "guide-close-shoulder.png",
+    "guide-close-chest.png",
+    "guide-close-calf.png",
+    "guide-close-belly.png",
+    "guide-close-pelvis.png",
+    "guide-close-hand.png",
+    "guide-close-thigh-knee.png",
+    "guide-close-foot.png",
+    "comparison-front-guide.png",
+    "comparison-front-voxel.png",
+    "comparison-profile-guide.png",
+    "comparison-profile-voxel.png",
+    "comparison-three-quarter-voxel.png"
+  ],
+  "captures": [
+    "clay-front.png",
+    "close-face.png",
+    "close-belly.png"
+  ],
+  "evidence": [
+    {
+      "file": "clay-front.png",
+      "sha256": "af5b525d28881aa421757ccfbbfbf511cef427a55dc763181194ad396a8027c6"
+    },
+    {
+      "file": "close-face.png",
+      "sha256": "71d19b6fa32cdf96f1fd9f68f4bd676b5da9a79108a6a6a6a299cf5d179e885d"
+    },
+    {
+      "file": "close-belly.png",
+      "sha256": "1181452f7422d18cc6448e2320e7fba83989fa474e7da0e1a52dd183f12ddaa6"
+    }
+  ]
+}

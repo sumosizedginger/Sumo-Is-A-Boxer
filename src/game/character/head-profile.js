@@ -11,7 +11,7 @@ const rows=[
   [1.78,  .114, .110, .106],
   [1.80,  .106, .104, .104]
 ];
-export function headSection(y){if(y>=1.80){const cap=Math.sqrt(Math.max(.000001,1-((y-1.755)/.105)**2));return [.112*cap,.110*cap,.110*cap];}for(let j=0;j<rows.length-1;j++)if(y<=rows[j+1][0]){const a=rows[j],b=rows[j+1],t=clamp((y-a[0])/(b[0]-a[0])),prev=rows[Math.max(0,j-1)],next=rows[Math.min(rows.length-1,j+2)];return a.slice(1).map((v,k)=>{const m0=(b[k+1]-prev[k+1])/(b[0]-prev[0]),m1=(next[k+1]-a[k+1])/(next[0]-a[0]),h=b[0]-a[0];return (2*t*t*t-3*t*t+1)*v+(t*t*t-2*t*t+t)*h*m0+(-2*t*t*t+3*t*t)*b[k+1]+(t*t*t-t*t)*h*m1;});}const h=Math.max(.002,Math.sqrt(Math.max(0,1-((y-1.80)/.060)**2)));return [.106*h,.104*h,.104*h];}
+export function headSection(y){if(y>=1.80){return rows.at(-1).slice(1).map((radius,k)=>{const slope=(radius-rows.at(-2)[k+1])/.02,height=.06,rate=-slope/radius,offset=rate*height*height/(1-2*rate*height),extent=height+offset;return radius*Math.sqrt(Math.max(.000001,(extent*extent-(y-1.80+offset)**2)/(extent*extent-offset*offset)));});}for(let j=0;j<rows.length-1;j++)if(y<=rows[j+1][0]){const a=rows[j],b=rows[j+1],t=clamp((y-a[0])/(b[0]-a[0])),prev=rows[Math.max(0,j-1)],next=rows[Math.min(rows.length-1,j+2)];return a.slice(1).map((v,k)=>{const m0=(b[k+1]-prev[k+1])/(b[0]-prev[0]),m1=(next[k+1]-a[k+1])/(next[0]-a[0]),h=b[0]-a[0];return (2*t*t*t-3*t*t+1)*v+(t*t*t-2*t*t+t)*h*m0+(-2*t*t*t+3*t*t)*b[k+1]+(t*t*t-t*t)*h*m1;});}const h=Math.max(.002,Math.sqrt(Math.max(0,1-((y-1.80)/.060)**2)));return [.106*h,.104*h,.104*h];}
 
 
 export function headTemplatePoint(y,angle){const c=Math.cos(angle),s=Math.sin(angle),[w,f,b]=headSection(y);return [w*Math.sign(c)*Math.pow(Math.abs(c),.92),y,(s>=0?f*Math.pow(s,.45):b*s)-.006];}

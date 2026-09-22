@@ -72,3 +72,19 @@ The occupancy grid remains canonical. Surface realization is an explicit HERO pr
 ## 7. Tests
 
 `engine/tests/voxel.test.js` plus public-surface / purity allowlists.
+
+## Canonical-cell-constrained realization
+
+Pass `surfaceSampling: { placement: 'coherentSurface' }` with `surfaceMesh` to `createVoxelArtifact`, then instantiate with `mode: 'surfaceInstances'`. This is explicit and does not change environment or legacy grid behavior. Existing `surface` and `grid-normal` placement modes remain available.
+
+The compiler emits exactly one sample for each canonical surface cell, in canonical order. A deterministic triangle BVH finds the closest guide point. Euclidean center correction is limited to `projection * voxelSize` (default 0.35; allowed 0 through 0.45). Samples retain the original cell coordinate, region, color, skin indices and weights. Source triangle, barycentrics, closest point, and raw normal remain inspectable. The occupancy artifact and its hash are unchanged.
+
+The orientation field uses 26-neighbor canonical adjacency, rejecting neighbors whose raw normals differ by 60 degrees or more. `smoothing` selects 0 through 8 passes (default 2). `quantization` selects 0, 5, 7.5, 10 or 15 degree azimuth/elevation increments (default 10). A projected world-up tangent, with a polar fallback, produces a right-handed orthonormal bind frame. `orientation: 'none'` retains identity orientation for the projection-only experiment. All settings and ordered samples contribute to a separate deterministic realization hash.
+
+`overlap` scales every cube axis equally, from 1 through 1.06 (default 1.04). Canonical `voxelSize` remains unchanged; runtime reports `cubeScale` separately. Bind and deformed matrices use the same isotropic scale. Skeletal rotation composes with the bind frame; centers retain canonical skeletal influences.
+
+Tests: `engine/tests/voxel-coherent.test.js` covers deterministic identity/order, nearest triangle interiors, bounded displacement, canonical inheritance, normal/frame validity, quantization, isotropic overlap, deformation, and invalid settings. `voxel-surface.test.js` retains the previous-mode and renderer compatibility checks. Visual mode selection is a game-level evidence decision, not an engine test assertion.
+
+A fixed 45-degree tangent-phase experiment was visually rejected for producing a chainmail-like shell and removed from the implementation. Its comparison captures remain in the game evidence directory.
+
+The additional regular column-stagger experiment was also rejected after capture review: bounded tangential center shifts retained cell identity but exposed checkerboard gaps. It is not an available realization option. The canonical-cell-constrained mode remains an explicit experimental alternative, not an accepted replacement for the current hero presentation.

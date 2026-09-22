@@ -1,0 +1,21 @@
+{
+  "metrics": {
+    "occupied": 261823,
+    "surface": 27558,
+    "faces": 47068,
+    "voxelSize": 0.012,
+    "generationMs": 27365.799999952316,
+    "drawCalls": 1,
+    "realization": "coherent-15",
+    "instances": 27558,
+    "realizationHash": "003976cfaef80133",
+    "realizationMs": 1185.2000000476837
+  },
+  "errors": [],
+  "capturesCount": 3,
+  "captures": [
+    "artifacts\\voxel-hero-003-precision\\comparison-coherent-15\\clay-front.png",
+    "artifacts\\voxel-hero-003-precision\\comparison-coherent-15\\close-face.png",
+    "artifacts\\voxel-hero-003-precision\\comparison-coherent-15\\close-belly.png"
+  ]
+}
