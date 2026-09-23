@@ -54,7 +54,8 @@ export const PRESETS = {
 
   close_head: preset([0.00, 1.60, 0.95], [0, 1.59, 0.04], 30, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'VOXEL_CLAY' }),
   close_face: preset([0.00, 1.60, 0.76], [0, 1.60, 0.08], 32, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'VOXEL_CLAY' }),
-  close_shoulder: preset([0.48, 1.48, 1.05], [0.30, 1.44, 0.02], 34, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'VOXEL_CLAY' }),
+  close_shoulder: preset([0.78, 1.38, 1.05], [0.43, 1.29, 0.04], 34, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'VOXEL_CLAY' }),
+  close_axilla_rear: preset([0.90, 1.36, -1.03], [0.40, 1.27, -0.05], 34, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'VOXEL_CLAY' }),
   close_chest: preset([0.22, 1.43, 1.35], [0, 1.36, 0.08], 35, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'VOXEL_CLAY' }),
   close_calf: preset([-0.65, 0.34, -0.90], [-0.25, 0.26, 0], 33, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'VOXEL_CLAY' }),
   close_belly: preset([0.42, 1.10, 1.55], [0, 1.12, 0.38], 36, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'VOXEL_CLAY' }),

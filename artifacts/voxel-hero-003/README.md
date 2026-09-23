@@ -11,3 +11,5 @@ Contact sheets [1](contact-01.png), [2](contact-02.png), [3](contact-03.png), [4
 [Metrics](metrics.json), [capture provenance](MANIFEST.json), [fresh silhouette measurements](silhouette-metrics.json), and [structure board sources](structure-comparisons.json) accompany the images.
 
 Same-camera surface-mode experiments are in [the precision directory](../voxel-hero-003-precision/). The [iteration record](../../docs/VOXEL_HERO_003_PRECISION.md) explains retained and rejected changes.
+
+Current posterior axilla closeups: [guide](guide-close-axilla-rear.png), [HERO](close-axilla-rear.png). The regenerated set contains 35 camera captures and 10 comparison boards. Visual acceptance remains pending.

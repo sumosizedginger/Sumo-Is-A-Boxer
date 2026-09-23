@@ -1,0 +1,25 @@
+{
+  "metrics": {
+    "occupied": 270688,
+    "surface": 28405,
+    "faces": 48848,
+    "voxelSize": 0.012,
+    "generationMs": 29560.899999976158,
+    "drawCalls": 1,
+    "realization": "surface",
+    "instances": 46241,
+    "realizationHash": "3ced6fcacb039f1b",
+    "realizationMs": 1109.2000000476837,
+    "canonicalHash": "69ba3446ca031573",
+    "canonicalGenerationMs": 28451.699999928474,
+    "instanceToCellRatio": 1.6279176201372998,
+    "cubeScale": 1
+  },
+  "errors": [],
+  "capturesCount": 3,
+  "captures": [
+    "artifacts\\voxel-hero-003-precision\\guide-21-bind\\bind-front.png",
+    "artifacts\\voxel-hero-003-precision\\guide-21-bind\\bind-rear.png",
+    "artifacts\\voxel-hero-003-precision\\guide-21-bind\\bind-profile.png"
+  ]
+}

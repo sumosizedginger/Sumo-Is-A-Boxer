@@ -1,0 +1,17 @@
+{
+  "occupied": 266922,
+  "surface": 28349,
+  "faces": 47884,
+  "voxelSize": 0.012,
+  "generationMs": 38491.59760000001,
+  "drawCalls": 1,
+  "realization": "coherentSurface",
+  "instances": 28349,
+  "realizationHash": "897d92789d6c79e8",
+  "realizationMs": 1921.5066000000006,
+  "canonicalHash": "856c70ae8364a9ba",
+  "canonicalGenerationMs": 36570.09100000001,
+  "instanceToCellRatio": 1,
+  "cubeScale": 1.04,
+  "hash": "856c70ae8364a9ba"
+}

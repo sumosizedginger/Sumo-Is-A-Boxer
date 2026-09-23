@@ -1,0 +1,112 @@
+{
+  "milestone": "VOXEL-HERO-003",
+  "branch": "game-build",
+  "quality": "HERO",
+  "hero": {
+    "occupied": 264585,
+    "surface": 27877,
+    "faces": 47768,
+    "voxelSize": 0.012,
+    "generationMs": 27607.800000071526,
+    "drawCalls": 1,
+    "realization": "surface",
+    "instances": 44991,
+    "realizationHash": "83b252b492f62c87",
+    "realizationMs": 1143.3000000715256,
+    "canonicalHash": "e7a804982719878f",
+    "canonicalGenerationMs": 26464.5,
+    "instanceToCellRatio": 1.613911109516806,
+    "cubeScale": 1
+  },
+  "sourceCommit": "26811dd185de94f5251a817bf98297b5e5e7c90f",
+  "sourceHashes": {
+    "src/game/character/hero-rig.js": "673c746062e363c7ce5fdf6b95e7ccf21ea50a7c3291cb73854b7fa1e1207984",
+    "src/game/character/hero-guide-body.js": "dc1296f298d2cd1c981252059dd4d7ad6f99356eacef169716b0616a0e5682bb",
+    "src/game/character/opponent-sumo.js": "dd75d19816ff15a3d2346a1f9351ef92a0df803c95b084c5204ee9b03ee0dcd8",
+    "src/game/character/continuous-body.js": "d93e95119eb94bfbfee16fffc0cd62ac98844220d09c4d14d345c383cf802104",
+    "src/game/character/sumo-body-sculpt.js": "a62c5f5f88ca3918c5e6d4d53b4ca37b68c95fc5d7249fb07a7e77ba019ee015",
+    "src/game/character/head-profile.js": "89c3b2b2d5500ddb6e623066b87a959ba3ca5f89c8a52fbba4dc794cc439c3c4",
+    "src/game/character/hero-face.js": "d3304809833bb694964f368af7f1fbf2531a6ec16440793d1677d2b6eab8a452",
+    "src/game/character/orbital-pockets.js": "e35daea3a029441eae2a6d5ca6f0fa47027d0b386a4287b4a3790e9a655bac42",
+    "src/game/voxel/hero-voxel.js": "56d06bdcac4abc80ffe7e54c7ec9e46d89414236fe44d3dca7db3e15cdfe6060",
+    "engine/src/voxel/coherent-surface.js": "8f469158a978a45434ac6be824e41f078ba583c63454ef497b3fe1a9a726467d",
+    "engine/src/voxel/surface-frame.js": "5e0865c6dc2a8a5c821cff443510fc4aea8e04934c232ab61516d1a2edbd9b3d",
+    "engine/src/voxel/surface-instances.js": "78ad835ce0fbf5ce0db00bae078c190b3ac9a08ae3125150505997c0b4c05286",
+    "engine/src/voxel/runtime.js": "ec47acf34fdb735af76ac4811f405bbdf56ae08b54a718e4fabf45c444a0e9ea",
+    "src/game/validation/presets.js": "a380b142f12ee305ea967eaead76ae2d76e2555bf6d16c1ea569b5d4a1bf67d7",
+    "src/game/validation/harness.js": "d5105a1b091154c68657a077a76839399573bf337b384ffffc83fda03b711f3d"
+  },
+  "sourceDiffHash": "f836649a19c9419afaeb73ec508d50edd5dd632b85747e38c7e4489767d9d341",
+  "filter": "=guide-front,=guide-rear,=guide-profile,=guide-three-quarter-rear,=guide-close-shoulder",
+  "complete": false,
+  "capturesCount": 5,
+  "expectedCaptures": [
+    "guide-front.png",
+    "guide-rear.png",
+    "guide-profile.png",
+    "guide-three-quarter-front.png",
+    "guide-three-quarter-rear.png",
+    "clay-front.png",
+    "clay-rear.png",
+    "clay-profile.png",
+    "clay-three-quarter-front.png",
+    "clay-three-quarter-rear.png",
+    "silhouette-front.png",
+    "silhouette-profile.png",
+    "close-head.png",
+    "close-face.png",
+    "close-shoulder.png",
+    "close-chest.png",
+    "close-calf.png",
+    "close-belly.png",
+    "close-pelvis.png",
+    "close-hand.png",
+    "close-thigh-knee.png",
+    "close-foot.png",
+    "hero-production.png",
+    "guide-close-head.png",
+    "guide-close-face.png",
+    "guide-close-shoulder.png",
+    "guide-close-chest.png",
+    "guide-close-calf.png",
+    "guide-close-belly.png",
+    "guide-close-pelvis.png",
+    "guide-close-hand.png",
+    "guide-close-thigh-knee.png",
+    "guide-close-foot.png",
+    "comparison-front-guide.png",
+    "comparison-front-voxel.png",
+    "comparison-profile-guide.png",
+    "comparison-profile-voxel.png",
+    "comparison-three-quarter-voxel.png"
+  ],
+  "captures": [
+    "guide-front.png",
+    "guide-rear.png",
+    "guide-profile.png",
+    "guide-three-quarter-rear.png",
+    "guide-close-shoulder.png"
+  ],
+  "evidence": [
+    {
+      "file": "guide-front.png",
+      "sha256": "6885da100ae9e7b7fd745e1bedbda38d541b513e43f7a828a5355222233d4bde"
+    },
+    {
+      "file": "guide-rear.png",
+      "sha256": "523d5c30a13731282739cc3681537b403fd38904a576df31639e60df1fea01d6"
+    },
+    {
+      "file": "guide-profile.png",
+      "sha256": "a65933bc4f35fa7d959cba5edad18c2ae6cf9e08cf5dd7a99c7222db55dd4aef"
+    },
+    {
+      "file": "guide-three-quarter-rear.png",
+      "sha256": "dbfbbf859105d0016cc13a8790d3f8c568ab13dfd12c3509bd65a84819de2093"
+    },
+    {
+      "file": "guide-close-shoulder.png",
+      "sha256": "81ba63c2020bc7b5a16b6ad6d523e5583a279c90be52da738a9af118c0b089e5"
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "metrics": {
+    "occupied": 270688,
+    "surface": 28405,
+    "faces": 48848,
+    "voxelSize": 0.012,
+    "generationMs": 38544,
+    "drawCalls": 1,
+    "realization": "surface",
+    "instances": 46241,
+    "realizationHash": "3ced6fcacb039f1b",
+    "realizationMs": 1479.0999999046326,
+    "canonicalHash": "69ba3446ca031573",
+    "canonicalGenerationMs": 37064.90000009537,
+    "instanceToCellRatio": 1.6279176201372998,
+    "cubeScale": 1
+  },
+  "errors": [],
+  "capturesCount": 5,
+  "captures": [
+    "artifacts\\voxel-hero-003-precision\\guide-21\\guide-front.png",
+    "artifacts\\voxel-hero-003-precision\\guide-21\\guide-rear.png",
+    "artifacts\\voxel-hero-003-precision\\guide-21\\guide-profile.png",
+    "artifacts\\voxel-hero-003-precision\\guide-21\\guide-three-quarter-rear.png",
+    "artifacts\\voxel-hero-003-precision\\guide-21\\guide-close-shoulder.png"
+  ]
+}

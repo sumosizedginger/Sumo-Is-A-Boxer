@@ -1,0 +1,109 @@
+{
+  "milestone": "VOXEL-HERO-003",
+  "branch": "game-build",
+  "quality": "HERO",
+  "hero": {
+    "occupied": 270688,
+    "surface": 28405,
+    "faces": 48848,
+    "voxelSize": 0.012,
+    "generationMs": 38544,
+    "drawCalls": 1,
+    "realization": "surface",
+    "instances": 46241,
+    "realizationHash": "3ced6fcacb039f1b",
+    "realizationMs": 1479.0999999046326,
+    "canonicalHash": "69ba3446ca031573",
+    "canonicalGenerationMs": 37064.90000009537,
+    "instanceToCellRatio": 1.6279176201372998,
+    "cubeScale": 1
+  },
+  "sourceCommit": "26811dd185de94f5251a817bf98297b5e5e7c90f",
+  "sourceHashes": {
+    "src/game/character/continuous-body.js": "798f3b7a03334e16502ba7ba6fe1977259a168a527ede844d27f00255fe28949",
+    "src/game/character/sumo-body-sculpt.js": "a62c5f5f88ca3918c5e6d4d53b4ca37b68c95fc5d7249fb07a7e77ba019ee015",
+    "src/game/character/head-profile.js": "89c3b2b2d5500ddb6e623066b87a959ba3ca5f89c8a52fbba4dc794cc439c3c4",
+    "src/game/character/hero-face.js": "d3304809833bb694964f368af7f1fbf2531a6ec16440793d1677d2b6eab8a452",
+    "src/game/character/orbital-pockets.js": "e35daea3a029441eae2a6d5ca6f0fa47027d0b386a4287b4a3790e9a655bac42",
+    "src/game/voxel/hero-voxel.js": "56d06bdcac4abc80ffe7e54c7ec9e46d89414236fe44d3dca7db3e15cdfe6060",
+    "engine/src/voxel/coherent-surface.js": "8f469158a978a45434ac6be824e41f078ba583c63454ef497b3fe1a9a726467d",
+    "engine/src/voxel/surface-frame.js": "5e0865c6dc2a8a5c821cff443510fc4aea8e04934c232ab61516d1a2edbd9b3d",
+    "engine/src/voxel/surface-instances.js": "78ad835ce0fbf5ce0db00bae078c190b3ac9a08ae3125150505997c0b4c05286",
+    "engine/src/voxel/runtime.js": "ec47acf34fdb735af76ac4811f405bbdf56ae08b54a718e4fabf45c444a0e9ea",
+    "src/game/validation/presets.js": "a380b142f12ee305ea967eaead76ae2d76e2555bf6d16c1ea569b5d4a1bf67d7",
+    "src/game/validation/harness.js": "d5105a1b091154c68657a077a76839399573bf337b384ffffc83fda03b711f3d"
+  },
+  "sourceDiffHash": "73d130de7393003dd750710d770ab3ee89617fa7c6338090b07eebc2574c78ca",
+  "filter": "=guide-front,=guide-rear,=guide-profile,=guide-three-quarter-rear,=guide-close-shoulder",
+  "complete": false,
+  "capturesCount": 5,
+  "expectedCaptures": [
+    "guide-front.png",
+    "guide-rear.png",
+    "guide-profile.png",
+    "guide-three-quarter-front.png",
+    "guide-three-quarter-rear.png",
+    "clay-front.png",
+    "clay-rear.png",
+    "clay-profile.png",
+    "clay-three-quarter-front.png",
+    "clay-three-quarter-rear.png",
+    "silhouette-front.png",
+    "silhouette-profile.png",
+    "close-head.png",
+    "close-face.png",
+    "close-shoulder.png",
+    "close-chest.png",
+    "close-calf.png",
+    "close-belly.png",
+    "close-pelvis.png",
+    "close-hand.png",
+    "close-thigh-knee.png",
+    "close-foot.png",
+    "hero-production.png",
+    "guide-close-head.png",
+    "guide-close-face.png",
+    "guide-close-shoulder.png",
+    "guide-close-chest.png",
+    "guide-close-calf.png",
+    "guide-close-belly.png",
+    "guide-close-pelvis.png",
+    "guide-close-hand.png",
+    "guide-close-thigh-knee.png",
+    "guide-close-foot.png",
+    "comparison-front-guide.png",
+    "comparison-front-voxel.png",
+    "comparison-profile-guide.png",
+    "comparison-profile-voxel.png",
+    "comparison-three-quarter-voxel.png"
+  ],
+  "captures": [
+    "guide-front.png",
+    "guide-rear.png",
+    "guide-profile.png",
+    "guide-three-quarter-rear.png",
+    "guide-close-shoulder.png"
+  ],
+  "evidence": [
+    {
+      "file": "guide-front.png",
+      "sha256": "5c9cdbd92ba6b22a6299325ab89daae3d72b4267482cd5499489be08acf6b1f4"
+    },
+    {
+      "file": "guide-rear.png",
+      "sha256": "c1e2e20238ff30ca0afcbb20856cbc0165da51e8c9d414475188c0a50cd053f5"
+    },
+    {
+      "file": "guide-profile.png",
+      "sha256": "5226802d503a55040c6ed71127d784c3797cd92fba5abd3a26857622193f4e0c"
+    },
+    {
+      "file": "guide-three-quarter-rear.png",
+      "sha256": "665f8757fa6fefd43dabfaf9620c46c88cab4bce7325559fb745a974e0c80394"
+    },
+    {
+      "file": "guide-close-shoulder.png",
+      "sha256": "b07081c303f7bf00e53322440bb51cada7f4c79fdfaa0e6ae2ac92c75a653076"
+    }
+  ]
+}

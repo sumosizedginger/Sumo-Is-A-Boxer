@@ -1,0 +1,102 @@
+{
+  "milestone": "VOXEL-HERO-003",
+  "branch": "game-build",
+  "quality": "HERO",
+  "hero": {
+    "occupied": 270688,
+    "surface": 28405,
+    "faces": 48848,
+    "voxelSize": 0.012,
+    "generationMs": 29560.899999976158,
+    "drawCalls": 1,
+    "realization": "surface",
+    "instances": 46241,
+    "realizationHash": "3ced6fcacb039f1b",
+    "realizationMs": 1109.2000000476837,
+    "canonicalHash": "69ba3446ca031573",
+    "canonicalGenerationMs": 28451.699999928474,
+    "instanceToCellRatio": 1.6279176201372998,
+    "cubeScale": 1
+  },
+  "sourceCommit": "26811dd185de94f5251a817bf98297b5e5e7c90f",
+  "sourceHashes": {
+    "src/game/character/continuous-body.js": "798f3b7a03334e16502ba7ba6fe1977259a168a527ede844d27f00255fe28949",
+    "src/game/character/sumo-body-sculpt.js": "a62c5f5f88ca3918c5e6d4d53b4ca37b68c95fc5d7249fb07a7e77ba019ee015",
+    "src/game/character/head-profile.js": "89c3b2b2d5500ddb6e623066b87a959ba3ca5f89c8a52fbba4dc794cc439c3c4",
+    "src/game/character/hero-face.js": "d3304809833bb694964f368af7f1fbf2531a6ec16440793d1677d2b6eab8a452",
+    "src/game/character/orbital-pockets.js": "e35daea3a029441eae2a6d5ca6f0fa47027d0b386a4287b4a3790e9a655bac42",
+    "src/game/voxel/hero-voxel.js": "56d06bdcac4abc80ffe7e54c7ec9e46d89414236fe44d3dca7db3e15cdfe6060",
+    "engine/src/voxel/coherent-surface.js": "8f469158a978a45434ac6be824e41f078ba583c63454ef497b3fe1a9a726467d",
+    "engine/src/voxel/surface-frame.js": "5e0865c6dc2a8a5c821cff443510fc4aea8e04934c232ab61516d1a2edbd9b3d",
+    "engine/src/voxel/surface-instances.js": "78ad835ce0fbf5ce0db00bae078c190b3ac9a08ae3125150505997c0b4c05286",
+    "engine/src/voxel/runtime.js": "ec47acf34fdb735af76ac4811f405bbdf56ae08b54a718e4fabf45c444a0e9ea",
+    "src/game/validation/presets.js": "a380b142f12ee305ea967eaead76ae2d76e2555bf6d16c1ea569b5d4a1bf67d7",
+    "src/game/validation/harness.js": "d5105a1b091154c68657a077a76839399573bf337b384ffffc83fda03b711f3d"
+  },
+  "sourceDiffHash": "73d130de7393003dd750710d770ab3ee89617fa7c6338090b07eebc2574c78ca",
+  "filter": "bind",
+  "complete": false,
+  "capturesCount": 3,
+  "expectedCaptures": [
+    "guide-front.png",
+    "guide-rear.png",
+    "guide-profile.png",
+    "guide-three-quarter-front.png",
+    "guide-three-quarter-rear.png",
+    "clay-front.png",
+    "clay-rear.png",
+    "clay-profile.png",
+    "clay-three-quarter-front.png",
+    "clay-three-quarter-rear.png",
+    "silhouette-front.png",
+    "silhouette-profile.png",
+    "close-head.png",
+    "close-face.png",
+    "close-shoulder.png",
+    "close-chest.png",
+    "close-calf.png",
+    "close-belly.png",
+    "close-pelvis.png",
+    "close-hand.png",
+    "close-thigh-knee.png",
+    "close-foot.png",
+    "hero-production.png",
+    "guide-close-head.png",
+    "guide-close-face.png",
+    "guide-close-shoulder.png",
+    "guide-close-chest.png",
+    "guide-close-calf.png",
+    "guide-close-belly.png",
+    "guide-close-pelvis.png",
+    "guide-close-hand.png",
+    "guide-close-thigh-knee.png",
+    "guide-close-foot.png",
+    "bind-front.png",
+    "bind-rear.png",
+    "bind-profile.png",
+    "comparison-front-guide.png",
+    "comparison-front-voxel.png",
+    "comparison-profile-guide.png",
+    "comparison-profile-voxel.png",
+    "comparison-three-quarter-voxel.png"
+  ],
+  "captures": [
+    "bind-front.png",
+    "bind-rear.png",
+    "bind-profile.png"
+  ],
+  "evidence": [
+    {
+      "file": "bind-front.png",
+      "sha256": "363b8caae521bd97a95fdaf8e4fca11a6124c9bdf43de4f612900e4532053a55"
+    },
+    {
+      "file": "bind-rear.png",
+      "sha256": "9268f395c8ce9c7346b635e9ab4818eda31134dd147b15885fffdae302c37393"
+    },
+    {
+      "file": "bind-profile.png",
+      "sha256": "f9e2fd74bfb6225721e67a75722036dd76101510fda9aa8a1d1b8c82035d6fc7"
+    }
+  ]
+}

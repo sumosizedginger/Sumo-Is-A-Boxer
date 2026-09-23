@@ -206,6 +206,7 @@ try {
     ["close-head", "close_head"],
     ["close-face", "close_face"],
     ["close-shoulder", "close_shoulder"],
+    ["close-axilla-rear", "close_axilla_rear"],
     ["close-chest", "close_chest"],
     ["close-calf", "close_calf"],
     ["close-belly", "close_belly"],
@@ -273,7 +274,7 @@ try {
     hero: metrics,
     sourceCommit: execFileSync("git", ["rev-parse", "HEAD"], {encoding:"utf8"}).trim(),
     sourceHashes: Object.fromEntries([
-      'src/game/character/continuous-body.js','src/game/character/sumo-body-sculpt.js',
+      'src/game/character/hero-rig.js','src/game/character/hero-guide-body.js','src/game/character/opponent-sumo.js','src/game/character/continuous-body.js','src/game/character/sumo-body-sculpt.js',
       'src/game/character/head-profile.js','src/game/character/hero-face.js','src/game/character/orbital-pockets.js',
       'src/game/voxel/hero-voxel.js','engine/src/voxel/coherent-surface.js','engine/src/voxel/surface-frame.js',
       'engine/src/voxel/surface-instances.js','engine/src/voxel/runtime.js',

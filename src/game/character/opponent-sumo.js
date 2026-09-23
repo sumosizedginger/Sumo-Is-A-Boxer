@@ -11,8 +11,6 @@ import { Group, Object3D, Quaternion, Vector3, Matrix4 } from 'three';
 import {
   createCharacterDefinition,
   buildHumanoidCharacter,
-  computeSemanticLandmarks,
-  resolveHumanoidParameters,
   createMotionDefinition,
   createLocomotionEvaluator,
   solveTwoBoneIK,
@@ -85,7 +83,8 @@ function buildPoseTargets(landmarks) {
       pelvisYaw: 0, chestYaw: 0, headPitch: .02, lean: .025
     },
     sumo_neutral: {
-      left: [0.33, 0.86, 0.03], right: [-0.33, 0.86, 0.03],
+      left: [landmarks['wrist.L'].x, landmarks['wrist.L'].y, landmarks['wrist.L'].z+.01],
+      right: [landmarks['wrist.R'].x, landmarks['wrist.R'].y, landmarks['wrist.R'].z+.01],
       pelvisYaw: 0, chestYaw: 0, headPitch: 0, lean: 0
     },
     extended: {
@@ -185,10 +184,8 @@ export function createOpponentSumo({ library, voxelQuality = 'HERO', voxelRealiz
   const anatomy = rebuildSumoGuideBody(character, skinDefinition);
   const eyeRig=createBoxerEyes(character);character.eyeRig=eyeRig;
 
-  // Landmarks recomputed from parameters alone, proving the semantic layer is
-  // usable without the built character, and used for every rest direction.
-  const { parameters } = resolveHumanoidParameters(SUMO_PARAMETERS);
-  const landmarks = computeSemanticLandmarks(parameters);
+  // Pose targets and segment lengths use the same authored rig as the guide.
+  const {parameters,landmarks}=character;
   const poses = buildPoseTargets(landmarks);
 
   const group = new Group();
@@ -277,7 +274,7 @@ export function createOpponentSumo({ library, voxelQuality = 'HERO', voxelRealiz
    * @param {string} side - 'l' or 'r'
    * @param {Vector3} wristTarget - Character-space wrist position.
    */
-  function solveArm(side, wristTarget, poleOverride = null) {
+  function solveArm(side, wristTarget, poleOverride = null, followRestShoulder = false) {
     const upperName = `upperarm_${side}`;
     const lowerName = `forearm_${side}`;
     const upper = character.bonesByName[upperName];
@@ -291,13 +288,17 @@ export function createOpponentSumo({ library, voxelQuality = 'HERO', voxelRealiz
     upper.updateWorldMatrix(true, false);
     _shoulderWorld.setFromMatrixPosition(upper.matrixWorld).applyMatrix4(_bodyInverseMatrix);
 
+    const restShoulder=landmarks['shoulder.'+(side==='l'?'L':'R')];
+    const targetPos=followRestShoulder
+      ? {x:wristTarget.x+_shoulderWorld.x-restShoulder.x,y:wristTarget.y+_shoulderWorld.y-restShoulder.y,z:wristTarget.z+_shoulderWorld.z-restShoulder.z}
+      : {x:wristTarget.x,y:wristTarget.y,z:wristTarget.z};
     const defaultPole = wristTarget.y < 0.95
       ? { x: side === 'l' ? 0.20 : -0.20, y: -0.15, z: -0.70 }
       : { x: side === 'l' ? 0.58 : -0.58, y: -1, z: -0.3 };
 
     const solved = solveTwoBoneIK({
       rootPos: { x: _shoulderWorld.x, y: _shoulderWorld.y, z: _shoulderWorld.z },
-      targetPos: { x: wristTarget.x, y: wristTarget.y, z: wristTarget.z },
+      targetPos,
       upperLength: upperArmLength,
       lowerLength: forearmLength,
       // The elbow rides low and slightly outboard, which is what makes a guard
@@ -528,8 +529,8 @@ export function createOpponentSumo({ library, voxelQuality = 'HERO', voxelRealiz
         solveArm('l', _sagL, armPoleL);
         solveArm('r', _sagR, armPoleR);
       } else {
-        solveArm('l', current.left, armPoleL);
-        solveArm('r', current.right, armPoleR);
+        solveArm('l', current.left, armPoleL, isSumoNeutral);
+        solveArm('r', current.right, armPoleR, isSumoNeutral);
       }
       for(const side of ['l','r']){
         const extension=side===attackSide?drive:0;

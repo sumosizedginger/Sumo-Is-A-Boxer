@@ -4,33 +4,33 @@ STATUS: PARTIAL. Visual acceptance fails.
 TASK: VOXEL-HERO-003 anatomical authority and coherent surface lattice.
 ROLE: BUILDER. Test and capture results below are builder evidence, not independent acceptance.
 REVISION / SHA: The game-build commit containing this handoff; the delivery message supplies its full SHA.
-PARENT / BASE REVISION: b424b6775746fd7681bb90b2977aa324b74c2876.
+PARENT / BASE REVISION: 26811dd185de94f5251a817bf98297b5e5e7c90f.
 BRANCH: game-build.
 WORKTREE STATE: Intended changes committed; pre-existing untracked artifact directories and index.tmp preserved outside the commit.
 
-CHANGES: See [current state](CURRENT_STATE.md) for retained guide, hand, foot, face, engine and validation changes. Failed shoulder projection, enlarged eyes, diagonal frames and column stagger were removed.
-FILES: [Exact inventory](../artifacts/voxel-hero-003-precision/validation/changed-files.txt).
+CHANGES: This checkpoint adds shared hero arm rig fitting, a lower/narrower shoulder opening, oblique asymmetric proximal arm sections, monotone inferior bridge and focused regression tests. Hand/foot and facial geometry have no new retained edits in this checkpoint. No new engine realization algorithm was adopted; surface remains default and coherentSurface remains experimental. See [current state](CURRENT_STATE.md) for retained guide, hand, foot, face, engine and validation changes. Failed shoulder projection, enlarged eyes, diagonal frames and column stagger were removed.
+FILES: [Exact inventory](../artifacts/voxel-hero-003-precision/validation-shoulder/changed-files.txt).
 
 TESTS / CHECKS:
 
-- npm test: 108/108 pass.
+- npm test: 112/112 pass.
 - npm --prefix engine test: 613/613 pass.
 - npm run build: pass, existing large-bundle advisory.
 - node --check on changed/new scripts: pass.
 - git diff --cached --check: pass after EOF cleanup.
 - node scripts/validate-continuous-body.mjs: pass, 30 captures, valid live mesh, zero browser errors.
-- node scripts/validate-hero-face.mjs precision-full: pass, 21 captures, zero browser errors.
+- node scripts/validate-hero-face.mjs shoulder-full: pass, 21 captures, zero browser errors.
 - VOXEL_QUALITY=HERO REALIZATION=surface node scripts/validate-voxel.mjs: pass.
 - VOXEL_QUALITY=HERO REALIZATION=coherentSurface node scripts/validate-voxel.mjs: pass.
 - Canonical capture, reference triptych, contact-sheet and silhouette scripts: pass.
 
-RUNTIME / BROWSER EVIDENCE: Headless Chrome, local Vite, validation harness cameras. [Reports and retained captures](../artifacts/voxel-hero-003-precision/validation/).
+RUNTIME / BROWSER EVIDENCE: Headless Chrome, local Vite, validation harness cameras. [Reports and retained captures](../artifacts/voxel-hero-003-precision/validation-shoulder/).
 VISUAL EVIDENCE: [Canonical previews](../artifacts/voxel-hero-003/README.md) and [same-camera experiments](../artifacts/voxel-hero-003-precision/README.md). All final captures inspected.
-PERFORMANCE EVIDENCE: Windows local machine, Node 24.21.0, one sequential run per mode. Surface compilation 28.303 s = 27.120 s canonical + 1.183 s realization. Coherent 28.999 s = 27.618 s canonical + 1.381 s realization. Single samples do not establish variance.
+PERFORMANCE EVIDENCE: Windows local machine, Node 24.21.0, one sequential run per mode. Surface compilation 39.246 s = 37.766 s canonical + 1.479 s realization. Coherent 38.492 s = 36.570 s canonical + 1.922 s realization. Single samples do not establish variance.
 DIAGNOSTICS: Initial body navigation timed out at 30 seconds; the harness now allows 120 seconds and the rerun passes. LF/CRLF notices are informational.
 
-WHAT WORKS: Deterministic canonical authority, bounded one-cell/one-cube experimental realization, finite orthonormal frames, normalized inherited weights, isotropic cubes through deformation, legacy modes, one draw call, manifold guide, rounded thumb and continuous cranial join.
-WHAT DOES NOT: Reference anatomy, credible shoulder/axilla, strong posterior separation, knee/ankle transitions, facial identity, acceptable stress-pose folds, and a gap-free coherent cubic shell.
+WHAT WORKS: Deterministic canonical authority, bounded one-cell/one-cube experimental realization, finite orthonormal frames, normalized inherited weights, isotropic cubes through deformation, legacy modes, one draw call, manifold guide, fitted arm pivots, neutral wrist targets, monotone lower axilla bridge and local arm/torso clearance.
+WHAT DOES NOT: Reference anatomy, credible shoulder/axilla, strong posterior separation, punched knees, flattened guide feet, facial identity, acceptable stress-pose deformation, and a gap-free coherent cubic shell.
 ARCHITECTURAL FINDINGS: Keeping canonical neighborhoods alone does not eliminate terrace bands. Free surface placement softens terraces but retains stippling. Numeric manifold certification does not detect visually unacceptable folds.
 VALIDATION FINDINGS: BLOCKING for visual acceptance. Tests pass, required visual gates do not.
 UNRESOLVED: Guide anatomy and surface coherence BLOCK NEXT STEP into downstream milestones.

@@ -1,0 +1,16 @@
+[
+  {
+    "dir": "artifacts/voxel-hero-003",
+    "complete": true,
+    "sources": 15,
+    "captures": 40,
+    "bad": []
+  },
+  {
+    "dir": "artifacts/voxel-hero-003-precision/retained-coherentSurface",
+    "complete": false,
+    "sources": 15,
+    "captures": 9,
+    "bad": []
+  }
+]

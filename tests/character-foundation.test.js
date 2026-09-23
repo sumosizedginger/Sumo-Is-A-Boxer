@@ -59,3 +59,19 @@ test('actual posed skin remains one finite closed surface throughout the stress 
     assert.ok(longest<.18,name+' exploded edge '+longest);results.push({name,longestEdge:longest});
   }}finally{fists.dispose();match.dispose();opponent.reset();}t.diagnostic(JSON.stringify(results));
 });
+
+test('neutral inspection wrists follow the fitted shoulder without pulling into the torso',()=>{
+ const match=createMatch();opponent.reset();
+ try{
+  Object.assign(match.opponent,{state:'idle',stateT:0,stateDuration:1,yaw:0,speed:0});
+  for(let i=0;i<60;i++)opponent.update({state:match.opponent,position:{x:0,z:0},dt:1/60,speed:0,inspection:{pose:'sumo_neutral',stanceWidth:.24,stagger:false}});
+  opponent.group.updateMatrixWorld(true);
+  for(const [side,key] of [['l','L'],['r','R']]){
+   const shoulder=character.mesh.worldToLocal(character.bonesByName['upperarm_'+side].getWorldPosition(new Vector3()));
+   const wrist=character.mesh.worldToLocal(character.bonesByName['hand_'+side].getWorldPosition(new Vector3()));
+   const a=character.landmarks['shoulder.'+key],b=character.landmarks['wrist.'+key];
+   const expected=new Vector3(b.x-a.x,b.y-a.y,b.z-a.z+.01);
+   assert.ok(wrist.sub(shoulder).distanceTo(expected)<.003,'neutral wrist does not follow the fitted rest offset');
+  }
+ }finally{match.dispose();opponent.reset();}
+});

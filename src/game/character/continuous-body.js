@@ -2,7 +2,10 @@
 import {createTopologySurface,extractBoundaryLoops,weldTopologyVertices,stitchTopologySurfaces,validateTopology,HERO_BODY_TOPOLOGY_POLICY} from '@sumosizedginger/my-game-engine-1.0/full';
 import {anatomicalTorsoPoint} from './sumo-body-sculpt.js';
 import {skullAt} from '../assets/skull-sections.js';
+import {HERO_ARM_CENTERLINE} from './hero-rig.js';
 
+export const SHOULDER_OPENING_BOTTOM=1.24;
+export const SHOULDER_OPENING_TOP=1.49;
 export const BODY_REGIONS=Object.freeze(Object.fromEntries(['head','neck','chest','back','abdomen','pelvis','shoulder_l','shoulder_r','upperarm_l','upperarm_r','elbow_l','elbow_r','forearm_l','forearm_r','hip_l','hip_r','thigh_l','thigh_r','knee_l','knee_r','calf_l','calf_r'].map((n,i)=>[n,i+1])));
 const clamp=t=>Math.max(0,Math.min(1,t));
 const smooth=t=>{t=clamp(t);return t*t*(3-2*t);};
@@ -18,6 +21,19 @@ function raw(position,indices){return createTopologySurface({attributes:{positio
 function joinFaces(indices,a,b){for(let i=0;i<a.length;i++){const j=(i+1)%a.length;indices.push(a[j],a[i],b[i],a[j],b[i],b[j]);}}
 function cap(indices,loop,center){for(let i=0;i<loop.length;i++)indices.push(loop[(i+1)%loop.length],loop[i],center);}
 
+// The inferior axilla must reach the humerus without an S-shaped reversal.
+// Blend its monotone loft into the outward deltoid tangent above the fold.
+export function shoulderBridgePoint(start,end,sign,t){
+ const u=1-t,cap=smooth((start[1]-1.32)/.10);
+ return start.map((value,axis)=>{
+  const linearA=value+(end[axis]-value)/3,linearB=value+2*(end[axis]-value)/3;
+  const curvedA=value+(axis===0?sign*.060:axis===1?(start[1]-1.425)*.45:start[2]*.16);
+  const curvedB=end[axis]+(axis===1?.065:0);
+  const a=linearA+(curvedA-linearA)*cap,b=linearB+(curvedB-linearB)*cap;
+  return u*u*u*value+3*u*u*t*a+3*u*t*t*b+t*t*t*end[axis];
+ });
+}
+
 export function generateContinuousBody(landmarks,{widthScale=1,leftArmScale=1}={}){
   if(![widthScale,leftArmScale].every(v=>Number.isFinite(v)&&v>=.8&&v<=1.2))throw new Error('Body shape scale must be finite and between .8 and 1.2');
   const N=64,position=[],indices=[],rings=[],ys=[];
@@ -29,7 +45,7 @@ export function generateContinuousBody(landmarks,{widthScale=1,leftArmScale=1}={
   for(const y of ys)rings.push(Array.from({length:N},(_,i)=>vertex(axial(y,i/N*Math.PI*2))));
   for(let j=0;j<rings.length-1;j++)for(let i=0;i<N;i++){
     // Two actual rectangular openings in the lateral upper thorax.
-    if(ys[j]>=1.31&&ys[j]<1.54&&((i>=56||i<8)||(i>=24&&i<40)))continue;
+    if(ys[j]>=SHOULDER_OPENING_BOTTOM&&ys[j]<SHOULDER_OPENING_TOP&&((i>=58||i<6)||(i>=26&&i<38)))continue;
     const k=(i+1)%N,a=rings[j][i],b=rings[j][k],c=rings[j+1][i],d=rings[j+1][k];indices.push(a,c,d,a,d,b);
   }
   const top=rings.at(-1),crown=vertex([0,1.86,-.013]);
@@ -63,7 +79,7 @@ export function generateContinuousBody(landmarks,{widthScale=1,leftArmScale=1}={
     const push=p=>{const id=out.length/3;out.push(...p);return id;};
     let angles,shapeRows,begin,end;
     if(kind==='arm'){
-      angles=base.map(p=>Math.atan2(p[2]/.190,(p[1]-1.425)/.115));
+      angles=base.map(p=>Math.atan2(p[2]/.150,(p[1]-(SHOULDER_OPENING_BOTTOM+SHOULDER_OPENING_TOP)/2)/((SHOULDER_OPENING_TOP-SHOULDER_OPENING_BOTTOM)/2)));
       const e=landmarks['elbow.'+key].y,w=landmarks['wrist.'+key].y;
       shapeRows=[
         [w-.165, .052, .040],
@@ -76,11 +92,11 @@ export function generateContinuousBody(landmarks,{widthScale=1,leftArmScale=1}={
         [e-.04,  .092, .086],
         [e,      .086, .080],
         [e+.04,  .096, .090],
-        [e+.12,  .120, .114],
-        [1.35,   .117, .126],
-        [1.385,  .118, .137]
+        [e+.12,  .120, .145],
+        [1.35,   .117, .170],
+        [1.385,  .118, .180]
       ];
-      begin=1.30;end=w-.165;
+      begin=1.33;end=w-.165;
     }else{
       angles=base.map(p=>Math.atan2(p[2]-legCenterZ,p[0]-sign*legCenterX));
       const k=landmarks['knee.'+key].y,a=landmarks['ankle.'+key].y;
@@ -109,12 +125,14 @@ export function generateContinuousBody(landmarks,{widthScale=1,leftArmScale=1}={
         let x, z;
         if(kind==='arm'){
           const e=landmarks['elbow.'+key].y,wr=landmarks['wrist.'+key].y;
-          const elbowX=sign*.465,wristX=sign*.450,shoulderX=sign*.445;
+          const elbowX=sign*HERO_ARM_CENTERLINE.elbowX,wristX=sign*HERO_ARM_CENTERLINE.wristX,shoulderX=sign*HERO_ARM_CENTERLINE.shoulderX;
           x=y>=e?elbowX+(shoulderX-elbowX)*clamp((y-e)/(1.385-e)):elbowX+(wristX-elbowX)*clamp((e-y)/(e-wr));
           if(y<wr){
-            x=wristX+(sign*.438-wristX)*clamp((wr-y)/.165);
+            x=wristX+(sign*HERO_ARM_CENTERLINE.handX-wristX)*clamp((wr-y)/.165);
           }
-          let dx=sign*ct*w, dz=st*d-.008;
+          let dx=sign*ct*w, dz=st*d-.008-.030*smooth((y-e)/.20);
+          // The humerus sits medial to the deltoid's outer mass.
+          dx*=1-smooth((y-e)/.14)*(.175-.125*ct);
           if(y<wr){
             const ht=clamp((wr-y)/.165),palm=Math.sin(Math.PI*Math.min(1,ht/.90));
             dx=sign*Math.sign(ct)*Math.pow(Math.abs(ct),.62)*w;
@@ -123,7 +141,9 @@ export function generateContinuousBody(landmarks,{widthScale=1,leftArmScale=1}={
             dx-=sign*.012*thumb;dz+=.009*thumb;
             dz-=.012*palm*Math.max(0,-st);
           }
-          return [x+dx,y,dz];
+          // Oblique humeral section: deltoid summit above the medial axilla.
+          const shoulderRise=.080*smooth((y-e)/.26);
+          return [x+dx,y+ct*shoulderRise,dz];
         } else {
           const k=landmarks['knee.'+key].y,a=landmarks['ankle.'+key].y;
           let lx=sign*legCenterX, lz=legCenterZ;
@@ -168,16 +188,10 @@ export function generateContinuousBody(landmarks,{widthScale=1,leftArmScale=1}={
     const target=ringAt(begin);
     const transition=kind==='arm'?8:1;
     for(let j=1;j<=transition;j++){
-      const t=j/transition,u=1-t;
-      rows.push(base.map((p,i)=>push(p.map((v,k)=>{
-        if(kind!=='arm')return v+(target[i][k]-v)*t;
-        // Match the thoracic opening with an outward tangent, then enter
-        // the upper arm along its longitudinal axis. Linear lofting leaves
-        // a hard turn at both boundaries even after positional relaxation.
-        const controlA=v+(k===0?sign*.060:k===1?(p[1]-1.425)*.45:p[2]*.16);
-        const controlB=target[i][k]+(k===1?.065:0);
-        return u*u*u*v+3*u*u*t*controlA+3*u*t*t*controlB+t*t*t*target[i][k];
-      }))));
+      const t=j/transition;
+      rows.push(base.map((p,i)=>push(kind==='arm'
+        ?shoulderBridgePoint(p,target[i],sign,t)
+        :p.map((v,k)=>v+(target[i][k]-v)*t))));
     }
     const steps=kind==='arm'?72:96;
     for(let j=1;j<=steps;j++)rows.push(ringAt(begin+(end-begin)*j/steps).map(push));
@@ -300,7 +314,7 @@ export function skinContinuousBody(surface,character){
     // pectorals and posterior lats retain thoracic authority.
     if(domain==='axial'){
       const attachment=smooth((ax-.23)/.13)*(1-smooth(Math.abs(z)/.20))
-        *smooth((y-1.30)/.12)*(1-smooth((y-1.50)/.10));
+        *smooth((y-(SHOULDER_OPENING_BOTTOM-.01))/.12)*(1-smooth((y-1.50)/.10));
       if(attachment>0){
         w=w.map(([bone,weight])=>[bone,weight*(1-attachment)]);
         w.push(['upperarm_'+side,attachment*.70],['shoulder_'+side,attachment*.30]);
@@ -321,7 +335,7 @@ export function skinContinuousBody(surface,character){
   for(let pass=0;pass<24;pass++){
     const next=new Float32Array(field);
     for(let i=0;i<n;i++){
-      const y=p[i*3+1];if(!((y>1.24&&y<1.62)||(y>.81&&y<1.07)))continue;
+      const y=p[i*3+1];if(!((y>SHOULDER_OPENING_BOTTOM-.07&&y<1.62)||(y>.81&&y<1.07)))continue;
       for(let b=0;b<B;b++){
         const name=character.bones[b].name,wrong=(vertexSides[i]==='l'&&name.endsWith('_r'))||(vertexSides[i]==='r'&&name.endsWith('_l'));
         if(wrong){next[i*B+b]=0;continue;}

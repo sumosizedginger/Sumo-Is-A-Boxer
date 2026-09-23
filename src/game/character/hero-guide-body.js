@@ -1,3 +1,4 @@
+import {fitHeroArmRig} from './hero-rig.js';
 import {sculptBoxerHead,FACE_REGIONS,facialRegionAt} from './hero-face.js';
 import {sculptSumoBody} from './sumo-body-sculpt.js';
 // Runtime assembly of the certified canonical skin. Equipment stays separate.
@@ -6,6 +7,7 @@ import {generateContinuousBody,skinContinuousBody,BODY_REGIONS} from './continuo
 import {createAnatomicalCorrections} from './corrective-deformation.js';
 
 export function rebuildSumoGuideBody(character,skinDefinition){
+  fitHeroArmRig(character);
   const generated=generateContinuousBody(character.landmarks);
   const sculptedBody=sculptSumoBody(generated.surface,character.landmarks);
   const face=sculptBoxerHead(sculptedBody);
