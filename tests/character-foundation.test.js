@@ -75,3 +75,40 @@ test('neutral inspection wrists follow the fitted shoulder without pulling into 
   }
  }finally{match.dispose();opponent.reset();}
 });
+
+test('ankle skin weights remain continuous across the stitched foot boundary',()=>{
+ const domains=character.bodyTemplate.domains,idx=g.index.array,weights=g.attributes.skinWeight,indices=g.attributes.skinIndex;
+ let checked=0;
+ for(let j=0;j<idx.length;j+=3)for(let k=0;k<3;k++){
+  const a=idx[j+k],b=idx[j+(k+1)%3];
+  if(!domains[a].startsWith('leg_')||!domains[b].startsWith('foot_'))continue;
+  const difference=new Map();
+  for(let n=0;n<4;n++){
+   const ai=indices.array[a*4+n],bi=indices.array[b*4+n];
+   difference.set(ai,(difference.get(ai)??0)+weights.array[a*4+n]);
+   difference.set(bi,(difference.get(bi)??0)-weights.array[b*4+n]);
+  }
+  assert.ok([...difference.values()].reduce((sum,w)=>sum+Math.abs(w),0)<.6,'stitched ankle edge switches abruptly between shin and foot');checked++;
+ }
+ assert.ok(checked>20);
+});
+
+test('neutral skinned heel and forefoot reach the contact plane without penetrating it',()=>{
+ const match=createMatch();opponent.reset();
+ try{
+  Object.assign(match.opponent,{state:'idle',stateT:0,stateDuration:1,yaw:Math.PI,speed:0});
+  for(let i=0;i<60;i++)opponent.update({state:match.opponent,position:{x:0,z:0},dt:1/60,speed:0,inspection:{pose:'sumo_neutral',stanceWidth:.24,stagger:false}});
+  // updateMatrixWorld also refreshes SkinnedMesh.bindMatrixInverse.
+  opponent.group.updateMatrixWorld(true);character.skeleton.update();
+  for(const side of ['l','r'])for(const [lo,hi] of [[-.08,.04],[.12,.20]]){
+   let minY=Infinity,count=0;
+   for(let i=0;i<g.attributes.position.count;i++){
+    if(character.bodyTemplate.domains[i]!=='foot_'+side)continue;
+    const z=g.attributes.position.getZ(i);if(z<lo||z>hi)continue;
+    const v=character.mesh.getVertexPosition(i,new Vector3()).applyMatrix4(character.mesh.matrixWorld);
+    minY=Math.min(minY,v.y);count++;
+   }
+   assert.ok(count>20);assert.ok(minY>=-.001&&minY<=.006,'visible sole misses the contact plane: '+minY);
+  }
+ }finally{match.dispose();opponent.reset();}
+});

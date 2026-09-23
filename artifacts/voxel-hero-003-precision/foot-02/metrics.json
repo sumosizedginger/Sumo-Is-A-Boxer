@@ -1,0 +1,25 @@
+{
+  "metrics": {
+    "occupied": 268281,
+    "surface": 28379,
+    "faces": 48026,
+    "voxelSize": 0.012,
+    "generationMs": 39078.09999990463,
+    "drawCalls": 1,
+    "realization": "surface",
+    "instances": 45512,
+    "realizationHash": "c20e0c8dc3cecf0a",
+    "realizationMs": 1633.3999998569489,
+    "canonicalHash": "b02751e483ef82ab",
+    "canonicalGenerationMs": 37444.700000047684,
+    "instanceToCellRatio": 1.60372106134818,
+    "cubeScale": 1
+  },
+  "errors": [],
+  "capturesCount": 3,
+  "captures": [
+    "artifacts\\voxel-hero-003-precision\\foot-02\\guide-close-foot.png",
+    "artifacts\\voxel-hero-003-precision\\foot-02\\guide-close-foot-profile.png",
+    "artifacts\\voxel-hero-003-precision\\foot-02\\guide-close-heel.png"
+  ]
+}

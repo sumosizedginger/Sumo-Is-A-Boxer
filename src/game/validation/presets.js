@@ -64,6 +64,8 @@ export const PRESETS = {
   close_thigh_knee: preset([-0.24, 0.45, 0.65], [-0.24, 0.45, -0.05], 32, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'VOXEL_CLAY' }),
   close_hand: preset([-0.80, 0.78, 0.85], [-0.44, 0.73, 0.00], 34, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'VOXEL_CLAY' }),
   close_foot: preset([-0.60, 0.28, 0.62], [-0.24, 0.07, 0.075], 28, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'VOXEL_CLAY' }),
+  close_foot_profile: preset([-.90, .09, .10], [-.24, .07, .09], 30, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'VOXEL_CLAY' }),
+  close_heel: preset([-.57, .15, -.65], [-.24, .09, -.035], 30, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'VOXEL_CLAY' }),
   hero_production: preset([0.4, 1.15, 2.8], [0, 1.05, 0], 46, 'skin', false, { pose: 'sumo_neutral', presentationMode: 'VOXEL_COLOR' }),
 
   skin_close: preset([.5, 1.6, 1.05], [0, 1.48, 0], 42, 'skin'),

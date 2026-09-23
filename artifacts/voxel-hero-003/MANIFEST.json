@@ -3,27 +3,27 @@
   "branch": "game-build",
   "quality": "HERO",
   "hero": {
-    "occupied": 266922,
-    "surface": 28349,
-    "faces": 47884,
+    "occupied": 269401,
+    "surface": 28620,
+    "faces": 48362,
     "voxelSize": 0.012,
-    "generationMs": 43773.5,
+    "generationMs": 36788,
     "drawCalls": 1,
     "realization": "surface",
-    "instances": 45387,
-    "realizationHash": "60375de139bcd94a",
-    "realizationMs": 1840.1999999284744,
-    "canonicalHash": "856c70ae8364a9ba",
-    "canonicalGenerationMs": 41933.300000071526,
-    "instanceToCellRatio": 1.6010088539278282,
+    "instances": 45796,
+    "realizationHash": "efd30fd17c5022ed",
+    "realizationMs": 1446.5,
+    "canonicalHash": "aac035fe836f7641",
+    "canonicalGenerationMs": 35341.5,
+    "instanceToCellRatio": 1.6001397624039133,
     "cubeScale": 1
   },
-  "sourceCommit": "26811dd185de94f5251a817bf98297b5e5e7c90f",
+  "sourceCommit": "c48c2c375c15d1a4a924ef84620f43b4cc5554df",
   "sourceHashes": {
     "src/game/character/hero-rig.js": "6f3e73c92bafa67a5e7c00f2fe7794f5c9aa3e6ffd6b484175318c559cb3a259",
     "src/game/character/hero-guide-body.js": "dc1296f298d2cd1c981252059dd4d7ad6f99356eacef169716b0616a0e5682bb",
     "src/game/character/opponent-sumo.js": "dd75d19816ff15a3d2346a1f9351ef92a0df803c95b084c5204ee9b03ee0dcd8",
-    "src/game/character/continuous-body.js": "f542670e75502275b56086b7a35e3f94e9bc266d5d368b78505fa73589c42bc5",
+    "src/game/character/continuous-body.js": "0d681f412efde3ce7a21b38b9641b718e4d8d0470d74cbc57834077a7ef1813f",
     "src/game/character/sumo-body-sculpt.js": "a62c5f5f88ca3918c5e6d4d53b4ca37b68c95fc5d7249fb07a7e77ba019ee015",
     "src/game/character/head-profile.js": "89c3b2b2d5500ddb6e623066b87a959ba3ca5f89c8a52fbba4dc794cc439c3c4",
     "src/game/character/hero-face.js": "d3304809833bb694964f368af7f1fbf2531a6ec16440793d1677d2b6eab8a452",
@@ -33,13 +33,13 @@
     "engine/src/voxel/surface-frame.js": "5e0865c6dc2a8a5c821cff443510fc4aea8e04934c232ab61516d1a2edbd9b3d",
     "engine/src/voxel/surface-instances.js": "78ad835ce0fbf5ce0db00bae078c190b3ac9a08ae3125150505997c0b4c05286",
     "engine/src/voxel/runtime.js": "ec47acf34fdb735af76ac4811f405bbdf56ae08b54a718e4fabf45c444a0e9ea",
-    "src/game/validation/presets.js": "31a3128138e02ef1f01980a0c6175b3fe6923ccf4e211a9508e7dc130f6b24a1",
+    "src/game/validation/presets.js": "646b988ea66390adcf388388a37e0f7ede9e54633addbc60388183d504f831a7",
     "src/game/validation/harness.js": "d5105a1b091154c68657a077a76839399573bf337b384ffffc83fda03b711f3d"
   },
-  "sourceDiffHash": "72585bd0e69dfa034c71a3f522ce10660016ae3a8ca037fa97139337da8aeec4",
+  "sourceDiffHash": "83d0d4579932d29eb2302d94734b75123335cf9879e39d07b91bdfcfcf867d38",
   "filter": null,
   "complete": true,
-  "capturesCount": 40,
+  "capturesCount": 44,
   "expectedCaptures": [
     "guide-front.png",
     "guide-rear.png",
@@ -64,6 +64,8 @@
     "close-hand.png",
     "close-thigh-knee.png",
     "close-foot.png",
+    "close-foot-profile.png",
+    "close-heel.png",
     "hero-production.png",
     "guide-close-head.png",
     "guide-close-face.png",
@@ -76,6 +78,8 @@
     "guide-close-hand.png",
     "guide-close-thigh-knee.png",
     "guide-close-foot.png",
+    "guide-close-foot-profile.png",
+    "guide-close-heel.png",
     "comparison-front-guide.png",
     "comparison-front-voxel.png",
     "comparison-profile-guide.png",
@@ -106,6 +110,8 @@
     "close-hand.png",
     "close-thigh-knee.png",
     "close-foot.png",
+    "close-foot-profile.png",
+    "close-heel.png",
     "hero-production.png",
     "guide-close-head.png",
     "guide-close-face.png",
@@ -118,6 +124,8 @@
     "guide-close-hand.png",
     "guide-close-thigh-knee.png",
     "guide-close-foot.png",
+    "guide-close-foot-profile.png",
+    "guide-close-heel.png",
     "comparison-front-guide.png",
     "comparison-front-voxel.png",
     "comparison-profile-guide.png",
@@ -127,103 +135,111 @@
   "evidence": [
     {
       "file": "guide-front.png",
-      "sha256": "23ddde16d0a26265d13f461f2d3a57a293ce078820b7e49c6fda3c75328ee7a4"
+      "sha256": "31c8be14f287033766ccb35d9a28f8dc484cd3d513c99669e6a7d10b385163e7"
     },
     {
       "file": "guide-rear.png",
-      "sha256": "e52929313b24cde5228c8736fe3579ee7d4474252f649e6684fa4596e5cc3324"
+      "sha256": "60d34910b559cc76223007d45dacb3d274035b65235c6244e0dada26be753281"
     },
     {
       "file": "guide-profile.png",
-      "sha256": "ec5b3b87a5716c671ef2c7139ad6affb0b41b8561e30ecba486cf602bf6a203e"
+      "sha256": "1c221bca8eafb8e0f9c5c8cdabd226e37ba72ed9427cae8b086f1bd21d8bad3e"
     },
     {
       "file": "guide-three-quarter-front.png",
-      "sha256": "61e1ea5039087aa7dbaeffec3aa32c87349f36ec16dac9d51d58d648ea5e3793"
+      "sha256": "422b512cb2d7f5c2eabbdea99aa217fa642a19c76bc2eef51af7383e7480de06"
     },
     {
       "file": "guide-three-quarter-rear.png",
-      "sha256": "74c71771a9de91fda68e13a0a1f3095e0d96cc68be793148443463cc7f9b476d"
+      "sha256": "283af8ecc63a7fc7198c0d42c3e205fa9c8fe6172623494cd22a23216e121571"
     },
     {
       "file": "clay-front.png",
-      "sha256": "1f4b7146d35f700a9d3be956a78579e35ca4276092135db164c2f8884ead45ab"
+      "sha256": "5c341828cf03090b163f0b123bfb2d41eb8e658a16f370e202d486a441011b6d"
     },
     {
       "file": "clay-rear.png",
-      "sha256": "35bed1bb878068362ea6597d9d7753657bc3dcff3c7ede3af8fdcbef39a7775c"
+      "sha256": "ff8437809a548a2d91b1bec82bbba98f20ac6af11f6cc8d8c22463e879d53513"
     },
     {
       "file": "clay-profile.png",
-      "sha256": "929937f05aa92348bfe4cf48499be297b13703b3a05787172c1e5808d6dcca94"
+      "sha256": "acaf2cc048a18f7e34bb0e74a156b5b35839c4cb6bf45b457e5b2c018f83f61c"
     },
     {
       "file": "clay-three-quarter-front.png",
-      "sha256": "b20ae8435cae61e24641b2b62d671c59fcbc7d1d62d86ed9c07aa4a7cf0ae728"
+      "sha256": "5fe7cfef6d990baa4ef2dc6f5d90f7994e770d0eef85a718e1a8e516f608d282"
     },
     {
       "file": "clay-three-quarter-rear.png",
-      "sha256": "1ff72ceee77ebad3054f0a072f135442b7e64f011e41441e05d9074f56eb766c"
+      "sha256": "32f2bb7fcd60e87fe724515bafc1f7c30b6fed2d2936948a5ba3832faec1d68c"
     },
     {
       "file": "silhouette-front.png",
-      "sha256": "790607451631232e37c0653e795769082859990fa62e483494c3ab65355c857c"
+      "sha256": "09d947c93a88917533dfe54d5c3d8a59a04522b476be53a8ed51ee8a4602baf1"
     },
     {
       "file": "silhouette-profile.png",
-      "sha256": "9b536842363d7305371545fbbc2de59bbbdab6597f6dab11078907f4510c2a1c"
+      "sha256": "627bbcac75dc3040aa6ea7452151e3d307634c292ec54fa29f11250e08316939"
     },
     {
       "file": "close-head.png",
-      "sha256": "474464d7683f71f837a6a9e2a3327e561256f23c5a2dff337a363cfe6623031d"
+      "sha256": "859f067e8b99afeaab153f637c38e8d379841f204a6995c76947021109dd08df"
     },
     {
       "file": "close-face.png",
-      "sha256": "2d732e6d97a0966b70046eb93f483f849e8600bb014eba0d56da47f558427218"
+      "sha256": "404090ed7e7af20139ed99943028a3debce76284a0304dbfd425006c3bcf367d"
     },
     {
       "file": "close-shoulder.png",
-      "sha256": "91d100a47f025226b54f6d32c4072e7fe45369678763cc63b554a4a97e93a945"
+      "sha256": "5362aac3d27123b0bc53b900bd6441a3f09be63eb91563a83843c0fdad0c1a6f"
     },
     {
       "file": "close-axilla-rear.png",
-      "sha256": "4e6383e69390a2a21eaab02fcc4ab749e5f77c4d79db18e4ea025ab1290bc596"
+      "sha256": "847056eae6443e100fac3167bd3c65b52ca2be6f69c204547b8aaa8c2237ae68"
     },
     {
       "file": "close-chest.png",
-      "sha256": "780d24693ed8872a2ed31f2b604eb8a1132ca2e31b80b84c18276c838b531a8e"
+      "sha256": "502b088512ef42b4154fae0b1a6b4a633018b573b5462323400dde0f2dd779d7"
     },
     {
       "file": "close-calf.png",
-      "sha256": "52a542eaddb1146f78815d86107770324d67d7ed349710af8580167576e69c53"
+      "sha256": "3083b4f2bbdd5f5923c089412d3fba1e42df75ff1c9fc504e4bb03d70381c6aa"
     },
     {
       "file": "close-belly.png",
-      "sha256": "1cce8b5daf56f72cedbd89f2ace43bab3d855525ef1e9cd9e3e29c00e236d1a8"
+      "sha256": "64cf9178a5aa3d544e8597838cef2ec9782803ccba8722103516672205c21a9b"
     },
     {
       "file": "close-pelvis.png",
-      "sha256": "10c46b4725e3204aa8e7fd50bd71d1ee506d34f1c385fb250faea279c6e7c4bd"
+      "sha256": "4a0727f8ea2f1a1d9b7311b25bdd8b419615fec21baf7aef8d4a553f76aa9170"
     },
     {
       "file": "close-hand.png",
-      "sha256": "79e1799784abcbf7d5a407af33e40d1be133cbe19d4b45c84f8cf39297a1d9f1"
+      "sha256": "11c157070ceef78f1409e2569787794c7d4d288444bf4a2a0165b44d769e4312"
     },
     {
       "file": "close-thigh-knee.png",
-      "sha256": "957501abbe423bcb8d62812ccb29c44afdb582363e6b066872d2d0d9930765ba"
+      "sha256": "ef9f4fbb9b800f8f05367938c5f79153a19a5676a4ebba44d9d4663dfe8e8c85"
     },
     {
       "file": "close-foot.png",
-      "sha256": "4b1f916b89d588ae1258934f11e3543b2aea1fa89e5c8ed1aaff22803caf77be"
+      "sha256": "d2b1d15b6911f473cf429311b3f2b605ea468d134153cbc75222cc64749c5b33"
+    },
+    {
+      "file": "close-foot-profile.png",
+      "sha256": "f685d3caded81eb2c95bb60e420717fab246f830a0ddcbb2ff5254338ce66f68"
+    },
+    {
+      "file": "close-heel.png",
+      "sha256": "4512cfd82b73aa65b463438eb82d5fecbe2866eebfbe8e9a514ab8cc2e62b835"
     },
     {
       "file": "hero-production.png",
-      "sha256": "cb85ed1b392740a92b531ea196f4ed8cfd3c88461c46aba61190b9a015814f85"
+      "sha256": "a0abd9e1f6dfc51d119c222ae929648ae5c1c0465dfd9cc2ded31cba556cfef1"
     },
     {
       "file": "guide-close-head.png",
-      "sha256": "20fc99fcc58bba79b8e97d69197239b12bf7cb299788774924faec359301404c"
+      "sha256": "964ee6e1389f091e42689fd2a3034f88a8a44140e4ec877607f36d93cbc8e290"
     },
     {
       "file": "guide-close-face.png",
@@ -231,19 +247,19 @@
     },
     {
       "file": "guide-close-shoulder.png",
-      "sha256": "546b4129954091f2142efc46ea647f9557a78ab05f5801847c273b15a1937759"
+      "sha256": "6ed75a276b8ff494590cab816e2a8cd516806531716d0702f517f6d8baa91d84"
     },
     {
       "file": "guide-close-axilla-rear.png",
-      "sha256": "ace73d032a17e84058b9fe6219a1427fd1535188562c2e6f546dfbb19663b897"
+      "sha256": "682e8ffcf0e26e0665335ea3fa653c87fefd88f554031ab9e6c22390de85ca55"
     },
     {
       "file": "guide-close-chest.png",
-      "sha256": "694d03497d98e7702bccb5969de52bca92b6c1413a49a068dfd5fbb234083a86"
+      "sha256": "36e6ff47e55ce245f9b5cc90c5513d65e31974b03c6a81ea10397fdbf479e182"
     },
     {
       "file": "guide-close-calf.png",
-      "sha256": "b4180e44bb3b7add8b279c7c7c5bbff7107c11a1199a5c37a660ee1bb00d1337"
+      "sha256": "91923fa5d0ace6dd95cc946d7863b55c067b7adda007fef8ee19b755b75e748f"
     },
     {
       "file": "guide-close-belly.png",
@@ -255,7 +271,7 @@
     },
     {
       "file": "guide-close-hand.png",
-      "sha256": "125b11b0787237d023df8912f3e8e3491779416b00487e599a7384a6ab602910"
+      "sha256": "6381228e02378176466adc1fd607f22344399336742ad5390e8fb0b19fdc6910"
     },
     {
       "file": "guide-close-thigh-knee.png",
@@ -263,27 +279,35 @@
     },
     {
       "file": "guide-close-foot.png",
-      "sha256": "7ddc535b3f80939efc77aa1a15c5fd3c291fccc9396acc9bd8d30b588cdf73db"
+      "sha256": "124f29d99ae24479f5418994188932adc5b9752f347db1c6dd5681eefa5ae39c"
+    },
+    {
+      "file": "guide-close-foot-profile.png",
+      "sha256": "ef937aad24aa5f86ceb7829104fd46991da31e304b7d53145086eae67b6c03ac"
+    },
+    {
+      "file": "guide-close-heel.png",
+      "sha256": "0e4c10f0d1077010068c09c249f243aced79702099f17e1b5c8b4a3fc1ddc307"
     },
     {
       "file": "comparison-front-guide.png",
-      "sha256": "c528f41e07c90e69e49ed18f612534e688729cf780237da947fa6b5509d658df"
+      "sha256": "0c57cfbdcacab5e5e5f62b2140c43c01287e43a6d10b00220d183cf646d8e465"
     },
     {
       "file": "comparison-front-voxel.png",
-      "sha256": "b261bc4ccff3b87d7edc3e3610da16df1fbff8692f6c8b42799b070fcebc21cc"
+      "sha256": "7180773fc019423a053a9ff3ef4146b2aa78789d073858150a1c6c125e818dfb"
     },
     {
       "file": "comparison-profile-guide.png",
-      "sha256": "c396ca0ce7724bf83ff3ba77695e1bf5d08e9bde0180e0ded8835d6ca22748c5"
+      "sha256": "aecda22b4c198d29d297ef0d6b769b5970e4045a1e304168f48ed439b92ec111"
     },
     {
       "file": "comparison-profile-voxel.png",
-      "sha256": "4aa4ab01f931b16f0a565dce839787928687c7e209ac10ae1454125f5de7b555"
+      "sha256": "dd606518ad6670fb679d5bb08c77bd286e29d73e0e66b388719a46f8fe3ae958"
     },
     {
       "file": "comparison-three-quarter-voxel.png",
-      "sha256": "ee36065e239d5d2facf54611102750ee5bd40945e8daf8a21298ecc9650f0c67"
+      "sha256": "9f8936a8cbffc0fb450c11ba6611890f585a7257a25ccc47168f1f0b2ce2eee8"
     }
   ]
 }

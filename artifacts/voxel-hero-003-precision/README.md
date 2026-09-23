@@ -30,4 +30,10 @@ The local radial-shell diagnostic found 282 arm vertices more than 1 mm inside i
 
 Later experiments: [larger opening](guide-20/contact-01.png), [rejected posterior bulk](guide-21/contact-01.png), [rig fit before neutral-target repair](guide-22/contact-01.png), [corrected neutral targets](guide-23/contact-01.png), [smaller opening](guide-24/contact-01.png), [oblique socket](guide-25/contact-01.png). The iteration ledger records which parts survived.
 
-Current full-root and engine test logs are in [validation-shoulder](validation-shoulder/). Earlier validation/ logs belong to checkpoint 26811dd.
+Historical shoulder checkpoint full-root and engine test logs are in [validation-shoulder](validation-shoulder/). Earlier validation/ logs belong to checkpoint 26811dd.
+
+## Foot exterior diagnostics after c48c2c3
+
+[Baseline low-angle views](foot-diagnostic-01/contact-01.png), [corrected sweep orientation](foot-02/contact-01.png), [slower turn and continuous ankle weights](foot-03/contact-01.png). The foot had inward-facing dorsal/plantar surfaces despite passing manifold checks. The retained local candidate restores visible volume; heel/contact and anatomical form remain incomplete. The final foot-05 repair is now represented in the regenerated canonical set.
+
+[Retained heel/contact candidate, guide and HERO](foot-05/contact-01.png). All six closeups were inspected. The solid forefoot, blended ankle and heel mass are retained; toe form and cubic surface gaps remain unresolved. Canonical regeneration is complete: 39 camera views and ten reference boards. Current 115-test root, 613-test engine, 30-view body validation and provenance reports are in [validation-foot](validation-foot/). All eleven retained coherent captures and three same-camera comparison boards were inspected; terraces and gaps prevent adoption.

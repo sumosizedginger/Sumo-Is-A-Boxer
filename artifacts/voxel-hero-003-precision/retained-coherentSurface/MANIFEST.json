@@ -3,27 +3,27 @@
   "branch": "game-build",
   "quality": "HERO",
   "hero": {
-    "occupied": 266922,
-    "surface": 28349,
-    "faces": 47884,
+    "occupied": 269401,
+    "surface": 28620,
+    "faces": 48362,
     "voxelSize": 0.012,
-    "generationMs": 37368.60000002384,
+    "generationMs": 38779.700000047684,
     "drawCalls": 1,
     "realization": "coherentSurface",
-    "instances": 28349,
-    "realizationHash": "447d8da82042bb6d",
-    "realizationMs": 1668.2999999523163,
-    "canonicalHash": "856c70ae8364a9ba",
-    "canonicalGenerationMs": 35700.300000071526,
+    "instances": 28620,
+    "realizationHash": "ce52907695d33744",
+    "realizationMs": 1920.4000000953674,
+    "canonicalHash": "aac035fe836f7641",
+    "canonicalGenerationMs": 36859.299999952316,
     "instanceToCellRatio": 1,
     "cubeScale": 1.04
   },
-  "sourceCommit": "26811dd185de94f5251a817bf98297b5e5e7c90f",
+  "sourceCommit": "c48c2c375c15d1a4a924ef84620f43b4cc5554df",
   "sourceHashes": {
     "src/game/character/hero-rig.js": "6f3e73c92bafa67a5e7c00f2fe7794f5c9aa3e6ffd6b484175318c559cb3a259",
     "src/game/character/hero-guide-body.js": "dc1296f298d2cd1c981252059dd4d7ad6f99356eacef169716b0616a0e5682bb",
     "src/game/character/opponent-sumo.js": "dd75d19816ff15a3d2346a1f9351ef92a0df803c95b084c5204ee9b03ee0dcd8",
-    "src/game/character/continuous-body.js": "f542670e75502275b56086b7a35e3f94e9bc266d5d368b78505fa73589c42bc5",
+    "src/game/character/continuous-body.js": "0d681f412efde3ce7a21b38b9641b718e4d8d0470d74cbc57834077a7ef1813f",
     "src/game/character/sumo-body-sculpt.js": "a62c5f5f88ca3918c5e6d4d53b4ca37b68c95fc5d7249fb07a7e77ba019ee015",
     "src/game/character/head-profile.js": "89c3b2b2d5500ddb6e623066b87a959ba3ca5f89c8a52fbba4dc794cc439c3c4",
     "src/game/character/hero-face.js": "d3304809833bb694964f368af7f1fbf2531a6ec16440793d1677d2b6eab8a452",
@@ -33,13 +33,13 @@
     "engine/src/voxel/surface-frame.js": "5e0865c6dc2a8a5c821cff443510fc4aea8e04934c232ab61516d1a2edbd9b3d",
     "engine/src/voxel/surface-instances.js": "78ad835ce0fbf5ce0db00bae078c190b3ac9a08ae3125150505997c0b4c05286",
     "engine/src/voxel/runtime.js": "ec47acf34fdb735af76ac4811f405bbdf56ae08b54a718e4fabf45c444a0e9ea",
-    "src/game/validation/presets.js": "31a3128138e02ef1f01980a0c6175b3fe6923ccf4e211a9508e7dc130f6b24a1",
+    "src/game/validation/presets.js": "646b988ea66390adcf388388a37e0f7ede9e54633addbc60388183d504f831a7",
     "src/game/validation/harness.js": "d5105a1b091154c68657a077a76839399573bf337b384ffffc83fda03b711f3d"
   },
-  "sourceDiffHash": "72585bd0e69dfa034c71a3f522ce10660016ae3a8ca037fa97139337da8aeec4",
-  "filter": "=clay-front,=clay-profile,=clay-rear,=close-face,=close-belly,=close-shoulder,=close-axilla-rear,=close-hand,=close-foot",
+  "sourceDiffHash": "83d0d4579932d29eb2302d94734b75123335cf9879e39d07b91bdfcfcf867d38",
+  "filter": "=clay-front,=clay-profile,=clay-rear,=close-face,=close-belly,=close-shoulder,=close-axilla-rear,=close-hand,=close-foot,=close-foot-profile,=close-heel",
   "complete": false,
-  "capturesCount": 9,
+  "capturesCount": 11,
   "expectedCaptures": [
     "guide-front.png",
     "guide-rear.png",
@@ -64,6 +64,8 @@
     "close-hand.png",
     "close-thigh-knee.png",
     "close-foot.png",
+    "close-foot-profile.png",
+    "close-heel.png",
     "hero-production.png",
     "guide-close-head.png",
     "guide-close-face.png",
@@ -76,6 +78,8 @@
     "guide-close-hand.png",
     "guide-close-thigh-knee.png",
     "guide-close-foot.png",
+    "guide-close-foot-profile.png",
+    "guide-close-heel.png",
     "comparison-front-guide.png",
     "comparison-front-voxel.png",
     "comparison-profile-guide.png",
@@ -91,44 +95,54 @@
     "close-axilla-rear.png",
     "close-belly.png",
     "close-hand.png",
-    "close-foot.png"
+    "close-foot.png",
+    "close-foot-profile.png",
+    "close-heel.png"
   ],
   "evidence": [
     {
       "file": "clay-front.png",
-      "sha256": "547381637ded58d734325a99c3201610dc3c800c85a867227d24d5815c360f5b"
+      "sha256": "a68beab2621e19b4fd13e6327d99efce382249924953e6b9a90ee6ac7ee065b0"
     },
     {
       "file": "clay-rear.png",
-      "sha256": "3d9722e50c23d7ac8646d9854f4a7733a55a7d1cb3fe2ce9a711f9d0ffe24f4e"
+      "sha256": "2f98018998428b6fe3fc3f1f6b27f5a6eff9ab0e80d2b356a180b2eda2379569"
     },
     {
       "file": "clay-profile.png",
-      "sha256": "f4b997bb81e32fb7ddc82b350c6b7ee413bdbfeb4e22c4242c0c21c4abbbcfdb"
+      "sha256": "6ac63bc7394530bf38f4fc942ac0c0e182968cc48882ed8bf2b44a7b903d74a3"
     },
     {
       "file": "close-face.png",
-      "sha256": "05aa0c94252d3f72129b1fc434d3cd395d68e0801c0b4539c1171b83b473840c"
+      "sha256": "509a11fa2f6dd66cfb51f49d8414ee46cbffba366dc88df2c3de79509d8d4c2d"
     },
     {
       "file": "close-shoulder.png",
-      "sha256": "d6b0fa527d8179182555411397921b01ce4bb175590916242b729fe9fc75c196"
+      "sha256": "385efd07b5fb3fe8ae2b03936f2a9b20fac795e9591508cebabb7b345ffeb109"
     },
     {
       "file": "close-axilla-rear.png",
-      "sha256": "06643e070d211e3cd97e54ae6bd72c446d09d0e6a03773ddc1047f9096884951"
+      "sha256": "bd6540e0a03048f6bf12baa6cb50931591b028f947541a78a88130712056bb3f"
     },
     {
       "file": "close-belly.png",
-      "sha256": "3bd57224b7aee6bf0e73f34bf1b78fe1db6c776d2cb8d2f9a327757a288f9b0e"
+      "sha256": "3d261411d34c17eb031304c01ffab333c3b77fce7e9553ebc8c7d9d2eda38502"
     },
     {
       "file": "close-hand.png",
-      "sha256": "8ce3f47cecf8172b119d56d214b8e579863e278752669bf3e0dbdddf917c5b63"
+      "sha256": "8ac8214301126d6066200dd574a3955efd0730032f035165995162722c37fce7"
     },
     {
       "file": "close-foot.png",
-      "sha256": "10f971ea558ab08e96d986488786f75935f2441c01eff4c1e602a90df31bf579"
+      "sha256": "54435c6917a9837834f2e285733935970c1b4ec216683d52166ec7c9b7ab1d14"
+    },
+    {
+      "file": "close-foot-profile.png",
+      "sha256": "7a6871142c201977d226c67cfbf5e44f0a86651cc28e58ce403bdb84292156ce"
+    },
+    {
+      "file": "close-heel.png",
+      "sha256": "51a0d4e97cfa6f9f4d602e06196939dd2154bcff464a6e20de54d70d26988378"
     }
   ]
 }

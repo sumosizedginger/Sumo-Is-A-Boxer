@@ -1,22 +1,22 @@
 {
   "metrics": {
-    "occupied": 266922,
-    "surface": 28349,
-    "faces": 47884,
+    "occupied": 269401,
+    "surface": 28620,
+    "faces": 48362,
     "voxelSize": 0.012,
-    "generationMs": 37368.60000002384,
+    "generationMs": 38779.700000047684,
     "drawCalls": 1,
     "realization": "coherentSurface",
-    "instances": 28349,
-    "realizationHash": "447d8da82042bb6d",
-    "realizationMs": 1668.2999999523163,
-    "canonicalHash": "856c70ae8364a9ba",
-    "canonicalGenerationMs": 35700.300000071526,
+    "instances": 28620,
+    "realizationHash": "ce52907695d33744",
+    "realizationMs": 1920.4000000953674,
+    "canonicalHash": "aac035fe836f7641",
+    "canonicalGenerationMs": 36859.299999952316,
     "instanceToCellRatio": 1,
     "cubeScale": 1.04
   },
   "errors": [],
-  "capturesCount": 9,
+  "capturesCount": 11,
   "captures": [
     "artifacts\\voxel-hero-003-precision\\retained-coherentSurface\\clay-front.png",
     "artifacts\\voxel-hero-003-precision\\retained-coherentSurface\\clay-rear.png",
@@ -26,6 +26,8 @@
     "artifacts\\voxel-hero-003-precision\\retained-coherentSurface\\close-axilla-rear.png",
     "artifacts\\voxel-hero-003-precision\\retained-coherentSurface\\close-belly.png",
     "artifacts\\voxel-hero-003-precision\\retained-coherentSurface\\close-hand.png",
-    "artifacts\\voxel-hero-003-precision\\retained-coherentSurface\\close-foot.png"
+    "artifacts\\voxel-hero-003-precision\\retained-coherentSurface\\close-foot.png",
+    "artifacts\\voxel-hero-003-precision\\retained-coherentSurface\\close-foot-profile.png",
+    "artifacts\\voxel-hero-003-precision\\retained-coherentSurface\\close-heel.png"
   ]
 }

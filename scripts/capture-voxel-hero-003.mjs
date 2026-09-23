@@ -214,6 +214,8 @@ try {
     ["close-hand", "close_hand"],
     ["close-thigh-knee", "close_thigh_knee"],
     ["close-foot", "close_foot"],
+    ["close-foot-profile", "close_foot_profile"],
+    ["close-heel", "close_heel"],
 
     // PRODUCTION (26)
     ["hero-production", "hero_production"]

@@ -12,4 +12,6 @@ Contact sheets [1](contact-01.png), [2](contact-02.png), [3](contact-03.png), [4
 
 Same-camera surface-mode experiments are in [the precision directory](../voxel-hero-003-precision/). The [iteration record](../../docs/VOXEL_HERO_003_PRECISION.md) explains retained and rejected changes.
 
-Current posterior axilla closeups: [guide](guide-close-axilla-rear.png), [HERO](close-axilla-rear.png). The regenerated set contains 35 camera captures and 10 comparison boards. Visual acceptance remains pending.
+Current posterior axilla closeups: [guide](guide-close-axilla-rear.png), [HERO](close-axilla-rear.png). The regenerated set contains 39 camera captures and 10 comparison boards. Visual acceptance remains pending.
+
+Foot exterior views: [guide profile](guide-close-foot-profile.png), [HERO profile](close-foot-profile.png), [guide heel](guide-close-heel.png), [HERO heel](close-heel.png).

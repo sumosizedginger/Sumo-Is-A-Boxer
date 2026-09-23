@@ -198,14 +198,16 @@ export function generateContinuousBody(landmarks,{widthScale=1,leftArmScale=1}={
     let footStart=Infinity;
     if(kind==='leg'){
       footStart=out.length/3;
-      // Heel to toe: a bent longitudinal sweep sharing the ankle boundary.
+      // Heel to toe: transport the ankle ring toward +Z without reversing its outward winding.
+      // The anterior half rises over the instep; the posterior half becomes the sole.
       for(let j=1;j<=24;j++){
-        const t=j/24,turn=smooth(t/.50),cy=.105-.060*smooth(t/.45)-.012*smooth((t-.65)/.35),cz=-.015+.238*t;
+        const t=j/24,turn=clamp(t/.65),cy=.105-.070*turn-.012*smooth((t-.65)/.35),cz=-.015+.238*t;
         const rw=.070+.015*Math.exp(-2*((t-.70)/.22)**2)-.015*Math.exp(-2*((t-.35)/.16)**2),rd=.090*(1-turn)+(.038-.013*smooth((t-.60)/.40))*turn;
         rows.push(angles.map(angle=>{
           const c=Math.cos(angle),sn=Math.sin(angle),localX=c*rw;
-          const bend=turn*Math.PI/2,yy=cy-sn*rd*Math.sin(bend),zz=cz+sn*rd*Math.cos(bend)+.016*Math.max(0,-c*sign)*turn;
-          return push([sign*legCenterX+localX,Math.max(.015,yy),zz]);
+          const heel=Math.sin(Math.PI*clamp(t/.45))**2*Math.max(0,-sn);
+          const bend=turn*Math.PI/2,yy=cy+sn*rd*Math.sin(bend)-.075*heel,zz=cz+sn*rd*Math.cos(bend)+.016*Math.max(0,-c*sign)*turn-.030*heel;
+          return push([sign*legCenterX+localX,Math.max(0,yy),zz]);
         }));
       }
     }
@@ -296,7 +298,8 @@ export function skinContinuousBody(surface,character){
       const k=L['knee.'+key].y, aLandmark=L['ankle.'+key].y;
       const t=smooth((y-k+.10)/.20),hip=smooth((y-.78)/.18);
       region=y>.80?'hip_'+side:Math.abs(y-k)<.065?'knee_'+side:y>k?'thigh_'+side:'calf_'+side;
-      const footT = domain.startsWith('foot_') ? 1 : y < aLandmark ? smooth((aLandmark - y) / 0.025) : 0;
+      // Blend through the shared ankle boundary, rather than switching by domain.
+      const footT = smooth((aLandmark + .08 - y) / .07);
       const footBone = 'foot_' + side, shinBone = 'shin_' + side;
       w=[
         [footBone, footT * (1 - hip)],

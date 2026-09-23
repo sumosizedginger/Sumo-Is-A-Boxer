@@ -1,0 +1,14 @@
+[
+  {
+    "directory": "artifacts/voxel-hero-003",
+    "runtimeSources": 15,
+    "images": 44,
+    "failures": []
+  },
+  {
+    "directory": "artifacts/voxel-hero-003-precision/retained-coherentSurface",
+    "runtimeSources": 15,
+    "images": 11,
+    "failures": []
+  }
+]
